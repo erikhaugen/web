@@ -1,0 +1,134 @@
+
+--------------------------------------------------
+processDocument()
+- find by GUID, copy, UID, EN user ID, pen display ID
+- if 'null', INSERT
+- else UPDATE
+
+- create new Notebook
+- get pen name
+
+- Get Notebooks from Evernote
+
+- Get pen name from Settings Service.
+	- If 'null' Notebooks, use pen name from Settings Service.
+	- If no pen name use "Sky Smartpen"
+	- Override pen name with value from list of Notebooks - ONLY IF ALL NOTEBOOKS HAVE THE SAME STACK NAME.  (Do not include "Archived Notebooks")
+
+- If UPDATE, update EN Notebook GUID of Document in database.
+- If INSERT, create and insert new database Document record.
+
+- Find matching Template record for each Template in uploaded AFD.
+	- If found, add to DocumentDTO.
+	- If NOT found, INSERT into database.
+
+- Get Page records from database.
+	- For each Page from DB, if found, ignore the page, else INSERT new Page.
+
+
+--------------------------------------------------
+processStrokes()
+
+- Find Page by page index and doc ID.
+- If EN Note GUID is present, get Note from Evernote.
+	- If the Note's Notebook GUID is different from the one in the Document record form the database, UPDATE the Note's Notebook GUID with the one from database Document.
+
+	- Check if Note has "set deleted", and "is not active", set active to "true" and deletedIsSet to "false"
+		- This pulls the Note out of the Trash in Evernote.
+
+	- If the Note has Resources ...
+		- Iterate over Resources.
+			- Find the Stroke Resource.
+			- Find the Image Resource.
+			- If Stroke or Image Resource has Data ...
+				- Compare the hash
+		- If Stroke Resource has Data, 
+			- extract the XML from the Data.getBody() and create new XMLStrokes object.
+			- Add new XMLStrokes to existing List found in Data.getBody()
+	
+	- Inject "UI Setting PNG" and "Logo Inactive frost GIF" as Resources of the Note
+	- Set Content Class of Note.
+	
+- If EN Note GUID is not present ...
+	- Create new Note.
+	
+
+
+- Get list of XMLStroke objects from File created from parsing *.stf files.
+
+- Create Evernote Stroke Resource Hash:
+
+				//	Convert Strokes back to XML.
+				String tStrokeXML = getXMLFromStrokes(tStrokeList);
+				
+				//	Create a new MD5 hash of the strokes.
+				tNewStrokeBytes = tStrokeXML.getBytes("UTF-8");
+				MessageDigest tMD5Digest = MessageDigest.getInstance("MD5");
+				tNewStrokeHash = tMD5Digest.digest(tNewStrokeBytes);
+				tNewStrokeHexHash = new String(Hex.encodeHex(tNewStrokeHash));
+
+--------------------------------------------------
+
+
+
+
+
+AYE-ARE-4R3-WB
+http://localhost/services/lssettingsservice/getSetting.xml?serialNumber=AYE-ARE-4R3-WB&type=device&namespace=system&name=penName
+<setting key="penName" value="BgALRGF3bidzIFBlbgA=" type="device" meta="BAAAAAMEAAAAAAIA" modificationoffset="23008385"/>
+
+
+
+
+
+
+
+ 		<camel:route id="matchDocuments">
+		
+ 			<camel:from uri="activemq:queue:enriched?jmsMessageType=Object" />
+			
+			<!-- Set the HTTP method to GET. -->
+ 			<camel:setHeader headerName="CamelHttpMethod">
+ 				<camel:constant>GET</camel:constant>
+ 			</camel:setHeader
+
+ 			<camel:setHeader headerName="Authorization">
+ 				<camel:simple>${header.uid}</camel:simple>
+ 			</camel:setHeader>
+		
+ 			<camel:setHeader headerName="PenSerial">
+ 				<camel:simple>${header.displayId}</camel:simple>
+ 			</camel:setHeader>
+			
+			<!-- Find Documents belonging to the display ID and UID. -->
+ 			<camel:recipientList id="docRequest">
+ 				<camel:simple>http4://{{host.shareservice}}/services/lsplaybackservice/document</camel:simple>
+ 			</camel:recipientList>
+ 			<camel:to uri="activemq:queue:docList?jmsMessageType=Object" />
+ 		</camel:route>
+
+ 		<camel:route id="determineMissing">
+		    <camel:from uri="activemq:queue:docList?jmsMessageType=Object" />
+		    <camel:bean ref="xml2doc" method="translate" />
+		    <camel:to uri="activemq:queue:docDTO?jmsMessageType=Object" />
+		</camel:route>
+			
+			JDBC Query
+		<camel:route id="findExistingDoc">
+		    <camel:from uri="activemq:queue:enriched?jmsMessageType=Object" />
+		    <camel:enrich uri="sql:select * from document where user = :#uid and en_user_id = :#enUserId and pen_serial = :#displayId?dataSource=#lsevernotedbDS" />
+		    <camel:to uri="activemq:queue:newDocuments?jmsMessageType=Object" />
+		</camel:route>
+		
+		JPA Query
+		<camel:route id="findExistingDoc">
+		    <camel:from uri="activemq:queue:enriched?jmsMessageType=Object" />
+		    <camel:bean ref="xml2doc" method="translate" />
+		    <camel:from uri="jpa://org.kfm.jpa.Document?consumer.query=select d from org.kfm.jpa.Document d where uid = '9v8VcCCLsHtw'" />
+		    <camel:to uri="activemq:queue:newDocuments?jmsMessageType=Object" />
+		</camel:route>
+ 		
+		    <camel:from uri="jpa://org.kfm.jpa.Document?consumer.query=select x from org.kfm.jpa.Document x where x.uid = '9v8VcCCLsHtw'" />
+		    <camel:from uri="jpa://org.kfm.jpa.Document?consumer.namedQuery=Document.findAll" />
+		    <camel:from uri="jpa://org.kfm.jpa.Document?consumer.query=select x from org.kfm.jpa.Document x where x.uid = '9v8VcCCLsHtw'&consumer.parameters" />
+ 		

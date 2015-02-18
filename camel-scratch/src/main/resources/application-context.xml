@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:p="http://www.springframework.org/schema/p" 
+                xmlns:broker="http://activemq.apache.org/schema/core"
+                xmlns:camel="http://camel.apache.org/schema/spring"
+                xmlns:context="http://www.springframework.org/schema/context"
+                xmlns:jee="http://www.springframework.org/schema/jee"
+                xmlns:oxm="http://www.springframework.org/schema/oxm"
+                xmlns:tx="http://www.springframework.org/schema/tx"
+                xsi:schemaLocation="
+                				http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                				http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
+                                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                                http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+                                http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
+								http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+								http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<context:component-scan base-package="org.kfm.camel" />
+	<context:annotation-config />
+	<tx:annotation-driven />
+
+<!-- 	<import resource="jpaRoutes.xml"/> -->
+
+	<bean id="exampleBean"				class="org.kfm.camel.bean.ExampleBean" />
+	<bean id="afd2xml"					class="org.kfm.camel.translator.AfdToXmlTranslator" />
+	<bean id="prSplitterBean"			class="org.kfm.camel.pattern.PaperReplaySplitterBean" />
+	<bean id="userDetailsAggregator"	class="org.kfm.camel.strategy.UserDetailsAggregationStrategy" />
+	<bean id="existingInfoAggregator"	class="org.kfm.camel.strategy.ExistingInfoAggregationStrategy" />
+	<bean id="file2Afd"					class="org.kfm.camel.translator.FileToAfdTranslator" />
+	<bean id="xml2doc"					class="org.kfm.camel.translator.XmlToDocumentTranslator" />
+	<bean id="xml2AuthResp"				class="org.kfm.camel.translator.StringToAuthorizationResponseTranslator" />
+	<bean id="xml2Afd"					class="org.kfm.camel.translator.XmlToAfdTranslator" />
+	<bean id="notebookProcessor"		class="org.kfm.camel.processor.FetchNotebooksProcessor" />
+	<bean id="strokesUpdateProcessor"	class="org.kfm.camel.processor.StrokesUpdateProcessor" />
+	
+	<bean name="log" 					class="org.apache.camel.component.log.LogComponent" />
+	
+	<bean id="deadLetterErrorHandler" class="org.apache.camel.builder.DeadLetterChannelBuilder">
+		<property name="deadLetterUri" value="activemq:queue:dead?jmsMessageType=Object"/>
+		<property name="redeliveryPolicy" ref="redeliveryPolicyConfig"/>
+	</bean>
+	 
+	<bean id="redeliveryPolicyConfig" class="org.apache.camel.processor.RedeliveryPolicy">
+		<property name="maximumRedeliveries" value="3"/>
+		<property name="redeliveryDelay" value="5000"/>
+	</bean>	
+	
+<!--     <bean id="appProperties" class="com.livescribe.framework.lsconfiguration.AppProperties" init-method="init" destroy-method="destroy"> -->
+<!--     	<property name="servletContextName" value="#{servletContext.servletContextName}" /> -->
+<!--         <property name="location"> -->
+<!-- 	        <value>classpath:app.properties</value> -->
+<!-- 	    </property> -->
+<!-- 	    <property name="searchSystemEnvironment"><value>true</value></property> -->
+<!-- 	    <property name="systemPropertiesMode"><value>1</value></property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="bridgePropertyPlaceholder" class="org.apache.camel.spring.spi.BridgePropertyPlaceholderConfigurer"> -->
+<!--   		<property name="location" value="classpath:app.properties"/> -->
+<!-- 	</bean> -->
+
+<!-- 	<bean id="connectionPool" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close"> -->
+<!-- 		<property name="jdbcUrl" value="${lsevernotedb.jdbc.url}" /> -->
+<!-- 		<property name="user" value="${lsevernotedb.jdbc.username}" /> -->
+<!-- 		<property name="password" value="${lsevernotedb.jdbc.password}" /> -->
+<!-- 		<property name="driverClass" value="${lsevernotedb.jdbc.driverClassName}" /> -->
+<!-- 	</bean> -->
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/evernote" />
+		<property name="username" value="lsshareuser" />
+		<property name="password" value="5up3r53cr3t" />
+	</bean>
+
+    <jee:jndi-lookup 
+        id="lsevernotedbDS"
+        jndi-name="jdbc/enDataSource"
+        resource-ref="true" />
+    
+<!--     <jee:jndi-lookup id="myEmf" jndi-name="persistence/myPersistenceUnit"/> -->
+    
+    
+	<!-- *** Add a DataSource bean to load 'app.properties' -->
+<!-- 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
+<!-- 		<property name="url" value="${lsevernotedb.jdbc.url}" /> -->
+<!-- 		<property name="username" value="${lsevernotedb.jdbc.username}" /> -->
+<!-- 		<property name="password" value="${lsevernotedb.jdbc.password}" /> -->
+<!-- 		<property name="driverClassName" value="${lsevernotedb.jdbc.driverClassName}" /> -->
+<!-- 	</bean> -->
+
+	<!-- 
+	==================================================
+		JPA Beans
+	================================================== -->
+	<bean id="openJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.OpenJpaVendorAdapter">
+		<property name="showSql" value="true" />
+		<property name="generateDdl" value="false" />
+		<property name="databasePlatform" value="mysql" />
+	</bean>
+<!-- 	<bean id="entityManagerFactory" class="org.apache.openjpa.persistence.EntityManagerFactoryImpl"> -->
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="lsevernotedbDS" />
+		<property name="loadTimeWeaver">
+			<bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
+		</property>
+		<property name="persistenceUnitName" value="evernotePersist"/>
+	</bean>	
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+	</bean>
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="transactionManager" />
+    </bean>
+	
+	<bean id="jpa" class="org.apache.camel.component.jpa.JpaComponent">
+		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+		<property name="transactionManager" ref="transactionManager"/>
+	</bean>
+	
+	<!-- 
+	==================================================
+		JMS Beans
+	================================================== -->
+<!-- 	<bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent"> -->
+<!-- 		<property name="brokerURL" value="tcp://localhost:61616"/> -->
+<!-- 	</bean> -->
+	<bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="vm://amqConnFactoryBroker" />
+	</bean>
+	<bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" init-method="start" destroy-method="stop">
+		<property name="maxConnections" value="8" />
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+	</bean>
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="pooledConnectionFactory"/>
+		<property name="concurrentConsumers" value="10"/>
+	</bean>
+	<bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property name="configuration" ref="jmsConfig"/>
+		<property name="brokerURL" value="vm://amqComponentBroker?create=true&amp;waitForStart=5000"/>
+	</bean>
+
+	<!-- 
+	==================================================
+		DAO Beans
+	================================================== -->
+	<bean id="documentDao"	class="org.kfm.camel.dao.DocumentDao" />
+	<bean id="pageDao"		class="org.kfm.camel.dao.PageDao" />
+	<bean id="noteDao"		class="org.kfm.camel.dao.NoteDao" />
+
+	<!-- 
+	==================================================
+		Camel Context
+	================================================== -->
+	<camel:camelContext id="camelCtx" xmlns="http://camel.apache.org/schema/spring">
+	
+		<camel:propertyPlaceholder id="camelProperties" location="classpath:app.properties" />
+		
+				<!-- === Endpoints === -->
+		
+		<!-- Login Service endpoint definition. -->
+<!-- 		<camel:endpoint id="findUID" uri="http4://{{host.loginservice}}/services/lsloginservice/finduseruidbypendisplayid.xml?dispayId=${displayId}" /> -->
+<!-- 		<camel:endpoint id="ppFileDir" uri="file:${uri.paper_product}?doneFileName=${file:name}.done&amp;moveFailed=.error" /> -->
+
+		<camel:dataFormats>
+			<camel:xstream id="xstream-utf8" encoding="UTF-8" />
+			<camel:xstream id="xstream-default" />
+		</camel:dataFormats>
+		
+		<!-- === Routes === -->
+		
+		<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - 
+				Parse Paper Product AFD
+		- - - - - - - - - - - - - - - - - - - - - - - - -  -->
+		<!-- Parses a Paper Product AFD into an XML message and places it on a JMS queue. -->
+		<camel:route id="ppRead">
+			<camel:from uri="file:/Livescribe/uploads/paper_product?doneFileName=${file:name}.done&amp;moveFailed=.error" />
+<!-- 			<camel:from uri="ref:ppFileDir" /> -->
+
+			<camel:bean ref="file2Afd" method="translate" />
+
+			<!-- Gets the 'displayId' from the XML using an XPath expression and
+				sets a message header. -->
+<!-- 			<camel:setHeader headerName="displayId"> -->
+<!-- 				<camel:xpath resultType="java.lang.String">/afd/display-id</camel:xpath> -->
+<!-- 			</camel:setHeader> -->
+
+			<camel:setHeader headerName="displayId">
+				<camel:simple>${in.header.CamelFileName.substring(0, 14)}</camel:simple>
+			</camel:setHeader>
+
+<!-- 			<camel:setHeader headerName="requestId"> -->
+<!-- 				<camel:simple>${in.header.CamelFileName.substring(15, in.header.CamelFileName.lastIndexOf(\".\"))}</camel:simple> -->
+<!-- 			</camel:setHeader> -->
+			
+			<camel:to uri="activemq:queue:uploadedPaperProducts?jmsMessageType=Object" />
+		</camel:route>
+		
+<!-- 		<camel:route id="xmlToAfd"> -->
+<!-- 			<camel:from uri="activemq:queue:enrichedUserDetails?jmsMessageType=Object" /> -->
+<!-- 			<camel:convertBodyTo type="com.livescribe.afp.Afd" /> -->
+<!-- 			<camel:to uri="activemq:queue:afdsWithUserDetails?jmsMessageType=Object" /> -->
+<!-- 		</camel:route> -->
+		
+		<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - 
+				Multicast to Enrichers
+		- - - - - - - - - - - - - - - - - - - - - - - - -  -->
+		<camel:route id="sendToEnrichers">
+			<camel:from uri="activemq:queue:uploadedPaperProducts?jmsMessageType=Object" />
+			<camel:multicast>
+				<camel:to uri="activemq:queue:enrichUID?jmsMessageType=Object" />
+				<camel:to uri="activemq:queue:enrichOAuth?jmsMessageType=Object" />
+<!-- 				<camel:to uri="activemq:queue:enrichExistingDocuments?jmsMessageType=Object" /> -->
+				
+				<!-- Save the original message for later aggregation. -->
+				<camel:to uri="activemq:queue:waitingForUserDetails?jmsMessageType=Object" />
+			</camel:multicast>
+		</camel:route>
+		
+		<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - 
+				Parse Paper Replay AFD
+		- - - - - - - - - - - - - - - - - - - - - - - - -  -->
+		<!-- Parses a Paper Replay AFD into an XML message and places it on a JMS queue. -->
+		<camel:route id="rte1">
+
+			<camel:from uri="file:/Livescribe/uploads/paper_replay?doneFileName=${file:name}.done" />
+			<camel:to uri="log:org.apache.camel?level=DEBUG&amp;showProperties=true&amp;showHeaders=true&amp;multiline=true" />
+			<camel:bean ref="afd2xml" method="translate" />
+
+<!-- 			<camel:wireTap uri="direct:tap"> -->
+<!-- 				<camel:body><camel:simple>${body}</camel:simple></camel:body> -->
+<!-- 			</camel:wireTap> -->
+			
+			<!-- Gets the 'displayId' from the XML using an XPath expression and
+				sets a message header. -->
+			<camel:setHeader headerName="displayId">
+				<camel:xpath resultType="java.lang.String">/paper-replay/display-id</camel:xpath>
+			</camel:setHeader>
+
+			<camel:to uri="activemq:queue:uploadedSessions?jmsMessageType=Object" />
+			
+		</camel:route>
+		
+		<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - 
+				Get UID
+		- - - - - - - - - - - - - - - - - - - - - - - - -  -->
+		<!-- Gets the UID of the user from Login Service and adds it as a 
+			message header. -->
+		<camel:route id="enrichUid" streamCache="true">
+		
+			<camel:from uri="activemq:queue:enrichUID?jmsMessageType=Object" />
+
+			<!-- Set the HTTP method to POST. -->
+			<camel:setHeader headerName="CamelHttpMethod">
+				<camel:constant>POST</camel:constant>
+			</camel:setHeader>
+			
+			<!-- Get the user's UID from Login Service. -->
+			<camel:recipientList id="uidRequest">
+				<camel:simple>http4://{{host.loginservice}}/services/lsloginservice/finduseruidbypendisplayid.xml?displayId=${in.header.displayId}</camel:simple>
+			</camel:recipientList>
+			
+			<!-- Set the UID header -->
+			<camel:setHeader headerName="uid">
+				<camel:xpath resultType="java.lang.String">/response/uid</camel:xpath>
+			</camel:setHeader>
+			
+			<camel:to uri="activemq:queue:uidAdded?jmsMessageType=Object" />
+			
+		</camel:route>
+		
+		<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - 
+				Get OAuth Access Token
+		- - - - - - - - - - - - - - - - - - - - - - - - -  -->
+		<!-- Gets the user's OAuth access token from Login Service and adds
+			it as a message header. -->
+		<camel:route id="enrichAuth" streamCache="true">
+		
+			<camel:from uri="activemq:queue:enrichOAuth?jmsMessageType=Object" />
+
+			<!-- Set the HTTP method to POST. -->
+			<camel:setHeader headerName="CamelHttpMethod">
+				<camel:constant>POST</camel:constant>
+			</camel:setHeader>
+
+			<!-- Find the OAuth access token from Login Service.  
+				Uses 'displayId' from message header. -->
+			<camel:recipientList id="authRequest">
+				<camel:simple>http4://{{host.loginservice}}/services/lsloginservice/findAuthorizationByPenDisplayId.xml?penDisplayId=${in.header.displayId}&amp;provider=EN</camel:simple>
+			</camel:recipientList>
+
+			<!-- Set the OAuth Access Token header -->
+			<camel:setHeader headerName="accessToken">
+				<camel:xpath resultType="java.lang.String">/response/oauthAccessToken</camel:xpath>
+			</camel:setHeader>
+			
+			<!-- Set the EN User ID header -->
+			<camel:setHeader headerName="enUserId">
+				<camel:xpath resultType="java.lang.String">/response/enUserId</camel:xpath>    
+			</camel:setHeader>
+			
+			<!-- Set the UID header -->
+<!-- 			<camel:setHeader headerName="uid"> -->
+<!-- 				<camel:xpath resultType="java.lang.String">/response/uid</camel:xpath>     -->
+<!-- 			</camel:setHeader> -->
+<!-- 			<camel:setHeader headerName="enUserId"> -->
+<!-- 				<camel:spel>#{response.header.enUserId = }</camel:spel>     -->
+<!-- 			</camel:setHeader> -->
+
+			<!-- Use the incoming Afd object as the outgoing message. -->
+<!-- 			<camel:setBody> -->
+<!-- 				<camel:spel>#{response.body}</camel:spel> -->
+<!-- 			</camel:setBody> -->
+			
+			<camel:to uri="activemq:queue:authAdded?jmsMessageType=Object" />
+
+		</camel:route>
+
+		<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - 
+				Aggregators
+		- - - - - - - - - - - - - - - - - - - - - - - - -  -->
+		<!-- Collects the original message and both the UID and OAuth responses into one queue. -->
+		<camel:route id="agg2">
+			<camel:from uri="activemq:queue:uidAdded?jmsMessageType=Object" />
+			<camel:from uri="activemq:queue:authAdded?jmsMessageType=Object" />
+			<camel:from uri="activemq:queue:waitingForUserDetails?jmsMessageType=Object" />
+			<camel:to uri="direct:userDetailsAgg" />
+		</camel:route>
+
+		<camel:route id="agg1">
+			<camel:from uri="direct:userDetailsAgg" />
+			<camel:aggregate strategyRef="userDetailsAggregator">
+				<camel:correlationExpression>
+<!-- 					<camel:simple>${in.header.CamelFileName} regex "[A-Z0-9]{3}-[A-Z0-9]{3}-[A-Z0-9]{3}-[A-Z0-9]{2}"</camel:simple> -->
+					<camel:simple>${in.header.CamelFileName}</camel:simple>
+				</camel:correlationExpression>
+				<camel:completionPredicate>
+				
+					<!-- All four headers must be present (i.e. not 'null' 
+						nor empty) to complete the aggregation. -->
+					<camel:spel>#{request.headers['displayId'] != null and request.headers['displayId'] != "" and request.headers['uid'] != null and request.headers['uid'] != "" and request.headers['accessToken'] != null and request.headers['accessToken'] != "" and request.headers['enUserId'] != null and request.headers['enUserId'] != "" and request.body instanceof T(com.livescribe.afp.Afd)}</camel:spel>
+				</camel:completionPredicate>
+				<camel:to uri="activemq:queue:afdsWithUserDetails?jmsMessageType=Object" />
+			</camel:aggregate>			
+		</camel:route>
+		
+		<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - 
+				Converter:  XML to AuthorizationResponse
+		- - - - - - - - - - - - - - - - - - - - - - - - -  -->
+<!-- 		<camel:route id="xmlToAuthResp"> -->
+<!-- 			<camel:from uri="activemq:queue:enriched?jmsMessageType=Object" /> -->
+<!-- 			<camel:bean ref="xml2AuthResp" method="translate" /> -->
+<!-- 			<camel:to uri="activemq:queue:authResp?jmsMessageType=Object" /> -->
+<!-- 		</camel:route> -->
+		
+		<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - 
+				Distribute to get existing information
+		- - - - - - - - - - - - - - - - - - - - - - - - -  -->		
+		<camel:route id="distributeToGetExistingInfo">
+			<camel:from uri="activemq:queue:afdsWithUserDetails?jmsMessageType=Object" />
+			<camel:multicast>
+				<camel:to uri="activemq:queue:findExistingDocs?jmsMessageType=Object" />
+				<camel:to uri="activemq:queue:findExistingNotebooks?jmsMessageType=Object" />
+				<camel:to uri="activemq:queue:findPenName?jmsMessageType=Object" />
+				<camel:to uri="activemq:queue:waitingForExistingInfo?jmsMessageType=Object" />
+			</camel:multicast>
+		</camel:route>
+		
+		<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - 
+				Get User's Existing Documents from database
+		- - - - - - - - - - - - - - - - - - - - - - - - -  -->		
+<!-- 		<camel:route id="findMatchingDocument"> -->
+<!-- 		    <camel:from uri="activemq:queue:findExistingDocs?jmsMessageType=Object" /> -->
+<!-- 		    <camel:bean ref="documentDao" method="findByAfd" /> -->
+<!-- 		    <camel:to uri="activemq:queue:lsDocuments?jmsMessageType=Object" /> -->
+<!-- 		</camel:route> -->
+		
+		<camel:route id="findAllUserDocuments">
+			<camel:from uri="activemq:queue:findExistingDocs?jmsMessageType=Object" />
+			<camel:bean ref="documentDao" method="findByUser" />
+			<camel:to uri="activemq:queue:lsDocuments?jmsMessageType=Object" />
+		</camel:route>
+		
+		<camel:route id="findPenName">
+			<camel:from uri="activemq:queue:findPenName?jmsMessageType=Object" />
+			<camel:recipientList id="penNameRequest">
+				<camel:simple>http4://{{host.settingsservice}}/services/lssettingsservice/getSetting.xml?serialNumber=${in.header.penSerial}&amp;type=device&amp;namespace=system&amp;name=penName</camel:simple>
+			</camel:recipientList>
+			<camel:convertBodyTo type="com.livescribe.web.lssettingsservice.client.Setting" />
+			<camel:to uri="activemq:queue:penNames?jmsMessageType=Object" />
+		</camel:route>
+		
+		<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - 
+				Get User's Existing Notebooks from Evernote
+		- - - - - - - - - - - - - - - - - - - - - - - - -  -->
+		<!-- Essentially determines the name of the stack to use. -->
+		<camel:route id="findExistingNotebooks">
+			<camel:from uri="activemq:queue:findExistingNotebooks?jmsMessageType=Object" />
+			<camel:process ref="notebookProcessor" />
+			<camel:to uri="activemq:queue:enNotebooks?jmsMessageType=Object" />
+		</camel:route>
+		
+		<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - 
+				Collect existing information into single queue
+		- - - - - - - - - - - - - - - - - - - - - - - - -  -->		
+		<camel:route id="collectExistingInfo">
+			<camel:from uri="activemq:queue:lsDocuments?jmsMessageType=Object" />
+			<camel:from uri="activemq:queue:enNotebooks?jmsMessageType=Object" />
+			<camel:from uri="activemq:queue:penNames?jmsMessageType=Object" />
+			<camel:from uri="activemq:queue:waitingForExistingInfo?jmsMessageType=Object" />
+			<camel:to uri="activemq:queue:existingInfoAgg?jmsMessageType=Object" />
+		</camel:route>
+		
+		<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - 
+				Merge existing information into one Exchange
+		- - - - - - - - - - - - - - - - - - - - - - - - -  -->		
+		<camel:route id="mergeUploadsWithExistingDocs">
+			<camel:from uri="activemq:queue:existingInfoAgg?jmsMessageType=Object" />
+						
+			<camel:aggregate strategyRef="existingInfoAggregator">
+				<camel:correlationExpression>
+					<camel:simple>${in.header.CamelFileName}</camel:simple>
+				</camel:correlationExpression>
+				<camel:completionPredicate>
+					<camel:simple>${in.header.mergeComplete} == true</camel:simple>
+				</camel:completionPredicate>
+				<camel:to uri="activemq:queue:mergedUploads?jmsMessageType=Object" />			
+<!-- 				<camel:to uri="activemq:queue:findExistingNotebooks?jmsMessageType=Object" />			 -->
+			</camel:aggregate>
+
+<!-- 			<camel:wireTap uri="direct:tap"> -->
+<!-- 				<camel:body><camel:simple>${body}</camel:simple></camel:body> -->
+<!-- 			</camel:wireTap> -->
+
+		</camel:route>
+		
+		<camel:route id="processStrokes">
+			<camel:from uri="activemq:queue:mergedUploads?jmsMessageType=Object" />
+			<camel:process ref="strokesUpdateProcessor" />
+			<camel:to uri="activemq:queue:uploadsProcessed?jmsMessageType=Object" />
+		</camel:route>
+		
+		<!-- 
+		==================================================
+			Logging Routes
+		================================================== -->		
+<!--  		<camel:route id="tapped"> -->
+<!--  			<camel:from uri="activemq:queue:tapped?jmsMessageType=Object" /> 			 -->
+<!--  			<camel:to uri="log:org.kfm.camel?level=DEBUG&amp;showProperties=true&amp;showHeaders=true&amp;multiline=true" /> -->
+<!--  		</camel:route> -->
+ 		<camel:route id="logFinalStep">
+ 			<camel:from uri="activemq:queue:uploadsProcessed?jmsMessageType=Object" /> 			
+ 			<camel:to uri="log:org.kfm.camel?level=DEBUG&amp;showProperties=true&amp;showHeaders=true&amp;multiline=true" />
+ 		</camel:route>
+
+		<!-- Polls messages from JMS queue and logs them to the Log4J log file. -->
+<!--  		<camel:route id="logMessages"> -->
+<!--  			<camel:from uri="activemq:queue:enNotebooks?jmsMessageType=Object" /> -->
+<!--  			<camel:to uri="log:org.kfm.camel?level=DEBUG&amp;showProperties=true&amp;showHeaders=true&amp;multiline=true" /> -->
+<!--  		</camel:route> -->
+
+<!--  		<camel:route id="logNewDocuments"> -->
+<!--  			<camel:from uri="activemq:queue:newDocuments?jmsMessageType=Object" /> -->
+<!--  			<camel:to uri="log:org.kfm.camel?level=DEBUG&amp;showProperties=true&amp;showHeaders=true&amp;multiline=true" /> -->
+<!--  		</camel:route> -->
+
+<!--  		<camel:route id="wireTapMessages"> -->
+<!--  			<camel:from uri="direct:tap" /> -->
+<!--  			<camel:to uri="file:/Livescribe/tappedMessages" /> -->
+<!--  		</camel:route> -->
+
+		<!-- Split session-info-entry and audio-file-entry nodes into separate messages. -->
+<!-- 		<camel:route id="splitter"> -->
+<!-- 			<camel:from uri="activemq:queue:uploadedSessions?jmsMessageType=Object" /> -->
+<!-- 			<camel:split> -->
+<!-- 				<camel:method ref="prSplitterBean" method="split" /> -->
+<!-- 				<camel:xpath>/parsed-paper-replay/session-info-entries</camel:xpath> -->
+<!-- 				<camel:to uri="log:org.kfm.camel?level=DEBUG" /> -->
+<!-- 				<camel:to uri="activemq:queue:toBeRouted?jmsMessageType=Object" /> -->
+<!-- 			</camel:split> -->
+<!-- 		</camel:route> -->
+		
+<!-- 		<camel:route id="logToBeRoutedMessages"> -->
+<!-- 			<camel:from uri="activemq:queue:toBeRouted?jmsMessageType=Object" /> -->
+<!-- 			<camel:to uri="log:org.kfm.camel?level=DEBUG" /> -->
+<!-- 		</camel:route> -->
+
+<!-- 		<camel:route id="logAudioClipMessages"> -->
+<!-- 			<camel:from uri="activemq:queue:audioClips?jmsMessageType=Object" /> -->
+<!-- 			<camel:to uri="log:org.kfm.camel?level=DEBUG" /> -->
+<!-- 		</camel:route> -->
+
+<!-- 		<camel:route id="logSessionInfoMessages"> -->
+<!-- 			<camel:from uri="activemq:queue:sessionInfo?jmsMessageType=Object" /> -->
+<!-- 			<camel:to uri="log:org.kfm.camel?level=DEBUG" /> -->
+<!-- 		</camel:route> -->
+
+		<!-- Route each split message to either the transcoder or a processor. -->
+<!-- 		<camel:route id="cbr"> -->
+			
+<!-- 		</camel:route> -->
+				
+		
+<!-- 		<camel:jmxAgent id="agent" createConnector="true" registryPort="11599" /> -->
+		
+<!-- 		<camel:route id="splitSessions"> -->
+<!-- 			<camel:from uri="" /> -->
+<!-- 			<camel:split> -->
+				
+<!-- 			</camel:split> -->
+<!-- 		</camel:route> -->
+		
+<!-- 		<camel:route id="aggregateSessions"> -->
+<!-- 			<camel:from uri="jms:queue:uploadedSessions" /> -->
+<!-- 			<camel:process ref="afdParser" /> -->
+<!-- 			<camel:to uri="file://Livescribe/processed" /> -->
+<!-- 		</camel:route> -->
+
+	</camel:camelContext>
+	
+	<!-- 
+	==================================================
+		Service Beans
+	================================================== -->
+
+	
+	
+</beans>

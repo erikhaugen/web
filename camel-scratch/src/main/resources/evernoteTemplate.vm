@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">
+<en-note style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; font-size: 11px; line-height: 15px; font-family: Helvetica, verdana, arial, sans-serif; color: rgb(100, 100, 100); word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+	<div style="text-align: center; padding: 3% 0px; min-height: 500px;">
+		<a name="$PLAYER_LAUNCH_URL_HREF" href="$player_launch_url_href" style="border: 0px; text-decoration: none;">
+#foreach($enMedia in $enMediaList)
+			<en-media name="$EVERNOTE_MEDIA_HASH_AND_TYPE" style="cursor: pointer; width:80%; height: auto; border: 1px solid #999999; box-shadow: 3px 3px 26px rgba(0,0,0,.5); -webkit-box-shadow:5px 5px 30px rgba(0,0,0,.5);" hash="$enMedia.hash" type="$enMedia.type" />
+#end
+		</a>
+	</div>
+	<div style="width:100%; border-top: 1px solid #BBBBBB; padding:8px 0px; margin:0px; float:left; x-evernote:title;">
+		<a name="$LIVESCRIBE_HOME_URL_HREF" style="border:none; text-decoration: none; float:left;" href="$livescribe_home_url_href" target="_blank">
+			## <img name="$LIVESCRIBE_HOME_URL_SRC_PREPEND" style="cursor: pointer; border: none; margin-right:2em; width: 130px;" src="/images/layout/logo_inactive_frost.gif" /> -->
+			<en-media name="$EVERNOTE_MEDIA_LOGO_INACTIVE_FROST_RESOURCE_HASH_AND_TYPE" style="cursor: pointer; border: none; margin-right:2em; width: 130px;" hash="[$EVERNOTE_LOGO_INACTIVE_FROST_RESOURCE_HASH]" type="[$EVERNOTE_LOGO_INACTIVE_FROST_RESOURCE_TYPE]" />
+		</a>
+		<a name="$LIVESCRIBE_HOME_URL_HREF_PREPEND" href="$livescribe_home_href_prepend/cgi-bin/WebObjects/LDApp.woa/wa/AccountOverviewPage" style="line-height:0px; padding:2px 12px; float:right; border: 1px solid #B2C0A6; margin: 5px 1.5% 0 3.5%; border-radius: 5px 5px 5px 5px; background: #b4deee; background: -moz-linear-gradient(top, #b4deee 0%, #229eca 100%); background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b4deee), color-stop(100%,#229eca)); /* Chrome,Safari4+ */background: -webkit-linear-gradient(top, #b4deee 0%,#229eca 100%);background: -o-linear-gradient(top, #b4deee 0%,#229eca 100%);background: -ms-linear-gradient(top, #b4deee 0%,#229eca 100%);background: linear-gradient(to bottom, #b4deee 0%,#229eca 100%); filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4deee', endColorstr='#229eca',GradientType=0 ); /* IE6-9 */)">
+			## <img name="$LIVESCRIBE_HOME_URL_SRC_PREPEND" style="outline: none; border: none; width:18px; height:19px; text-decoration:none;" src="/images/icons/evernote_ui_setting.png" /> -->
+			<en-media name="$EVERNOTE_MEDIA_UI_SETTING_RESOURCE_HASH_AND_TYPE" style="outline: none; border: none; width:18px; height:19px; text-decoration:none;" hash="[$EVERNOTE_UI_SETTING_RESOURCE_HASH]" type="[$EVERNOTE_UI_SETTING_RESOURCE_TYPE]" />
+		</a>
+		<div style="line-height: 18px; margin: 6px 1.5%; float: right; width: 60%;">
+			<div name="$PAGELIST_MODIFY" style="float: left; padding: 0px 2%; margin: 0px auto; width: 45%;">
+				<p align="left" style="font-weight: bold; margin: 0px 10px 0px 0px; float: left;">
+					Go to:
+				</p>
+				<ul style="padding-left: 0em; color: #1692b6; list-style-position: inside; list-style-type: none; float: left; margin: 0px;">
+					<li>
+						<a name="$PAGELIST_MODIFY_EVERNOTE_PAGE_NOTE_URL_HREF" href="" style="text-decoration: none; text-decoration-color: #FFFFFF;">
+							<span name="$PAGELIST_MODIFY_PAGE_LABEL_TEXT" style="color: #1692b6; text-decoration: none; text-decoration-color: #FFFFFF;">
+								Page Label
+							</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div name="$AUDIOLIST_MODIFY" style="float: left; padding: 0px 2%; margin: 0px auto; width: 45%;">
+				<p align="left" style="font-weight: bold; margin: 0px 10px 0px 0px; float: left;">
+					Go to:
+				</p>
+				<ul style="padding-left: 0em; color: #1692b6; list-style-position: inside; list-style-type: none; float: left; margin: 0px;">
+					<li>
+						<a name="$AUDIOLIST_MODIFY_EVERNOTE_AUDIO_NOTE_URL_HREF" href="" style="text-decoration:none;">
+							<span name="$AUDIOLIST_MODIFY_AUDIO_LABEL_TEXT" style="color: #1692b6;">
+								Audio Label
+							</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<br style="clear:both;" />
+		</div>
+	</div>
+</en-note>

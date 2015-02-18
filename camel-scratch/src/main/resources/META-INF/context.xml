@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context>
+
+	<Resource name="jdbc/enDataSource" auth="Container" type="javax.sql.DataSource"
+	               maxActive="100" maxIdle="30" maxWait="10000"
+	               username="lsshareuser" password="5up3r53cr3t" driverClassName="com.mysql.jdbc.Driver"
+	               url="jdbc:mysql://localhost:3306/evernote"/>
+
+</Context>

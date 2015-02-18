@@ -1,0 +1,570 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.kfm.camel</groupId>
+	<artifactId>camel-scratch</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>camel-scratch</name>
+	<url>http://maven.apache.org</url>
+
+	<scm>
+		<connection>scm:svn:svn+ssh://${svn-user}@svn.livescribe.com/svn/LSRepository/WebCore/WebServices/paperreplay/trunk/</connection>
+		<developerConnection>scm:svn:svn+ssh://${svn-user}@svn.livescribe.com/svn/LSRepository/WebCore/WebServices/paperreplay/trunk/</developerConnection>
+	</scm>
+
+<!-- 	<distributionManagement> -->
+<!-- 		<repository> -->
+<!-- 			<uniqueVersion>false</uniqueVersion> -->
+<!-- 			<id>nexus</id> -->
+<!-- 			<name>Nexus Releases Repository</name> -->
+<!-- 			<url>http://svn.livescribe.com:8081/nexus/content/repositories/releases</url> -->
+<!-- 			<layout>default</layout> -->
+<!-- 		</repository> -->
+<!-- 		<snapshotRepository> -->
+<!-- 			<uniqueVersion>false</uniqueVersion> -->
+<!-- 			<id>nexus-snapshots</id> -->
+<!-- 			<name>Nexus Snapshots Repository</name> -->
+<!-- 			<url>http://svn.livescribe.com:8081/nexus/content/repositories/snapshots</url> -->
+<!-- 			<layout>default</layout> -->
+<!-- 		</snapshotRepository> -->
+<!-- 	</distributionManagement> -->
+
+<!-- 	<repositories> -->
+<!-- 		<repository> -->
+<!-- 			<id>livescribe-repo</id> -->
+<!-- 			<name>livescribe-repo</name> -->
+<!-- 			<url>http://svn.livescribe.com:8081/nexus/content/groups/public/</url> -->
+<!-- 		</repository> -->
+<!-- 	</repositories> -->
+	
+	<profiles>
+	
+        <!-- 
+        ==============================================
+            Profile for building locally
+        ============================================== -->
+		<profile>
+			<id>local</id>
+			<activation>
+				<property>
+					<name>local</name>
+					<value>true</value>
+				</property>
+			</activation>
+			
+			<repositories>
+				<repository>
+					<id>localhost-repo</id>
+					<name>localhost-repo</name>
+					<url>http://localhost:8081/nexus/content/groups/public/</url>
+				</repository>
+<!-- 				<repository> -->
+<!-- 					<id>livescribe-repo</id> -->
+<!-- 					<name>livescribe-repo</name> -->
+<!-- 					<url>http://svn.livescribe.com:8081/nexus/content/groups/public/</url> -->
+<!-- 				</repository> -->
+			</repositories>
+			
+			<distributionManagement>
+				<repository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>localhost-nexus</id>
+					<name>Nexus Releases Repository</name>
+					<url>http://localhost:8081/nexus/content/repositories/releases</url>
+					<layout>default</layout>
+				</repository>
+				<snapshotRepository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>localhost-nexus-snapshots</id>
+					<name>Nexus Snapshots Repository</name>
+					<url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+					<layout>default</layout>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+		
+	</profiles>
+	
+	<dependencies>
+
+		<dependency>
+			<groupId>com.livescribe.framework</groupId>
+			<artifactId>lsconfiguration</artifactId>
+			<version>1.1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.livescribe.framework</groupId>
+			<artifactId>lsversion</artifactId>
+			<version>1.2.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.livescribe.framework</groupId>
+			<artifactId>lswebbase</artifactId>
+			<version>1.1.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.livescribe.framework</groupId>
+			<artifactId>paperreplay</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.livescribe.tools</groupId>
+			<artifactId>purejavaafp</artifactId>
+			<version>1.3.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.livescribe.framework</groupId>
+			<artifactId>orm</artifactId>
+			<version>1.10.0-SNAPSHOT</version>
+			<classifier>consumer</classifier>
+		</dependency>
+		<dependency>
+			<groupId>com.livescribe.framework</groupId>
+			<artifactId>orm</artifactId>
+			<version>1.10.0-SNAPSHOT</version>
+			<classifier>evernote</classifier>
+		</dependency>
+		<dependency>
+			<groupId>com.livescribe.web</groupId>
+			<artifactId>lssettingsservice</artifactId>
+			<version>1.1.0-SNAPSHOT</version>
+			<classifier>client</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.kfm.jpa</groupId>
+			<artifactId>jpa-orm</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.evernote</groupId>
+			<artifactId>evernote-api</artifactId>
+			<version>1.25.1</version>
+		</dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.6</version>
+        </dependency>
+
+		<!-- 
+		==============================================
+		  Apache Dependencies
+		============================================== -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.camel</groupId> -->
+<!-- 			<artifactId>camel-context</artifactId> -->
+<!-- 			<version>${version.camel}</version> -->
+<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+			<version>${version.camel}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-http4</artifactId>
+			<version>${version.camel}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.geronimo.specs</groupId>
+					<artifactId>geronimo-servlet_2.5_spec</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache-extras.camel-extra</groupId> -->
+<!-- 			<artifactId>camel-hibernate</artifactId> -->
+<!-- 			<version>${version.camel}</version> -->
+<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jpa</artifactId>
+			<version>${version.camel}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jdbc</artifactId>
+			<version>${version.camel}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jms</artifactId>
+			<version>${version.camel}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jpa</artifactId>
+			<version>${version.camel}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-spring</artifactId>
+			<version>${version.camel}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-sql</artifactId>
+			<version>${version.camel}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test</artifactId>
+			<version>${version.camel}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-velocity</artifactId>
+			<version>${version.camel}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-xstream</artifactId>
+			<version>${version.camel}</version>
+		</dependency>
+
+		<!-- 
+		==============================================
+		  Active MQ Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-broker</artifactId>
+			<version>5.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-camel</artifactId>
+			<version>5.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-kahadb-store</artifactId>
+			<version>5.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-pool</artifactId>
+			<version>5.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xbean</groupId>
+			<artifactId>xbean-spring</artifactId>
+			<version>3.13</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.6</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.3</version>
+		</dependency>
+
+		<!-- 
+		==============================================
+			Database-related Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>4.3.7.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.openjpa</groupId>
+			<artifactId>openjpa</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.12</version>
+			<scope>runtime</scope>
+		</dependency>  
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+		</dependency>
+
+		<!-- 
+		==============================================
+			Spring Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-web</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-webmvc</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-instrument-tomcat</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+
+	    <dependency>
+	    	<groupId>javax.persistence</groupId>
+	    	<artifactId>persistence-api</artifactId>
+	    	<version>1.0.2</version>
+	    </dependency>
+
+		<!-- 
+		==============================================
+		  Testing Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test</artifactId>
+			<version>${version.camel}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test-spring</artifactId>
+			<version>${version.camel}</version>
+			<scope>test</scope>
+		</dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+	</dependencies>
+	
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<finalName>${project.artifactId}-${project.version}</finalName>
+		
+		<plugins>
+		
+			<!-- 
+			==============================================
+				Maven Compiler Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			
+			<!-- 
+			==============================================
+				OpenJPA Plugin
+			============================================== -->
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.apache.openjpa</groupId> -->
+<!-- 				<artifactId>openjpa-maven-plugin</artifactId> -->
+<!-- 				<version>2.2.0</version> -->
+<!-- 				<configuration> -->
+<!-- 					<includes>**/jpa/*.class</includes> -->
+<!-- 					<excludes>**/entities/XML*.class</excludes> -->
+<!-- 					<addDefaultConstructor>true</addDefaultConstructor>                -->
+<!-- 					<enforcePropertyRestrictions>true</enforcePropertyRestrictions> -->
+<!-- 				</configuration> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<id>enhancer</id> -->
+<!-- 						<phase>process-classes</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>enhance</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 				<dependencies> -->
+<!-- 					<dependency> -->
+<!-- 						<groupId>org.apache.openjpa</groupId> -->
+<!-- 						<artifactId>openjpa</artifactId> -->
+<!-- 						<version>1.2.2</version> -->
+<!-- 					</dependency> -->
+<!-- 				</dependencies> -->
+<!-- 			</plugin> -->
+    
+			<!-- 
+			==============================================
+				Maven WAR Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<App-Name>${project.name}</App-Name>
+							<App-Version>${project.version}</App-Version>
+							<Svn-Revision>${buildNumber}</Svn-Revision>
+							<Hudson-Build-Number>${hudson-build-number}</Hudson-Build-Number>
+							<Build-Date>${maven.build.timestamp}</Build-Date>
+						</manifestEntries>
+					</archive>
+					<containerConfigXML>${project.build.resources}/META-INF/context.xml</containerConfigXML>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Maven Deploy Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<updateReleaseInfo>true</updateReleaseInfo>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Maven Tomcat Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<version>1.1</version>
+				<configuration>
+					<server>${TOMCAT_HOST}</server>
+					<url>${MANAGER_URL}</url>
+					<path>/${project.artifactId}</path>
+					<warFile>${WAR_FILE}</warFile>
+				</configuration>
+			</plugin>
+		
+		</plugins>
+	
+	</build>
+	
+	<reporting>
+		<plugins>
+			<!-- 
+			==============================================
+				Javadoc Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<detectLinks>true</detectLinks>
+<!-- 					<stylesheetfile>${basedir}/src/site/resources/css/javadoc.css</stylesheetfile> -->
+					<links>
+						<link>http://java.sun.com/javase/6/docs/api/</link>
+						<link>http://download.oracle.com/docs/cd/E17410_01/javaee/6/api/</link>
+						<link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
+						<link>http://static.springsource.org/spring-security/site/docs/3.0.x/apidocs/index.html</link>
+						<link>http://docs.jboss.org/hibernate/core/3.3/api/index.html</link>
+						<link>http://logging.apache.org/log4j/1.2/apidocs/index.html</link>
+						<link>http://dom4j.sourceforge.net/dom4j-1.6.1/apidocs/index.html</link>
+						<link>http://www.dbunit.org/apidocs/index.html</link>
+						<link>http://www.csg.is.titech.ac.jp/~chiba/javassist/html/index.html</link>
+						<link>http://gallardo.pensoft.local:8183/WebServices/AppDocs/orm/apidocs/index.html</link>
+					</links>
+				</configuration>
+			</plugin>
+			
+			<!-- 
+			==============================================
+				Change Log Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changelog-plugin</artifactId>
+				<version>2.2</version>
+<!--				<configuration>-->
+<!--				</configuration>-->
+			</plugin>
+					
+			<!-- 
+			==============================================
+				Project Info Reports Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.2</version>
+			</plugin>		
+
+			<!-- 
+			==============================================
+				Maven Surefire Report Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.6</version>
+			</plugin>
+		</plugins>
+	</reporting>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<svn-user>${env.USER}</svn-user>
+		<version.springframework>3.0.4.RELEASE</version.springframework>
+<!-- 		<version.camel>2.11.4</version.camel> -->
+		<version.camel>2.12.5</version.camel>
+		<WAR_FILE>target/${project.artifactId}-${project.version}.war</WAR_FILE>
+		<TOMCAT_HOST>localhost</TOMCAT_HOST>
+		<MANAGER_URL>http://localhost:20080/manager</MANAGER_URL>
+    </properties>
+    
+</project>

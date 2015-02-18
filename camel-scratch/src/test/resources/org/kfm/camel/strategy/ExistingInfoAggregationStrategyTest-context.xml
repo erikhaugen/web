@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:p="http://www.springframework.org/schema/p" 
+                xmlns:broker="http://activemq.apache.org/schema/core"
+                xmlns:camel="http://camel.apache.org/schema/spring"
+                xmlns:context="http://www.springframework.org/schema/context"
+                xmlns:oxm="http://www.springframework.org/schema/oxm"
+                xmlns:tx="http://www.springframework.org/schema/tx"
+                xsi:schemaLocation="
+                				http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                				http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
+                                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                                http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
+								http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+								http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<context:component-scan base-package="org.kfm.camel" />
+	<context:annotation-config />
+	<tx:annotation-driven />
+
+	<bean id="existingInfoAggregator"	class="org.kfm.camel.strategy.ExistingInfoAggregationStrategy" />
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/evernote" />
+		<property name="username" value="lsshareuser" />
+		<property name="password" value="5up3r53cr3t" />
+	</bean>
+
+	<bean id="documentDao"	class="org.kfm.camel.dao.DocumentDao" />
+	<bean id="pageDao"		class="org.kfm.camel.dao.PageDao" />
+
+	<!-- 
+	==================================================
+		JPA Beans
+	================================================== -->
+	<bean id="openJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.OpenJpaVendorAdapter">
+		<property name="showSql" value="true" />
+		<property name="generateDdl" value="false" />
+		<property name="databasePlatform" value="mysql" />
+	</bean>
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="loadTimeWeaver">
+			<bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
+		</property>
+		<property name="persistenceUnitName" value="evernotePersist"/>
+	</bean>	
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+	</bean>
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="transactionManager" />
+    </bean>
+	
+	<bean id="jpa" class="org.apache.camel.component.jpa.JpaComponent">
+		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+		<property name="transactionManager" ref="transactionManager"/>
+	</bean>
+	
+	<!-- 
+	==================================================
+		Camel Context
+	================================================== -->
+	<camel:camelContext id="testCamelCtx" xmlns="http://camel.apache.org/schema/spring">
+	
+		<camel:propertyPlaceholder id="camelProperties" location="classpath:app.properties" />
+	
+		<camel:route id="mergeUploadsWithExistingDocs">
+			<camel:from uri="direct:start" />
+			<camel:aggregate strategyRef="existingInfoAggregator">
+				<camel:correlationExpression>
+					<camel:simple>${in.header.CamelFileName}</camel:simple>
+				</camel:correlationExpression>
+				<camel:completionPredicate>
+					<camel:simple>${in.header.mergeComplete == true}</camel:simple>
+				</camel:completionPredicate>
+				<camel:to uri="mock:results" />			
+			</camel:aggregate>
+		</camel:route>
+	</camel:camelContext>
+</beans>
