@@ -26,3 +26,5 @@ proguard/
 *.log
 chairskipping/.*
 chairskipping/target/
+.metadata/
+word-addition/.settings/org.eclipse.m2e.core.prefs
