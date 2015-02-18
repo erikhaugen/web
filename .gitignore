@@ -28,3 +28,6 @@ chairskipping/.*
 chairskipping/target/
 .metadata/
 word-addition/.settings/org.eclipse.m2e.core.prefs
+jigsaw-puzzle-solving/.settings/org.eclipse.m2e.core.prefs
+*.project
+*.classpath
