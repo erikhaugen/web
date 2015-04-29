@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.livescribe.frameworks.orm.fb.UGComment" table="UGComment">
+
+		<id name="primaryKey" column="primaryKey" type="binary">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="contentDescription"		column="contentDescription"		type="clob" />
+		<property name="commenterKey"			column="commenterKey"			type="binary" />
+		<property name="displayName"			column="displayName"			type="string"	length="128" />
+		<property name="metaInfo"				column="metaInfo"				type="clob" />
+		<property name="rating"					column="rating"					type="double" />
+		<property name="ugFileKey"				column="ugFileKey"				type="binary" />
+		<property name="postedDate"				column="postedDate"				type="timestamp" />
+		<property name="ipAddress"				column="ipAddress"				type="string"	length="128" />
+		<property name="isSafeComment"			column="isSafeComment"			type="string"	length="1" />
+		<property name="inappropriateCounter"	column="inappropriateCounter"	type="int" />
+		
+	</class>
+</hibernate-mapping>

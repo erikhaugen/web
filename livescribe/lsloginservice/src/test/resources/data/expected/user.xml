@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dataset SYSTEM "../dtd/user.dtd">
+<dataset>
+
+<!-- 
+	This dataset represents user information in the 'user' table after xxx test completes.
+ -->
+ 
+	<user user_id="1" primary_email="samson@livescribe.com" password="OGFBRQQLe_f5MBESOWJQcnQxacQ" uid="8f694533-f666-45c2-a6ab-7daf0252db0a" confirmation_date="1970-01-01 00:10:00" />
+	<user user_id="2" primary_email="jackstr@livescribe.com" password="OGFBRQQLe_f5MBESOWJQcnQxacQ" uid="bdcf046a-3aad-41fc-8954-246342a74cd3" confirmation_date="1971-01-01 00:10:01" />
+	<user user_id="3" primary_email="darkstar@yahoo.com" password="OGFBRQQLe_f5MBESOWJQcnQxacQ" uid="ff137f69-b6f5-4aa7-a4b5-e7238d2410e8"  confirmation_date="2012-04-17 15:16:17" />
+	<user user_id="4" primary_email="sugaree@yahoo.com" password="{SHA}t6h1/B6iKLkGEEG3zsS9PFKrPOM=" uid="b2f9616f-0155-4753-9b7d-895c67dbe298"  confirmation_date="2012-06-26 20:58:44" />
+	
+</dataset>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.livescribe.frameworks.orm.fb">
+	
+	<class name="XReleaseGroupMember" table="xReleaseGroupMember">
+	
+		<composite-id name="id" class="com.livescribe.frameworks.orm.fb.XReleaseGroupMemberId">
+			<key-property name="groupId" type="binary">
+				<column name="groupId" />
+			</key-property>
+			<key-property name="userProfileKey" type="binary">
+				<column name="userProfileKey" />
+			</key-property>
+		</composite-id>
+		
+	</class>
+	
+</hibernate-mapping>

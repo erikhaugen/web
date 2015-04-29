@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.livescribe.frameworks.orm.fb">
+	<class name="DeveloperProfile" table="DeveloperProfile">
+	
+		<id name="primaryKey" column="primaryKey" type="binary">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="primaryKeyStr"				column="primaryKeyStr"				type="string"	length="64" />
+		<property name="addressKey"					column="addressKey"					type="binary" />
+		<property name="addressKeyStr"				column="addressKeyStr"				type="string"	length="64" />
+		<property name="company"					column="company"					type="string"	length="128" />
+		<property name="companyUrl"					column="companyURL"					type="string"	length="128" />
+		<property name="developmentLanguagesText"	column="developmentLanguagesText"	type="string"	length="256" />
+		<property name="developmentPlanText"		column="developmentPlanText"		type="string"	length="1024" />
+		<property name="email"						column="email"						type="string"	length="128" />
+		<property name="firstName"					column="firstName"					type="string"	length="128" />
+		<property name="ideText"					column="ideText"					type="string"	length="256" />
+		<property name="javaOne2008Agreement"		column="javaOne2008Agreement"		type="string"	length="1" />
+		<property name="javaOne2008AgreementDate"	column="javaOne2008AgreementDate"	type="timestamp" />
+		<property name="lastName"					column="lastName"					type="string"	length="128" />
+		<property name="ldDeveloperNewsletter"		column="ldDeveloperNewsletter"		type="string"	length="1" />
+		<property name="lspartnerContact"			column="lspartnerContact"			type="string"	length="1" />
+		<property name="macPlatform"				column="macPlatform"				type="string"	length="1" />
+		<property name="marketingInformation"		column="marketingInformation"		type="string"	length="1" />
+		<property name="metaInfo"					column="metaInfo"					type="clob" />
+		<property name="otherPlatform"				column="otherPlatform"				type="string"	length="1" />
+		<property name="phone"						column="phone"						type="string"	length="32" />
+		<property name="vistaPlatform"				column="vistaPlatform"				type="string"	length="1" />
+		<property name="xpPlatform"					column="xpPlatform"					type="string"	length="1" />
+		<property name="fk_developerProgram"		column="fk_developerProgram"		type="binary" />
+		<property name="fk_developerProgramStr"		column="devProgramKeyStr"			type="string"	length="64" />
+		<property name="appComponent_Penlet"		column="appComponent_Penlet"		type="string"	length="1" />
+		<property name="appComponent_PCDeskApp"		column="appComponent_PCDeskApp"		type="string"	length="1" />
+		<property name="appComponent_Paper"			column="appComponent_Paper"			type="string"	length="1" />
+		<property name="appComponent_MacDeskApp"	column="appComponent_MacDeskApp"	type="string"	length="1" />
+		<property name="appLang_English"			column="appLang_English"			type="string"	length="1" />
+		<property name="appLang_French"				column="appLang_French"				type="string"	length="1" />
+		<property name="appLang_Italian"			column="appLang_Italian"			type="string"	length="1" />
+		<property name="appLang_German"				column="appLang_German"				type="string"	length="1" />
+		<property name="appLang_Spanish"			column="appLang_Spanish"			type="string"	length="1" />
+		<property name="appLang_Korean"				column="appLang_Korean"				type="string"	length="1" />
+		<property name="appLang_Chinese"			column="appLang_Chinese"			type="string"	length="1" />
+		<property name="targetMarket"				column="targetMarket"				type="string" length="1024" />
+		<property name="fk_firstYearSale"			column="fk_firstYearSale"			type="binary" />
+		<property name="fk_firstYearSaleKey"		column="firstYearSaleKeyStr"		type="string"	length="64" />
+		<property name="fk_applicationDistribution"	column="fk_applicationDistribution"	type="binary" />
+		<property name="fk_applicationDistributionKey"	column="appDistKeyStr"			type="string"	length="64" />
+		<property name="fk_paperDistribution"		column="fk_paperDistribution"		type="binary" />
+		<property name="fk_paperDistributionKey"	column="paperDistKeyStr"			type="string"	length="64" />
+		<property name="fk_applicationPrice"		column="fk_applicationPrice"		type="binary" />
+		<property name="fk_applicationPriceKey"		column="appPriceKeyStr"				type="string"	length="64" />
+		<property name="fk_selfDescription"			column="fk_selfDescription"			type="binary" />
+		<property name="fk_selfDescriptionKey"		column="selfDescKeyStr"				type="string"	length="64" />
+		<property name="fk_userBizSize"				column="fk_userBizSize"				type="binary" />
+		<property name="fk_userBizSizeKey"			column="userBizSizeKeyStr"			type="string"	length="64" />
+		<property name="otherSpecifiedPlatform"		column="otherSpecifiedPlatform"		type="string"	length="256" />
+		<property name="otherAppDist"				column="otherAppDist"				type="string"	length="256" />
+		<property name="otherPriceModel"			column="otherPriceModel"			type="string"	length="256" />
+		
+	</class>
+</hibernate-mapping>

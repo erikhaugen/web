@@ -1,0 +1,1 @@
+<script language="javascript" type="text/javascript">window.close();</script>

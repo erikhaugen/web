@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.livescribe.frameworks.orm.fb">
+	<class name="UserProfile" table="UserProfile">
+	
+		<id name="shortId" column="shortId" type="string">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="primaryKey"				column="primaryKey"				type="binary" />
+		<property name="primaryKeyStr"			column="primaryKeyStr"			type="string" />
+		<property name="addressKey"				column="addressKey"				type="binary" />
+		<property name="addressKeyStr"			column="addressKeyStr"			type="string" />
+		<property name="birthYear"				column="birthYear"				type="integer" />
+		<property name="email"					column="email"					type="string" 	length="128" />
+		<property name="firstName"				column="firstName"				type="string" 	length="128" />
+		<property name="gradYear"				column="gradYear"				type="integer" />
+		<property name="isMLSActive"			column="isMLSActive"			type="integer" />
+		<property name="lastName"				column="lastName"				type="string" 	length="128" />
+		<property name="major"					column="major"					type="string" 	length="128" />
+		<property name="metaInfo"				column="metaInfo"				type="clob" />
+		<property name="occupation"				column="occupation"				type="string"	length="128" />
+		<property name="profilePicture"			column="profilePicture"			type="blob" />
+		<property name="profilePictureMimeType"	column="profilePictureMimeType"	type="string"	length="64" />
+		<property name="profilePictureName"		column="profilePictureName"		type="string"	length="64" />
+		<property name="screenName"				column="screenName"				type="string"	length="64" />
+		<property name="sendEmail"				column="sendEmail"				type="string"	length="1" />
+		<property name="sex"					column="sex"					type="string"	length="1" />
+		<property name="university"				column="university"				type="string"	length="128" />
+		<property name="lastModifyDate"			column="lastModifyDate"			type="timestamp" />
+		<property name="developerProfileKey"	column="developerProfileKey"	type="binary" />
+		<property name="developerProfileKeyStr"	column="developerProfileKeyStr"	type="string"	length="64" />
+		<property name="organization"			column="organization"			type="string"	length="64" />
+		<property name="phone"					column="phone"					type="string"	length="24" />
+		<property name="userPassword"			column="userPassword"			type="string"	length="64" />
+		<property name="passwordResetString"	column="passwordResetString"	type="string"	length="12" />
+		<property name="fk_avetti_customerID"	column="fk_avetti_customerID"	type="string"	length="2047" />
+		<property name="fk_avetti_password"		column="fk_avetti_password"		type="string"	length="2047" />
+		<property name="createdate"				column="createdate"				type="timestamp" />
+		<property name="fk_preferredcountry"	column="fk_preferredcountry"	type="binary" />
+		<property name="fk_preferredcountryStr"	column="fk_preferredcountryStr"	type="string" />
+		<property name="allowExceedQuota"		column="allowExceedQuota"		type="string"	length="1" />
+		<property name="allowedStorageQuotaInMB"	column="allowedStorageQuotaInMB"	type="integer" />
+		<property name="deprecatedAccount"		column="deprecated_account"		type="integer" />
+		
+	</class>
+</hibernate-mapping>

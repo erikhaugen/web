@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.livescribe.frameworks.orm.fb.UserAddress" table="UserAddress">
+
+		<id name="primaryKey" column="primaryKey" type="binary">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="primaryKeyStr"			column="primaryKeyStr"		type="string"	length="64" />
+		<property name="address1"				column="ADDRESS1"			type="string"	length="256" />
+		<property name="address2"				column="ADDRESS2"			type="string"	length="256" />
+		<property name="city"					column="CITY"				type="string"	length="128" />
+		<property name="countryKey"				column="countryKey"			type="binary" />
+		<property name="countryKeyStr"			column="countryKeyStr"		type="string"	length="64" />
+		<property name="county"					column="county"				type="string"	length="128" />
+		<property name="metaInfo"				column="metaInfo"			type="clob" />
+		<property name="lastValidationDate"		column="lastValidationDate"	type="timestamp" />
+		<property name="postCode"				column="postCode"			type="string"	length="10" />
+		<property name="province"				column="province"			type="string"	length="128" />
+		<property name="usStateKey"				column="usStateKey"			type="binary" />
+		<property name="usStateKeyStr"			column="usStateKeyStr"		type="string"	length="64" />
+		
+	</class>
+</hibernate-mapping>

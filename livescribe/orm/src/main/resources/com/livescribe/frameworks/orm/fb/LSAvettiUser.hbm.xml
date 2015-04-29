@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.livescribe.frameworks.orm.fb">
+	<class name="LSAvettiUser" table="LSAvettiUser">
+	
+		<id name="primaryKey" column="primaryKey" type="binary">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="fk_avetti_customerID"	column="fk_avetti_customerID"	type="string"	length="2047" />
+		<property name="fk_avetti_password"		column="fk_avetti_password"		type="string"	length="2047" />
+		<property name="fk_avetti_vendorId"		column="fk_avetti_vendorId"		type="string"	length="20" />
+		<property name="fk_user"				column="fk_user"				type="binary" />
+		<property name="metaInfo"				column="metaInfo"				type="clob" />
+		
+	</class>
+</hibernate-mapping>

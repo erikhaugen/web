@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 21, 2011 12:15:27 PM by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="com.livescribe.frameworks.orm.mysql.AppPurchases" table="app_purchases" catalog="consumer">
+        <composite-id name="id" class="com.livescribe.frameworks.orm.mysql.AppPurchasesId">
+            <key-property name="shortId" type="string">
+                <column name="shortId" length="36" />
+            </key-property>
+            <key-property name="itemId" type="java.lang.Integer">
+                <column name="itemId" />
+            </key-property>
+            <key-property name="datePurchased" type="timestamp">
+                <column name="datePurchased" length="19" />
+            </key-property>
+            <key-property name="downloadGuid" type="java.lang.Integer">
+                <column name="downloadGUID" />
+            </key-property>
+            <key-property name="itemCode" type="string">
+                <column name="itemCode" length="18" />
+            </key-property>
+            <key-property name="appFileName" type="string">
+                <column name="appFileName" length="200" />
+            </key-property>
+            <key-property name="appFilePath" type="string">
+                <column name="appFilePath" length="2000" />
+            </key-property>
+            <key-property name="downloadName" type="string">
+                <column name="downloadName" length="200" />
+            </key-property>
+            <key-property name="downloadDescription" type="string">
+                <column name="downloadDescription" length="2000" />
+            </key-property>
+            <key-property name="penTypes" type="string">
+                <column name="penTypes" length="200" />
+            </key-property>
+            <key-property name="penLocale" type="string">
+                <column name="penLocale" length="10" />
+            </key-property>
+            <key-property name="productId" type="java.lang.Long">
+                <column name="productId" />
+            </key-property>
+            <key-property name="productVersion" type="string">
+                <column name="productVersion" length="200" />
+            </key-property>
+            <key-property name="sizeInBytes" type="java.lang.Double">
+                <column name="sizeInBytes" precision="22" scale="0" />
+            </key-property>
+            <key-property name="infoUrl" type="string">
+                <column name="infoURL" length="2000" />
+            </key-property>
+            <key-property name="docUrl" type="string">
+                <column name="docURL" length="2000" />
+            </key-property>
+            <key-property name="icon" type="binary">
+                <column name="icon" />
+            </key-property>
+            <key-property name="releaseNotesUrl" type="string">
+                <column name="releaseNotesURL" length="2000" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

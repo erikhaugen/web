@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.example.org/response/" targetNamespace="http://www.example.org/response/">
+
+
+    <complexType name="responseCodeType">
+    	<choice>
+    		<element name="responseCode" type="string"></element>
+    		<element name="errorCode" type="string"></element>
+    	</choice>
+    </complexType>
+
+    <complexType name="responseType">
+    	<sequence>
+    		<element name="code" type="tns:responseCodeType"></element>
+    		<element name="message" type="string" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="registrationType">
+    	<sequence>
+    		<element name="appId" type="string"></element>
+    		<element name="edition" type="string"></element>
+    		<element name="penSerial" type="string"></element>
+    		<element name="displayId" type="string"></element>
+    		<element name="penName" type="string"></element>
+    		<element name="firstName" type="string"></element>
+    		<element name="lastName" type="string"></element>
+    		<element name="email" type="string"></element>
+    		<element name="locale" type="string"></element>
+    		<element name="country" type="string"></element>
+    		<element name="optIn" type="string"></element>
+    		<element name="created" type="string"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="registrationListType">
+    	<sequence>
+    		<element name="registration" type="tns:registrationType" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="warrantyType">
+    	<sequence>
+    		<element name="appId" type="string"></element>
+    		<element name="edition" type="string"></element>
+    		<element name="penSerial" type="string"></element>
+    		<element name="displayId" type="string"></element>
+    		<element name="penName" type="string"></element>
+    		<element name="firstName" type="string"></element>
+    		<element name="lastName" type="string"></element>
+    		<element name="email" type="string"></element>
+    		<element name="locale" type="string"></element>
+    		<element name="country" type="string"></element>
+    		<element name="optIn" type="string"></element>
+    		<element name="created" type="string"></element>
+    	</sequence>
+    </complexType>
+
+</schema>

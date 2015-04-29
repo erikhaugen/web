@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.livescribe.frameworks.orm.fb">
+	<class name="DuplicatedSerial" table="DuplicatedSerial">
+	
+		<id name="id" column="id" type="long">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="doubleRegisteredDate"	column="doubleRegisteredDate"	type="timestamp" />
+		<property name="userProfileKey"			column="userProfileKey"			type="string"	length="48" />
+		<property name="serialNumber"			column="serialNumber"			type="string"	length="13" />
+		<property name="aliasId"				column="aliasID"				type="string"	length="16" />
+		
+	</class>
+</hibernate-mapping>

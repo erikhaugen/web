@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.livescribe.frameworks.orm.fb.UGType" table="UGType">
+	
+		<id name="primaryKey" column="primaryKey" type="binary">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="displayName"	column="displayName"	type="string"	length="128" />
+		<property name="metaInfo"		column="metaInfo"		type="clob" />
+		
+	</class>
+</hibernate-mapping>
+		

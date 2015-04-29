@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.livescribe.frameworks.orm.fb.CertShortTmp" table="cert_short_tmp">
+	
+<!-- 		<id name="primaryKey" column="primaryKey" type="binary"> -->
+<!-- 			<generator class="assigned"/> -->
+<!-- 		</id> -->
+	
+		<id name="shortId" column="shortId" type="string">
+			<generator class="assigned" />
+		</id>
+			
+<!-- 		<property name="shortId"	column="shortId"	type="string"	length="16" /> -->
+		<property name="email"		column="email"		type="string"	length="128" />
+		
+	</class>
+</hibernate-mapping>
+		

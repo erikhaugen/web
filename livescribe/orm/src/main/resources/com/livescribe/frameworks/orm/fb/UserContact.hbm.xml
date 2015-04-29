@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.livescribe.frameworks.orm.fb.UserContact" table="UserContact">
+
+		<id name="primaryKey" column="primaryKey" type="binary">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="contactProfileKey"	column="contactProfileKey"	type="binary" />
+		<property name="email"				column="email"				type="string"	length="128" />
+		<property name="metaInfo"			column="metaInfo"			type="clob" />
+		<property name="nickName"			column="nickName"			type="string"	length="128" />
+		<property name="ownerProfileKey"	column="ownerProfileKey"	type="binary" />
+		
+	</class>
+</hibernate-mapping>

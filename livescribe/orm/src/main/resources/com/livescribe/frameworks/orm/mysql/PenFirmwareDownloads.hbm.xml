@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 21, 2011 12:15:27 PM by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="com.livescribe.frameworks.orm.mysql.PenFirmwareDownloads" table="pen_firmware_downloads" catalog="consumer">
+        <id name="id" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="idOld" type="java.lang.Integer">
+            <column name="id_old" />
+        </property>
+        <property name="appFilename" type="string">
+            <column name="app_filename" length="200" />
+        </property>
+        <property name="appFilepath" type="string">
+            <column name="app_filepath" length="2000" />
+        </property>
+        <property name="downloadName" type="string">
+            <column name="download_name" length="200" />
+        </property>
+        <property name="downloadDesc" type="string">
+            <column name="download_desc" length="200" />
+        </property>
+        <property name="purchased" type="timestamp">
+            <column name="purchased" length="19" not-null="true" />
+        </property>
+        <property name="downloadGuid" type="java.lang.Integer">
+            <column name="download_guid" />
+        </property>
+        <property name="penType" type="java.lang.Byte">
+            <column name="pen_type" />
+        </property>
+        <property name="penLocale" type="string">
+            <column name="pen_locale" length="10" />
+        </property>
+        <property name="productIdOld" type="string">
+            <column name="product_id_old" length="200" />
+        </property>
+        <property name="productVersion" type="string">
+            <column name="product_version" length="200" />
+        </property>
+        <property name="sizeInBytes" type="java.lang.Double">
+            <column name="size_in_bytes" precision="22" scale="0" />
+        </property>
+        <property name="infoUrl" type="string">
+            <column name="info_url" length="2000" />
+        </property>
+        <property name="icon" type="binary">
+            <column name="icon" />
+        </property>
+        <property name="downloadUrl" type="string">
+            <column name="download_url" length="1024" />
+        </property>
+        <property name="minLdVersion" type="string">
+            <column name="min_ld_version" length="32" />
+        </property>
+        <property name="maxLdVersion" type="string">
+            <column name="max_ld_version" length="32" />
+        </property>
+        <property name="releaseNotesUrl" type="string">
+            <column name="release_notes_url" length="2000" />
+        </property>
+        <property name="groupId" type="java.lang.Long">
+            <column name="group_id" />
+        </property>
+        <property name="groupKey" type="string">
+            <column name="group_key" length="64" />
+        </property>
+        <property name="created" type="timestamp">
+            <column name="created" length="19" not-null="true" />
+        </property>
+        <property name="lastModified" type="timestamp">
+            <column name="last_modified" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory name="mysqlSessionFactory">
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.username">lsadmin</property>
+        <property name="hibernate.connection.password">wwwpen</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/consumer</property>
+        <property name="hibernate.connection.default_schema">consumer</property>
+        <property name="hibernate.connection.default_catalog">consumer</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+        <mapping resource="com/livescribe/frameworks/orm/mysql/CertShortTmp.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/Country.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/DeveloperProfile.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/DeveloperProgram.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/DownloadCounter.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/DownloadType.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/DuplicatedSerial.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/DuplicateEmailDeprecated.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/LdProductRegistrationInProgress.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/LdVersion.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/LsAvettiUser.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/LsPackage.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/LsPackageEntry.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/PenApps.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/PenFirmwareDownloads.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/PenSerialFirstReg.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/PreOrderProfile.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/ProductType.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/ProvisionedPenApps.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/RegDevOptAppDist.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/RegDevOptAppPrice.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/RegDevOptFirstYearSale.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/RegDevOptPaperDist.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/RegDevOptSelfDesc.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/RegDevOptUserBizSize.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/RegisteredDownload.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/RegisteredDownloadVersion.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/RegisteredProduct.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/ReleaseGroup.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/UgCategory.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/UgComment.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/UgFile.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/UgType.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/UsState.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/User.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/UserAddress.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/UserContact.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/UserPenApps.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/UserProfile.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/XUgFileUserContact.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/mysql/XReleaseGroupMember.hbm.xml" />
+    </session-factory>
+
+</hibernate-configuration>

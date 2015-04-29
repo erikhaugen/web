@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.livescribe.frameworks.orm.fb">
+	<class name="USState" table="USState">
+	
+		<id name="primaryKey" column="primaryKey" type="binary">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="collectSalesTaxEndDate"			column="collectSalesTaxEndDate"			type="timestamp" />
+		<property name="collectSalesTaxStartDate"		column="collectSalesTaxStartDate"		type="timestamp" />
+		<property name="isActive"						column="isActive"						type="integer"	/>
+		<property name="metaInfo"						column="metaInfo"						type="clob" />
+		<property name="shortName"						column="shortName"						type="string"	length="2" />
+		<property name="name"							column="name"							type="string"	length="64" />
+		
+	</class>
+</hibernate-mapping>

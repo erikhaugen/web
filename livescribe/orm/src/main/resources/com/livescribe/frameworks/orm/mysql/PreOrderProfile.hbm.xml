@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 21, 2011 12:15:27 PM by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="com.livescribe.frameworks.orm.mysql.PreOrderProfile" table="pre_order_profile" catalog="consumer">
+        <id name="id" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="userProfileId" type="java.lang.Long">
+            <column name="user_profile_id" />
+        </property>
+        <property name="userProfileKey" type="string">
+            <column name="user_profile_key" length="64" />
+        </property>
+        <property name="emailAddress" type="string">
+            <column name="email_address" length="128" />
+        </property>
+        <property name="fullname" type="string">
+            <column name="fullname" length="128" />
+        </property>
+        <property name="preOrderDate" type="timestamp">
+            <column name="pre_order_date" length="19" not-null="true" />
+        </property>
+        <property name="rank" type="java.lang.Integer">
+            <column name="rank" />
+        </property>
+        <property name="coupon" type="string">
+            <column name="coupon" length="64" />
+        </property>
+        <property name="orderId" type="java.lang.Long">
+            <column name="order_id" />
+        </property>
+        <property name="orderIdKey" type="string">
+            <column name="order_id_key" length="64" />
+        </property>
+        <property name="preOrderFlag" type="string">
+            <column name="pre_order_flag" length="1" />
+        </property>
+        <property name="notifyFlag" type="string">
+            <column name="notify_flag" length="1" />
+        </property>
+        <property name="quantity" type="java.lang.Integer">
+            <column name="quantity" />
+        </property>
+        <property name="created" type="timestamp">
+            <column name="created" length="19" not-null="true" />
+        </property>
+        <property name="lastModified" type="timestamp">
+            <column name="last_modified" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

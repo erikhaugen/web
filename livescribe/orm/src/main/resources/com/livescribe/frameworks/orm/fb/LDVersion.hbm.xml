@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.livescribe.frameworks.orm.fb">
+	<class name="LDVersion" table="LDVersion">
+	
+		<id name="primaryKey" column="primaryKey" type="binary">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="version"			column="version"			type="string"	length="32" />
+		<property name="date"				column="date"				type="date" />
+		<property name="versionDescription"	column="versionDescription"	type="string"	length="1024" />
+		<property name="versionOrder"		column="versionOrder"		type="integer" />
+		<property name="metaInfo"			column="metaInfo"			type="clob" />
+		<property name="filePath"			column="filePath"			type="string"	length="2048" />
+		<property name="platformCode"		column="platformCode"		type="integer" />
+		<property name="mandatory"			column="mandatory"			type="integer" />
+		<property name="fileName"			column="fileName"			type="string"	length="1024" />
+		<property name="downloadUrl"		column="downloadURL"		type="string"	length="1024" />
+		<property name="downloadFileName"	column="downloadFileName"	type="string"	length="1024" />
+		<property name="releaseNotesURL"	column="releaseNotesURL"	type="string"	length="2000" />
+		<property name="groupId"			column="groupId"			type="binary" />
+		
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 22, 2011 5:21:44 PM by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+    <class name="com.livescribe.frameworks.orm.fb.RegDevOptUserBizSize" table="REGISTER_DEV_OPTION_UserBizSize">
+        
+        <id name="primaryKey" column="primaryKey" type="binary">
+            <generator class="assigned" />
+        </id>
+        <property name="metaInfo" type="clob">
+            <column name="metaInfo">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="size" type="string">
+            <column name="size" length="32">
+                <comment></comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

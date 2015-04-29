@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 21, 2011 12:15:27 PM by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="com.livescribe.frameworks.orm.mysql.UgFile" table="ug_file" catalog="consumer">
+        <id name="id" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="categoryId" type="java.lang.Long">
+            <column name="category_id" />
+        </property>
+        <property name="categoryKey" type="string">
+            <column name="category_key" length="64" />
+        </property>
+        <property name="userProfileId" type="java.lang.Long">
+            <column name="user_profile_id" />
+        </property>
+        <property name="shortId" type="string">
+            <column name="short_id" length="36" />
+        </property>
+        <property name="userProfileKey" type="string">
+            <column name="user_profile_key" length="64" />
+        </property>
+        <property name="primaryKey" type="string">
+            <column name="primary_key" length="64" />
+        </property>
+        <property name="contentDescription" type="string">
+            <column name="content_description" length="65535" />
+        </property>
+        <property name="displayName" type="string">
+            <column name="display_name" length="128" />
+        </property>
+        <property name="fileDate" type="timestamp">
+            <column name="file_date" length="19" not-null="true" />
+        </property>
+        <property name="fileName" type="string">
+            <column name="file_name" length="128" />
+        </property>
+        <property name="filePath" type="string">
+            <column name="file_path" length="2048" />
+        </property>
+        <property name="globalShare" type="java.lang.Integer">
+            <column name="global_share" />
+        </property>
+        <property name="metaInfo" type="string">
+            <column name="meta_info" length="65535" />
+        </property>
+        <property name="rating" type="java.lang.Double">
+            <column name="rating" precision="22" scale="0" />
+        </property>
+        <property name="ugTypeId" type="java.lang.Long">
+            <column name="ug_type_id" />
+        </property>
+        <property name="typeKey" type="string">
+            <column name="type_key" length="64" />
+        </property>
+        <property name="views" type="java.lang.Integer">
+            <column name="views" />
+        </property>
+        <property name="fileSize" type="java.lang.Integer">
+            <column name="file_size" />
+        </property>
+        <property name="ipAddress" type="string">
+            <column name="ip_address" length="128" />
+        </property>
+        <property name="isSafe" type="java.lang.Boolean">
+            <column name="is_safe" />
+        </property>
+        <property name="isSafeFile" type="string">
+            <column name="is_safe_file" length="1" />
+        </property>
+        <property name="inappropriateCounter" type="java.lang.Integer">
+            <column name="inappropriate_counter" />
+        </property>
+        <property name="commentCount" type="java.lang.Integer">
+            <column name="comment_count" />
+        </property>
+        <property name="created" type="timestamp">
+            <column name="created" length="19" not-null="true" />
+        </property>
+        <property name="lastModified" type="timestamp">
+            <column name="last_modified" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

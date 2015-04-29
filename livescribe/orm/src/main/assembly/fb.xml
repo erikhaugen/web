@@ -1,0 +1,31 @@
+<assembly>
+
+	<id>fb</id>
+	
+	<formats>
+		<format>jar</format>
+	</formats>
+	
+	<includeBaseDirectory>false</includeBaseDirectory>
+
+	<fileSets>
+  
+		<fileSet>
+			<directory>${project.build.outputDirectory}</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>**/fb/*.class</include>
+			</includes>
+		</fileSet>
+    
+		<fileSet>
+			<directory>${basedir}/src/main/resources/</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>**/fb/*.hbm.xml</include>
+			</includes>
+		</fileSet>
+
+	</fileSets>
+	
+</assembly>

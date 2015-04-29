@@ -1,0 +1,4 @@
+<response>
+	<errorCode>EMAIL_ALREADY_IN_USE</errorCode>
+	<message>Email address already in use.</message>
+</response>

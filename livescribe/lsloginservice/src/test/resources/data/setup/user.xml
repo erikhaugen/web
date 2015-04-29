@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dataset SYSTEM "../dtd/user.dtd">
+<dataset>
+
+<!-- 
+	This dataset represents user information for 4 Livescribe accounts.
+ -->
+ 
+<!-- 	<address address_id="1" country_id="221" us_state_id="6" address1="225 Kilt Court" city="Stockton" /> -->
+
+	<user user_id="1" primary_email="samson@livescribe.com" password="OGFBRQQLe_f5MBESOWJQcnQxacQ" uid="8f694533-f666-45c2-a6ab-7daf0252db0a" confirmation_date="1970-01-01 00:10:00" created="1970-01-01 00:00:00" />
+	
+	<!-- Used for 'testFindAuthorizationByUIDAndProviderUserId()' method of LoginClientTest. -->
+	<user user_id="2" primary_email="jackstr@livescribe.com" password="OGFBRQQLe_f5MBESOWJQcnQxacQ" uid="bdcf046a-3aad-41fc-8954-246342a74cd3" confirmation_date="1971-01-01 00:10:01" created="1970-01-01 00:00:00" />
+	
+	<user user_id="3" primary_email="darkstar@yahoo.com" password="OGFBRQQLe_f5MBESOWJQcnQxacQ" uid="ff137f69-b6f5-4aa7-a4b5-e7238d2410e8"  confirmation_date="2012-04-17 15:16:17" created="1970-01-01 00:00:00" />
+	
+	<user user_id="4" primary_email="sugaree@yahoo.com" password="{SHA}t6h1/B6iKLkGEEG3zsS9PFKrPOM=" uid="b2f9616f-0155-4753-9b7d-895c67dbe298"  confirmation_date="2012-06-26 20:58:44" created="1970-01-01 00:00:00" />
+	
+	
+	<registered_device user_id="2" device_serial_number="2594160246848" device_id="661191" reg_token="845a43647d3f01a1ff11eb41fb9475cd" device_type="Pulse" complete="1" completed_date="2012-07-23 15:33:57" created="1970-01-01 00:00:00" />
+	<registered_device user_id="1" device_serial_number="2594160247373" device_id="151151" reg_token="14419b21d6fe29495586b9318954f038" device_type="Pulse" created="1970-01-01 00:00:00" />
+<!-- 	<registered_device user_id="2" device_serial_number="7823948029286" device_id="20000" reg_token="9766d7617c405ed94981ad75f0eb43a2" device_type="Echo Wi-Fi" created="1970-01-01 00:00:00" /> -->
+	
+	
+	<authenticated id="666" user_id="1" login_token="e58373ff-90ea-4c54-bf9f-dff23a876709" login_domain="WEB" created="1970-01-01 00:00:00" />
+	
+	<!-- Used for the following methods in LoginClientTest:
+			- 'testIsLoggedIn()'
+			- 'testLogout_Success_EmptyLoginDomain()'
+			- 'testFindAuthorizationByUIDAndProviderUserId()'
+			- 'testLogout()' -->
+	<authenticated id="667" user_id="2" login_token="95d12b4d-ffe2-4fed-b715-ba5821f27e33" login_domain="LD" created="1970-01-01 00:00:00" />
+	
+	
+	<authorization user_id="2" en_user_id="440556" en_username="jackstr" is_Primary="1" expiration="2014-09-11 12:00:00" oauth_access_token="jackstr-0270.137C3FAFE02.687474703A2F2F6C6F63616C686F73743A383038302F657665726E6F74656F617574682F6C697374416C6C4E6F7465626F6F6B3F616374696F6E3D63616C6C6261636B52657475726E.397734ECE01F8EF64A4ECDED3F4D9553" provider="EN" en_shard_id="14" created="1970-01-01 00:00:00" />
+	<authorization user_id="3" en_user_id="220664" en_username="jackstr1" is_Primary="0" expiration="2014-09-11 12:00:00" oauth_access_token="S=s1:U=6b81d:E=1464985437d:C=13ef1d41781:P=18d:A=ls-web-test:V=2:H=084d9df7fc2bce0f03cadf8eda98e6f2" provider="EN" en_shard_id="s1" created="1970-01-01 00:00:00" />
+	<authorization user_id="3" en_user_id="220665" en_username="jackstr2" is_Primary="1" expiration="2014-09-11 12:00:00" oauth_access_token="S=s1:U=2ccfc:E=143c5d02eff:C=13c6e1f0303:P=18d:A=ls-web-test:H=80415bdc5ddecfe0fb44eb7e53162acd" provider="EN" en_shard_id="s4" created="1970-01-01 00:00:00" />
+
+</dataset>
+<!-- {SHA}t6h1_B6iKLkGEEG3zsS9PFKrPOM    letmein
+     t6h1/B6iKLkGEEG3zsS9PFKrPOM=  -->

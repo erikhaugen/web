@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="ERROR" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/Livescribe/Tomcat/Logs/lslogin-${logfile}-error.log" />
+        <param name="Threshold" value="ERROR" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} %-5p [%25c{1}] - %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="logfileall" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/Livescribe/Tomcat/Logs/lslogin-${logfile}-all.log" />
+        <param name="Threshold" value="debug" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} %-5p [%25c{1} [%15.15t]] - %m%n" />
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="debug" />
+            <param name="LevelMax" value="fatal" />
+            <param name="AcceptOnMatch" value="true" />
+        </filter> 
+        <filter class="org.apache.log4j.varia.DenyAllFilter" />
+    </appender>
+
+    <appender name="APP" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/Livescribe/Tomcat/Logs/lslogin-${logfile}-app.log" />
+        <param name="Threshold" value="debug" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} %-5p [%25c{1}] - %m%n" />
+        </layout>
+    </appender>
+
+	<!-- Graylog2 Appender -->
+<!--     <appender name="gelf" class="org.graylog2.log.GelfAppender"> -->
+<!--         <param name="graylogHost"	value="graylog.livescribe.com" /> -->
+<!--         <param name="originHost"	value="${logfile}" /> -->
+<!--         <param name="addExtendedInformation" value="true" /> -->
+<!--         <param name="facility"	value="LS Login Service" /> -->
+<!--         <param name="Threshold"	value="info" /> -->
+<!--         <param name="additionalFields" value="{'Environment': '${ENV}'}" /> -->
+<!--         <param name="extractStacktrace" value="true" /> -->
+<!--         <layout class="org.apache.log4j.PatternLayout"> -->
+<!-- 			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%25c{1} [%15.15t]] - %m%n" /> -->
+<!--         </layout> -->
+<!--     </appender> -->
+
+<!--     <appender name="stdout-appender" class="org.apache.log4j.ConsoleAppender"> -->
+<!--       <layout class="org.apache.log4j.PatternLayout"> -->
+<!--         <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p %c{1}: %m%n"/> -->
+<!--       </layout> -->
+<!--     </appender> -->
+    
+<!--     <appender name="sql-appender" class="org.apache.log4j.FileAppender"> -->
+<!--       <param name="File" value="/Livescribe/Tomcat/Logs/lslogin-${ENV}-${logfile}-sql.log"/> -->
+<!--       <param name="Append" value="false"/> -->
+<!--       <layout class="org.apache.log4j.PatternLayout"> -->
+<!--         <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %t %m%n%n"/> -->
+<!--       </layout> -->
+<!--     </appender> -->
+    
+<!--     <appender name="sql-timing-appender" class="org.apache.log4j.FileAppender"> -->
+<!--       <param name="File" value="/Livescribe/Tomcat/Logs/lslogin-${ENV}-${logfile}-sqltiming.log"/> -->
+<!--       <param name="Append" value="false"/> -->
+<!--       <layout class="org.apache.log4j.PatternLayout"> -->
+<!--         <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %m%n%n"/> -->
+<!--       </layout> -->
+<!--     </appender> -->
+    
+<!--     <appender name="jdbc-appender" class="org.apache.log4j.FileAppender"> -->
+<!--       <param name="File" value="/Livescribe/Tomcat/Logs/lslogin-${ENV}-${logfile}-jdbc.log"/> -->
+<!--       <param name="Append" value="false"/> -->
+<!--       <layout class="org.apache.log4j.PatternLayout"> -->
+<!--         <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %m%n"/> -->
+<!--       </layout> -->
+<!--     </appender> -->
+    
+<!--     <appender name="jdbc-connection" class="org.apache.log4j.FileAppender"> -->
+<!--       <param name="File" value="/Livescribe/Tomcat/Logs/lslogin-${ENV}-${logfile}-connection.log"/> -->
+<!--       <param name="Append" value="false"/> -->
+<!--       <layout class="org.apache.log4j.PatternLayout"> -->
+<!--         <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %m%n"/> -->
+<!--       </layout> -->
+<!--     </appender> -->
+  
+	<logger name="org.hibernate" additivity="false">
+	  <level value="${loglevel3rd}" />
+	  <appender-ref ref="logfileall" />
+	  <appender-ref ref="ERROR"/>
+	</logger>
+	  
+	<logger name="org.springframework" additivity="false">
+	  <level value="${loglevel3rd}" />
+	  <appender-ref ref="logfileall" />
+	  <appender-ref ref="ERROR"/>
+	</logger>
+	      
+	<logger name="com.livescribe" additivity="false">
+	  <level value="${loglevel}" />
+	  <appender-ref ref="APP"/>
+<!-- 	  <appender-ref ref="gelf"/> -->
+	  <appender-ref ref="ERROR"/>
+	</logger>
+
+	<!-- log SQL (pre-execution) plus exceptions caused by SQL -->
+<!-- 	<logger name="jdbc.sqlonly" additivity="false"> -->
+<!-- 	  <level value="${loglevel3rd}"/> -->
+<!-- 	  <appender-ref ref="sql-appender"/> -->
+<!-- 	</logger> -->
+	
+	<!-- log SQL with timing information, post execution -->
+<!-- 	<logger name="jdbc.sqltiming" additivity="false"> -->
+<!-- 	  <level value="${loglevel3rd}"/> -->
+<!-- 	  <appender-ref ref="sql-timing-appender"/> -->
+<!-- 	</logger> -->
+	
+	<!-- only use the two logs below to trace ALL JDBC information,
+	NOTE:  This can be very voluminous!  -->
+	
+	<!-- log all jdbc calls except ResultSet calls -->
+<!-- 	<logger name="jdbc.audit" additivity="false"> -->
+<!-- 	  <level value="fatal"/> -->
+<!-- 	  <appender-ref ref="jdbc-appender"/> -->
+<!-- 	</logger> -->
+	
+	<!-- log the jdbc ResultSet calls -->
+<!-- 	<logger name="jdbc.resultset" additivity="false"> -->
+<!-- 	  <level value="fatal"/> -->
+<!-- 	  <appender-ref ref="jdbc-appender"/> -->
+<!-- 	</logger> -->
+	
+	<!-- log connection open/close events and dump of all open connection numbers -->
+<!-- 	<logger name="jdbc.connection" additivity="false"> -->
+<!-- 	  <level value="${loglevel3rd}"/> -->
+<!-- 	  <appender-ref ref="jdbc-appender"/> -->
+<!-- 	</logger> -->
+	
+	<!-- this log is for internal debugging of log4jdbc, itself -->
+	<!-- debug logging for log4jdbc itself -->
+<!-- 	<logger name="log4jdbc.debug" additivity="false"> -->
+<!-- 	  <level value="${loglevel3rd}"/> -->
+<!-- 	  <appender-ref ref="stdout-appender"/> -->
+<!-- 	</logger> -->
+	
+	<root>
+	  <priority value="error" />
+	  <appender-ref ref="ERROR" />
+<!-- 	  <appender-ref ref="gelf" /> -->
+	</root>
+        
+</log4j:configuration>

@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+                xmlns:oxm="http://www.springframework.org/schema/oxm"
+                xmlns:tx="http://www.springframework.org/schema/tx"
+                xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                                http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
+								http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<context:annotation-config />
+	<tx:annotation-driven />
+	
+	<bean id="dataSourceFB" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass"><value>com.frontbase.jdbc.FBJDriver</value></property>
+		<property name="jdbcUrl">
+			<value>jdbc:frontbase://db1-test.pensoft.local/qa.consumer/isolation=read_committed/locking=deferred/readonly=false/</value>
+		</property>
+		<property name="user"><value>_system</value></property>
+		<property name="password"><value>c0d1ng</value></property>
+	</bean>
+	       
+	<bean id="dataSourceMySQL" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="jdbcUrl"><value>jdbc:mysql://localhost:3306/consumer</value></property>
+		<property name="user"><value>lsadmin</value></property>
+		<property name="password"><value>wwwpen</value></property>
+	</bean>
+
+	<bean id="sessionFactoryFB" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+<!-- 		<constructor-arg type="java.lang.String"><value>dataSource</value></constructor-arg> -->
+		<property name="dataSource"><ref local="dataSourceFB" /></property>
+        <property name="mappingResources">
+			<list>
+				<value>com/livescribe/dbmigration/fb/CertShortTmp.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/Country.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/DeveloperProfile.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/DeveloperProgram.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/DownloadCounter.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/DownloadType.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/DupeEmailDeprecated.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/DuplicatedSerial.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/LDProductRegistrationInProgress.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/LDVersion.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/LSAvettiUser.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/LSPackage.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/LSPackageEntry.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/PenApps.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/PenFirmwareDownloads.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/PenSerialFirstRegistration.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/PreOrderProfile.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/ProductType.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/ProvisionedPenApps.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/RegDevOptAppDist.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/RegDevOptAppPrice.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/RegDevOptFirstYearSale.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/RegDevOptPaperDist.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/RegDevOptSelfDesc.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/RegDevOptUserBizSize.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/RegisteredDownload.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/RegisteredDownloadVersion.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/RegisteredProduct.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/ReleaseGroup.hbm.xml</value>
+		        <value>com/livescribe/dbmigration/fb/UGCategory.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/UGComment.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/UGFile.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/UGType.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/UserAddress.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/UserContact.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/UserPenApps.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/UserProfile.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/USState.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/XReleaseGroupMember.hbm.xml</value>
+				<value>com/livescribe/dbmigration/fb/XUGFileUserContact.hbm.xml</value>
+			</list>
+		</property>
+<!-- 		<property name="hibernateProperties" ref="hibernateProperties" /> -->
+	</bean>
+
+	<bean id="sessionFactoryMySQL" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource"><ref local="dataSourceMySQL" /></property>
+        <property name="mappingResources">
+			<list>
+				<value>com/livescribe/dbmigration/mysql/CertShortTmp.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/Country.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/DeveloperProfile.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/DeveloperProgram.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/DownloadCounter.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/DownloadType.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/DuplicatedSerial.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/DuplicateEmailDeprecated.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/LdProductRegistrationInProgress.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/LdVersion.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/LsAvettiUser.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/LsPackage.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/LsPackageEntry.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/PenApps.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/ProductType.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/RegDevOptAppDist.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/RegDevOptAppPrice.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/RegDevOptFirstYearSale.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/RegDevOptPaperDist.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/RegDevOptSelfDesc.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/RegDevOptUserBizSize.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/RegisteredDownload.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/RegisteredDownloadVersion.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/RegisteredProduct.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/ReleaseGroup.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/UgCategory.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/UgComment.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/UgFile.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/UgType.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/UserAddress.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/UserContact.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/UserPenApps.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/UserProfile.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/UsState.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/XReleaseGroupMember.hbm.xml</value>
+				<value>com/livescribe/dbmigration/mysql/XUgFileUserContact.hbm.xml</value>
+			</list>
+		</property>
+<!-- 		<property name="hibernateProperties" ref="hibernateProperties" /> -->
+	</bean>
+
+    <!-- Transaction Management -->
+    <bean id="transactionManagerFB" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+		<property name="sessionFactory">
+			<ref local="sessionFactoryFB" />
+		</property>
+	</bean>
+
+    <!-- Transaction Management -->
+    <bean id="transactionManagerMySQL" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+		<property name="sessionFactory">
+			<ref local="sessionFactoryMySQL" />
+		</property>
+	</bean>
+	
+	<!-- 
+	==================================================
+		DAO Beans
+	================================================== -->
+	<bean id="fbCertShortTmpDao"		name="fbCertShortTmpDao"		class="com.livescribe.dbmigration.fb.CertShortTmpDao" />
+	<bean id="fbCountryDao"				name="fbCountryDao"				class="com.livescribe.dbmigration.fb.CountryDao" />
+	<bean id="fbDevProfileDao"			name="fbDevProfileDao"			class="com.livescribe.dbmigration.fb.DeveloperProfileDao" />
+	<bean id="fbDevProgDao"				name="fbDevProgDao"				class="com.livescribe.dbmigration.fb.DeveloperProgramDao" />
+	<bean id="fbDnldCounterDao"			name="fbDnldCounterDao"			class="com.livescribe.dbmigration.fb.DownloadCounterDao" />
+	<bean id="fbDnldTypeDao"			name="fbDnldTypeDao"			class="com.livescribe.dbmigration.fb.DownloadTypeDao" />
+	<bean id="fbDupSerialDao"			name="fbDupSerialDao"			class="com.livescribe.dbmigration.fb.DuplicatedSerialDao" />
+	<bean id="fbDupEmailDepDao"			name="fbDupEmailDepDao"			class="com.livescribe.dbmigration.fb.DupeEmailDeprecatedDao" />
+	<bean id="fbLdProdRegInProgressDao"	name="fbLdProdRegInProgressDao"	class="com.livescribe.dbmigration.fb.LDProductRegistrationInProgressDao" />
+	<bean id="fbLDVersionDao"			name="fbLDVersionDao"			class="com.livescribe.dbmigration.fb.LDVersionDao" />
+	<bean id="fbLSAvettiUserDao"		name="fbLSAvettiUserDao"		class="com.livescribe.dbmigration.fb.LSAvettiUserDao" />
+	<bean id="fbLSPackageEntryDao"		name="fbLSPackageEntryDao"		class="com.livescribe.dbmigration.fb.LSPackageEntryDao" />
+	<bean id="fbLSPackageDao"			name="fbLSPackageDao"			class="com.livescribe.dbmigration.fb.LSPackageDao" />
+	<bean id="fbPenAppsDao"				name="fbPenAppsDao"				class="com.livescribe.dbmigration.fb.PenAppsDao" />
+	<bean id="fbPenFwDnldsDao"			name="fbPenFwDnldsDao"			class="com.livescribe.dbmigration.fb.PenFirmwareDownloadsDao" />
+	<bean id="fbPenSerialFirstRegDao"	name="fbPenSerialFirstRegDao"	class="com.livescribe.dbmigration.fb.PenSerialFirstRegistrationDao" />
+	<bean id="fbPreOrderProfileDao"		name="fbPreOrderProfileDao"		class="com.livescribe.dbmigration.fb.PreOrderProfileDao" />
+	<bean id="fbProductTypeDao"			name="fbProductTypeDao"			class="com.livescribe.dbmigration.fb.ProductTypeDao" />
+	<bean id="fbProvPenAppsDao"			name="fbProvPenAppsDao"			class="com.livescribe.dbmigration.fb.ProvisionedPenAppsDao" />
+	<bean id="fbRegDnldDao"				name="fbRegDnldDao"				class="com.livescribe.dbmigration.fb.RegisteredDownloadDao" />
+	<bean id="fbRegDnldVersionDao"		name="fbRegDnldVersionDao"		class="com.livescribe.dbmigration.fb.RegisteredDownloadVersionDao" />
+	<bean id="fbRegProductDao"			name="fbRegProductDao"			class="com.livescribe.dbmigration.fb.RegisteredProductDao" />
+	<bean id="fbReleaseGroupDao"		name="fbReleaseGroupDao"		class="com.livescribe.dbmigration.fb.ReleaseGroupDao" />
+	<bean id="fbUGCategoryDao"			name="fbUGCategoryDao"			class="com.livescribe.dbmigration.fb.UGCategoryDao" />
+	<bean id="fbUGCommentDao"			name="fbUGCommentDao"			class="com.livescribe.dbmigration.fb.UGCommentDao" />
+	<bean id="fbUGFileDao"				name="fbUGFileDao"				class="com.livescribe.dbmigration.fb.UGFileDao" />
+	<bean id="fbUGTypeDao"				name="fbUGTypeDao"				class="com.livescribe.dbmigration.fb.UGTypeDao" />
+	<bean id="fbUserAddressDao"			name="fbUserAddressDao"			class="com.livescribe.dbmigration.fb.UserAddressDao" />
+	<bean id="fbUserContactDao"			name="fbUserContactDao"			class="com.livescribe.dbmigration.fb.UserContactDao" />
+	<bean id="fbUserPenAppsDao"			name="fbUserPenAppsDao"			class="com.livescribe.dbmigration.fb.UserPenAppsDao" />
+	<bean id="fbUserProfileDao"			name="fbUserProfileDao"			class="com.livescribe.dbmigration.fb.UserProfileDao" />
+	<bean id="fbStateDao"				name="fbStateDao"				class="com.livescribe.dbmigration.fb.USStateDao" />
+	<bean id="fbXRelGrpMemberDao"		name="fbXRelGrpMemberDao"		class="com.livescribe.dbmigration.fb.XReleaseGroupMemberDao" />
+	<bean id="fbXUGFileUserContactDao"	name="fbXUGFileUserContactDao"	class="com.livescribe.dbmigration.fb.XUGFileUserContactDao" />
+
+	<bean id="fbRegDevOptAppDistDao"		name="fbRegDevOptAppDistDao"		class="com.livescribe.dbmigration.fb.RegDevOptAppDistDao" />
+	<bean id="fbRegDevOptAppPriceDao"		name="fbRegDevOptAppPriceDao"		class="com.livescribe.dbmigration.fb.RegDevOptAppPriceDao" />
+	<bean id="fbRegDevOptFirstYearSale"		name="fbRegDevOptFirstYearSale"		class="com.livescribe.dbmigration.fb.RegDevOptFirstYearSaleDao" />
+	<bean id="fbRegDevOptPaperDist"			name="fbRegDevOptPaperDist"			class="com.livescribe.dbmigration.fb.RegDevOptPaperDistDao" />
+	<bean id="fbRegDevOptSelfDescDao"		name="fbRegDevOptSelfDescDao"		class="com.livescribe.dbmigration.fb.RegDevOptSelfDescDao" />
+	<bean id="fbRegDevOptUserBizSizeDao"	name="fbRegDevOptUserBizSizeDao"	class="com.livescribe.dbmigration.fb.RegDevOptUserBizSizeDao" />
+
+
+	<bean id="msAddressDao"				name="msAddressDao"				class="com.livescribe.dbmigration.mysql.dao.CustomUserAddressDao" />
+	<bean id="msCategoryDao"			name="msCategoryDao"			class="com.livescribe.dbmigration.mysql.UgCategoryDao" />
+	<bean id="msCertShortTmpDao"		name="msCertShortTmpDao"		class="com.livescribe.dbmigration.mysql.CertShortTmpDao" />
+	<bean id="msCommentDao"				name="msCommentDao"				class="com.livescribe.dbmigration.mysql.UgCommentDao" />
+	<bean id="msCountryDao"				name="msCountryDao"				class="com.livescribe.dbmigration.mysql.CountryDao" />
+	<bean id="msDevProfileDao"			name="msDevProfileDao"			class="com.livescribe.dbmigration.mysql.DeveloperProfileDao" />
+	<bean id="msDevProgDao"				name="msDevProgDao"				class="com.livescribe.dbmigration.mysql.DeveloperProgramDao" />
+	<bean id="msDnldCounterDao"			name="msDnldCounterDao"			class="com.livescribe.dbmigration.mysql.DownloadCounterDao" />
+	<bean id="msDnldTypeDao"			name="msDnldTypeDao"			class="com.livescribe.dbmigration.mysql.DownloadTypeDao" />
+	<bean id="msDupSerialDao"			name="msDupSerialDao"			class="com.livescribe.dbmigration.mysql.DuplicatedSerialDao" />
+	<bean id="msDupEmailDepDao"			name="msDupEmailDepDao"			class="com.livescribe.dbmigration.mysql.DuplicateEmailDeprecatedDao" />
+	<bean id="msLdProdRegInProgressDao"	name="msLdProdRegInProgressDao"	class="com.livescribe.dbmigration.mysql.LdProductRegistrationInProgressDao" />
+	<bean id="msLdVersionDao"			name="msLdVersionDao"			class="com.livescribe.dbmigration.mysql.LdVersionDao" />
+	<bean id="msLsAvettiUserDao"		name="msLsAvettiUserDao"		class="com.livescribe.dbmigration.mysql.LsAvettiUserDao" />
+	<bean id="msLsPackageEntryDao"		name="msLsPackageEntryDao"		class="com.livescribe.dbmigration.mysql.LsPackageEntryDao" />
+	<bean id="msLsPackageDao"			name="msLsPackageDao"			class="com.livescribe.dbmigration.mysql.LsPackageDao" />
+	<bean id="msPenAppsDao"				name="msPenAppsDao"				class="com.livescribe.dbmigration.mysql.PenAppsDao" />
+	<bean id="msPenFwDnldsDao"			name="msPenFwDnldsDao"			class="com.livescribe.dbmigration.mysql.PenFirmwareDownloadsDao" />
+	<bean id="msPenSerialFirstRegDao"	name="msPenSerialFirstRegDao"	class="com.livescribe.dbmigration.mysql.PenSerialFirstRegDao" />
+	<bean id="msPreOrderProfileDao"		name="msPreOrderProfileDao"		class="com.livescribe.dbmigration.mysql.PreOrderProfileDao" />
+	<bean id="msProductTypeDao"			name="msProductTypeDao"			class="com.livescribe.dbmigration.mysql.ProductTypeDao" />
+	<bean id="msProvPenAppsDao"			name="msProvPenAppsDao"			class="com.livescribe.dbmigration.mysql.ProvisionedPenAppsDao" />
+
+	<bean id="msRegDnldDao"				name="msRegDnldDao"				class="com.livescribe.dbmigration.mysql.RegisteredDownloadDao" />
+	<bean id="msRegDnldVersionDao"		name="msRegDnldVersionDao"		class="com.livescribe.dbmigration.mysql.RegisteredDownloadVersionDao" />
+	<bean id="msRegProductDao"			name="msRegProductDao"			class="com.livescribe.dbmigration.mysql.RegisteredProductDao" />
+	<bean id="msReleaseGroupDao"		name="msReleaseGroupDao"		class="com.livescribe.dbmigration.mysql.ReleaseGroupDao" />
+
+	<bean id="msStateDao"				name="msStateDao"				class="com.livescribe.dbmigration.mysql.UsStateDao" />
+	<bean id="msUgFileDao"				name="msUgFileDao"				class="com.livescribe.dbmigration.mysql.UgFileDao" />
+	<bean id="msUgTypeDao"				name="msUgTypeDao"				class="com.livescribe.dbmigration.mysql.UgTypeDao" />
+	<bean id="msUserContactDao"			name="msUserContactDao"			class="com.livescribe.dbmigration.mysql.UserContactDao" />
+	<bean id="msUserDao"				name="msUserDao"				class="com.livescribe.dbmigration.mysql.UserDao" />
+	<bean id="msUserPenAppsDao"			name="msUserPenAppsDao"			class="com.livescribe.dbmigration.mysql.UserPenAppsDao" />
+	<bean id="msUserProfileDao"			name="msUserProfileDao"			class="com.livescribe.dbmigration.mysql.UserProfileDao" />
+	<bean id="msXUgFileUserContactDao"	name="msXUgFileUserContactDao"	class="com.livescribe.dbmigration.mysql.XUgFileUserContactDao" />
+	<bean id="msXRelGrpMemberDao"		name="msXRelGrpMemberDao"		class="com.livescribe.dbmigration.mysql.XReleaseGroupMemberDao" />
+
+	<bean id="msRegDevOptAppDistDao"		name="msRegDevOptAppDistDao"		class="com.livescribe.dbmigration.mysql.RegDevOptAppDistDao" />
+	<bean id="msRegDevOptAppPriceDao"		name="msRegDevOptAppPriceDao"		class="com.livescribe.dbmigration.mysql.RegDevOptAppPriceDao" />
+	<bean id="msRegDevOptFirstYearSale"		name="msRegDevOptFirstYearSale"		class="com.livescribe.dbmigration.mysql.RegDevOptFirstYearSaleDao" />
+	<bean id="msRegDevOptPaperDist"			name="msRegDevOptPaperDist"			class="com.livescribe.dbmigration.mysql.RegDevOptPaperDistDao" />
+	<bean id="msRegDevOptSelfDescDao"		name="msRegDevOptSelfDescDao"		class="com.livescribe.dbmigration.mysql.RegDevOptSelfDescDao" />
+	<bean id="msRegDevOptUserBizSizeDao"	name="msRegDevOptUserBizSizeDao"	class="com.livescribe.dbmigration.mysql.RegDevOptUserBizSizeDao" />
+	
+	<!-- 
+	==================================================
+		Transformer Beans
+	================================================== -->
+	<bean id="addressTransformer"				name="addressTransformer"				class="com.livescribe.dbmigration.txfr.AddressTransformer" />
+	<bean id="categoryTransformer"				name="categoryTransformer"				class="com.livescribe.dbmigration.txfr.CategoryTransformer" />
+	<bean id="certShortTmpTransformer"			name="certShortTmpTransformer"			class="com.livescribe.dbmigration.txfr.CertShortTmpTransformer" />
+	<bean id="countryTransformer"				name="countryTransformer"				class="com.livescribe.dbmigration.txfr.CountryTransformer" />
+	<bean id="devProgramTransformer"			name="devProgramTransformer"			class="com.livescribe.dbmigration.txfr.DeveloperProgramTransformer" />
+	<bean id="devProfileTransformer"			name="devProfileTransformer"			class="com.livescribe.dbmigration.txfr.DeveloperProfileTransformer" />
+	<bean id="downloadCounterTransformer"		name="downloadCounterTransformer"		class="com.livescribe.dbmigration.txfr.DownloadCounterTransformer" />
+	<bean id="downloadTypeTransformer"			name="downloadTypeTransformer"			class="com.livescribe.dbmigration.txfr.DownloadTypeTransformer" />
+	<bean id="duplicateEmailDepTransformer"		name="duplicateEmailDepTransformer"		class="com.livescribe.dbmigration.txfr.DuplicateEmailDeprecatedTransformer" />
+	<bean id="duplicatedSerialTransformer"		name="duplicatedSerialTransformer"		class="com.livescribe.dbmigration.txfr.DuplicatedSerialTransformer" />
+	<bean id="ldProdRegInProgressTransformer"	name="ldProdRegInProgressTransformer"	class="com.livescribe.dbmigration.txfr.LdProductRegInProgressTransformer" />
+	<bean id="ldVersionTransformer"				name="ldVersionTransformer"				class="com.livescribe.dbmigration.txfr.LdVersionTransformer" />
+	<bean id="lsAvettiUserTransformer"			name="lsAvettiUserTransformer"			class="com.livescribe.dbmigration.txfr.LsAvettiUserTransformer" />
+	<bean id="lsPackageTransformer"				name="lsPackageTransformer"				class="com.livescribe.dbmigration.txfr.LsPackageTransformer" />
+	<bean id="lsPackageEntryTransformer"		name="lsPackageEntryTransformer"		class="com.livescribe.dbmigration.txfr.LsPackageEntryTransformer" />
+	<bean id="penAppsTransformer"				name="penAppsTransformer"				class="com.livescribe.dbmigration.txfr.PenAppsTransformer" />
+	<bean id="penFwDnldsTransformer"			name="penFwDnldsTransformer"			class="com.livescribe.dbmigration.txfr.PenFirmwareDownloadsTransformer" />
+	<bean id="penSerialFirstRegTransformer"		name="penSerialFirstRegTransformer"		class="com.livescribe.dbmigration.txfr.PenSerialFirstRegTransformer" />
+	<bean id="preOrderProfileTransformer"		name="preOrderProfileTransformer"		class="com.livescribe.dbmigration.txfr.PreOrderProfileTransformer" />
+	<bean id="productTypeTransformer"			name="productTypeTransformer"			class="com.livescribe.dbmigration.txfr.ProductTypeTransformer" />
+	<bean id="provisionedPenAppsTransformer"	name="provisionedPenAppsTransformer"	class="com.livescribe.dbmigration.txfr.ProvisionedPenAppsTransformer" />
+	<bean id="regDevOptAppDistTransformer"		name="regDevOptAppDistTransformer"		class="com.livescribe.dbmigration.txfr.RegDevOptAppDistTransformer" />
+	<bean id="regDevOptAppPriceTransformer"		name="regDevOptAppPriceTransformer"		class="com.livescribe.dbmigration.txfr.RegDevOptAppPriceTransformer" />
+	<bean id="regDevOptFirstYearSaleTransformer"	name="regDevOptFirstYearSaleTransformer"	class="com.livescribe.dbmigration.txfr.RegDevOptFirstYearSaleTransformer" />
+	<bean id="regDevOptPaperDistTransformer"		name="regDevOptPaperDistTransformer"		class="com.livescribe.dbmigration.txfr.RegDevOptPaperDistTransformer" />
+	<bean id="regDevOptSelfDescTransformer"		name="regDevOptSelfDescTransformer"		class="com.livescribe.dbmigration.txfr.RegDevOptSelfDescTransformer" />
+	<bean id="regDevOptUserBizSizeTransformer"	name="regDevOptUserBizSizeTransformer"	class="com.livescribe.dbmigration.txfr.RegDevOptUserBizSizeTransformer" />
+	<bean id="regDnldTransformer"				name="regDnldTransformer"				class="com.livescribe.dbmigration.txfr.RegisteredDownloadTransformer" />
+	<bean id="regDnldVersionTransformer"		name="regDnldVersionTransformer"		class="com.livescribe.dbmigration.txfr.RegisteredDownloadVersionTransformer" />
+	<bean id="regProductTransformer"			name="regProductTransformer"			class="com.livescribe.dbmigration.txfr.RegisteredProductTransformer" />
+	<bean id="releaseGroupTransformer"			name="releaseGroupTransformer"			class="com.livescribe.dbmigration.txfr.ReleaseGroupTransformer" />
+	<bean id="stateTransformer"					name="stateTransformer"					class="com.livescribe.dbmigration.txfr.StateTransformer" />
+	<bean id="ugCommentTransformer"				name="ugCommentTransformer"				class="com.livescribe.dbmigration.txfr.UgCommentTransformer" />
+	<bean id="ugFileTransformer"				name="ugFileTransformer"				class="com.livescribe.dbmigration.txfr.UgFileTransformer" />
+	<bean id="ugTypeTransformer"				name="ugTypeTransformer"				class="com.livescribe.dbmigration.txfr.UgTypeTransformer" />
+	<bean id="userContactTransformer"			name="userContactTransformer"			class="com.livescribe.dbmigration.txfr.UserContactTransformer" />
+	<bean id="userPenAppsTransformer"			name="userPenAppsTransformer"			class="com.livescribe.dbmigration.txfr.UserPenAppsTransformer" />
+	<bean id="userProfileTransformer"			name="userProfileTransformer"			class="com.livescribe.dbmigration.txfr.UserProfileTransformer" />
+	<bean id="xRlseGrpMemberTransformer"		name="xRlseGrpMemberTransformer"		class="com.livescribe.dbmigration.txfr.XReleaseGroupMemberTransformer" />
+	<bean id="xUgFileUserContactTransformer"	name="xUgFileUserContactTransformer"	class="com.livescribe.dbmigration.txfr.XUGFileUserContactTransformer" />
+	
+	<!-- 
+	==================================================
+		Service Beans
+	================================================== -->
+	<bean id="msService"	name="msService"	class="com.livescribe.dbmigration.mysql.service.MySQLService" />
+
+	<bean id="migrationManager" name="migrationManager" class="com.livescribe.dbmigration.MigrationManager" />
+	
+</beans>

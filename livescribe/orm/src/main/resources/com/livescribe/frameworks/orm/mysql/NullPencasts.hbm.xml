@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 21, 2011 12:15:27 PM by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="com.livescribe.frameworks.orm.mysql.NullPencasts" table="null_pencasts" catalog="consumer">
+        <composite-id name="id" class="com.livescribe.frameworks.orm.mysql.NullPencastsId">
+            <key-property name="filePrimaryKey" type="long">
+                <column name="filePrimaryKey" />
+            </key-property>
+            <key-property name="fileDisplayName" type="string">
+                <column name="fileDisplayName" length="128" />
+            </key-property>
+            <key-property name="fileFileDate" type="timestamp">
+                <column name="fileFileDate" length="19" />
+            </key-property>
+            <key-property name="fileGlobalShare" type="java.lang.Integer">
+                <column name="fileGlobalShare" />
+            </key-property>
+            <key-property name="fileRating" type="java.lang.Double">
+                <column name="fileRating" precision="22" scale="0" />
+            </key-property>
+            <key-property name="catDisplayName" type="string">
+                <column name="catDisplayName" length="128" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

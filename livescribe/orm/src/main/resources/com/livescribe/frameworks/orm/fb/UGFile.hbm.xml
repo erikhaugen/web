@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.livescribe.frameworks.orm.fb">
+	<class name="UGFile" table="UGFile">
+	
+		<id name="primaryKey" column="primaryKey" type="binary">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="primaryKeyStr"			column="primaryKeyStr"			type="string"	length="64" />
+		<property name="categoryKey"			column="categoryKey"			type="binary" />
+		<property name="categoryKeyStr"			column="categoryKeyStr"			type="string"	length="64" />
+		<property name="shortId"				column="shortId"				type="string"	length="64" />
+		<property name="contentDescription"		column="contentDescription"		type="clob" />
+		<property name="displayName"			column="displayName"			type="string"	length="128" />
+		<property name="fileDate"				column="fileDate"				type="timestamp" />
+		<property name="fileName"				column="fileName"				type="string"	length="128" />
+		<property name="filePath"				column="filePath"				type="string"	length="2048" />
+		<property name="globalShare"			column="globalShare"			type="integer" />
+		<property name="metaInfo"				column="metaInfo"				type="clob" />
+		<property name="rating"					column="rating"					type="java.lang.Double" precision="22" scale="0" />
+		<property name="typeKey"				column="typeKey"				type="binary" />
+		<property name="typeKeyStr"				column="typeKeyStr"				type="string" />
+		<property name="userProfileKey"			column="userProfileKey"			type="binary" />
+		<property name="userProfileKeyStr"		column="userProfileKeyStr"		type="string"	length="64" />
+		<property name="views"					column="views"					type="integer" />
+		<property name="fileSize"				column="fileSize"				type="integer" />
+		<property name="ipAddress"				column="ipAddress"				type="string"	length="128" />
+		<property name="isSafeFile"				column="isSafeFile"				type="string"	length="1" />		
+		<property name="inappropriateCounter"	column="inappropriateCounter"	type="integer" />
+		
+	</class>
+</hibernate-mapping>

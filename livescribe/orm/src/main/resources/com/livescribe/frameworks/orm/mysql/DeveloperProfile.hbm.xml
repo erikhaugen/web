@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 21, 2011 12:15:27 PM by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="com.livescribe.frameworks.orm.mysql.DeveloperProfile" table="developer_profile" catalog="consumer">
+        <id name="id" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="primaryKey" type="string">
+            <column name="primary_key" length="64" />
+        </property>
+        <property name="addressId" type="java.lang.Long">
+            <column name="address_id" />
+        </property>
+        <property name="addressKey" type="string">
+            <column name="address_key" length="64" />
+        </property>
+        <property name="company" type="string">
+            <column name="company" length="128" />
+        </property>
+        <property name="companyUrl" type="string">
+            <column name="company_url" length="128" />
+        </property>
+        <property name="devLangText" type="string">
+            <column name="dev_lang_text" length="256" />
+        </property>
+        <property name="devPlanText" type="string">
+            <column name="dev_plan_text" length="1024" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="128" />
+        </property>
+        <property name="firstName" type="string">
+            <column name="first_name" length="128" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="last_name" length="128" />
+        </property>
+        <property name="ideText" type="string">
+            <column name="ide_text" length="256" />
+        </property>
+        <property name="javaOne2008Agree" type="string">
+            <column name="java_one_2008_agree" length="1" />
+        </property>
+        <property name="javaOne2008AgreeDate" type="timestamp">
+            <column name="java_one_2008_agree_date" length="19" not-null="true" />
+        </property>
+        <property name="ldDvlpmntNewslttr" type="string">
+            <column name="ld_dvlpmnt_newslttr" length="1" />
+        </property>
+        <property name="lsPartnerContact" type="string">
+            <column name="ls_partner_contact" length="1" />
+        </property>
+        <property name="macPlatform" type="string">
+            <column name="mac_platform" length="1" />
+        </property>
+        <property name="mrktngInfo" type="string">
+            <column name="mrktng_info" length="1" />
+        </property>
+        <property name="metaInfo" type="string">
+            <column name="meta_info" length="65535" />
+        </property>
+        <property name="otherPlatform" type="string">
+            <column name="other_platform" length="1" />
+        </property>
+        <property name="phone" type="string">
+            <column name="phone" length="32" />
+        </property>
+        <property name="vistaPlatform" type="string">
+            <column name="vista_platform" length="1" />
+        </property>
+        <property name="xpPlatform" type="string">
+            <column name="xp_platform" length="1" />
+        </property>
+        <property name="developerProgramId" type="java.lang.Long">
+            <column name="developer_program_id" />
+        </property>
+        <property name="developerProgramKey" type="string">
+            <column name="developer_program_key" length="64" />
+        </property>
+        <property name="appComponentPenlet" type="string">
+            <column name="app_component_penlet" length="1" />
+        </property>
+        <property name="appComponentPcdeskapp" type="string">
+            <column name="app_component_pcdeskapp" length="1" />
+        </property>
+        <property name="appComponentPaper" type="string">
+            <column name="app_component_paper" length="1" />
+        </property>
+        <property name="appComponentMacdeskapp" type="string">
+            <column name="app_component_macdeskapp" length="1" />
+        </property>
+        <property name="appLangEnglish" type="string">
+            <column name="app_lang_english" length="1" />
+        </property>
+        <property name="appLangFrench" type="string">
+            <column name="app_lang_french" length="1" />
+        </property>
+        <property name="appLangItalian" type="string">
+            <column name="app_lang_italian" length="1" />
+        </property>
+        <property name="appLangGerman" type="string">
+            <column name="app_lang_german" length="1" />
+        </property>
+        <property name="appLangSpanish" type="string">
+            <column name="app_lang_spanish" length="1" />
+        </property>
+        <property name="appLangKorean" type="string">
+            <column name="app_lang_korean" length="1" />
+        </property>
+        <property name="appLangChinese" type="string">
+            <column name="app_lang_chinese" length="1" />
+        </property>
+        <property name="firstYearSaleId" type="java.lang.Long">
+            <column name="first_year_sale_id" />
+        </property>
+        <property name="firstYearSaleKey" type="string">
+            <column name="first_year_sale_key" length="64" />
+        </property>
+        <property name="appDistribId" type="java.lang.Long">
+            <column name="app_distrib_id" />
+        </property>
+        <property name="appDistribKey" type="string">
+            <column name="app_distrib_key" length="64" />
+        </property>
+        <property name="paperDistribId" type="java.lang.Long">
+            <column name="paper_distrib_id" />
+        </property>
+        <property name="paperDistribKey" type="string">
+            <column name="paper_distrib_key" length="64" />
+        </property>
+        <property name="appPriceId" type="java.lang.Long">
+            <column name="app_price_id" />
+        </property>
+        <property name="appPriceKey" type="string">
+            <column name="app_price_key" length="64" />
+        </property>
+        <property name="targetMarket" type="string">
+            <column name="target_market" length="1024" />
+        </property>
+        <property name="selfDescId" type="java.lang.Long">
+            <column name="self_desc_id" />
+        </property>
+        <property name="selfDescKey" type="string">
+            <column name="self_desc_key" length="64" />
+        </property>
+        <property name="userBizSizeId" type="java.lang.Long">
+            <column name="user_biz_size_id" />
+        </property>
+        <property name="userBizSizeKey" type="string">
+            <column name="user_biz_size_key" length="64" />
+        </property>
+        <property name="otherSpcfdPlatform" type="string">
+            <column name="other_spcfd_platform" length="256" />
+        </property>
+        <property name="otherAppDist" type="string">
+            <column name="other_app_dist" length="256" />
+        </property>
+        <property name="otherPriceModel" type="string">
+            <column name="other_price_model" length="256" />
+        </property>
+        <property name="created" type="timestamp">
+            <column name="created" length="19" not-null="true" />
+        </property>
+        <property name="lastModified" type="timestamp">
+            <column name="last_modified" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

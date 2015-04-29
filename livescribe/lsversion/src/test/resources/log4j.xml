@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="ERROR" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/Livescribe/Tomcat/Logs/lsversion-test-error.log" />
+		<param name="Threshold" value="error" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%t][%25c{1}] - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="logfileall" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="/Livescribe/Tomcat/Logs/lsversion-test-all.log" />
+		<param name="MaxFileSize" value="20MB" />
+		<param name="MaxBackupIndex" value="9" />
+		<param name="Threshold" value="debug" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%25c{1}] %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="debug" />
+			<param name="LevelMax" value="fatal" />
+			<param name="AcceptOnMatch" value="true" />
+		</filter> 
+		<filter class="org.apache.log4j.varia.DenyAllFilter" />
+	</appender>
+
+	<appender name="APP" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/Livescribe/Tomcat/Logs/lsversion-test-app.log" />
+		<param name="Threshold" value="debug" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%t][%25c{1}] - %m%n" />
+		</layout>
+	</appender>
+
+	<logger name="com.livescribe" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="APP"/>
+	</logger>
+
+  <root>
+    <priority value="error" />
+    <appender-ref ref="ERROR" />
+  </root>
+        
+</log4j:configuration>
+	

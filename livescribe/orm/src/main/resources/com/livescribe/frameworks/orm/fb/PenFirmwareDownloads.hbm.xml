@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.livescribe.frameworks.orm.fb.PenFirmwareDownloads" table="PenFirmwareDownloads">
+	
+		<id name="id" column="id" type="integer">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="appFileName"		column="appFileName"			type="string"	length="200" />
+		<property name="appFilePath"		column="appFilePath"			type="string"	length="2000" />
+		<property name="downloadName"		column="downloadName"			type="string"	length="200" />
+		<property name="downloadDescriptor"	column="downloadDescriptior"	type="string"	length="200" />
+		<property name="datePurchased"		column="datePurchased"			type="timestamp" />
+		<property name="downloadGuid"		column="downloadGUID"			type="integer" />
+		<property name="penType"			column="penType"				type="integer" />
+		<property name="penLocale"			column="penLocale"				type="string"	length="10" />
+		<property name="productId"			column="productId"				type="string"	length="200" />
+		<property name="productVersion"		column="productVersion"			type="string"	length="200" />
+		<property name="sizeInBytes"		column="sizeInBytes"			type="double" />
+		<property name="infoUrl"			column="infoURL"				type="string"	length="2000" />
+		<property name="icon"				column="icon"					type="blob" />
+		<property name="downloadUrl"		column="downloadURL"			type="string"	length="1024" />
+		<property name="minLDVersion"		column="minLDVersion"			type="string"	length="32" />
+		<property name="maxLDVersion"		column="maxLDVersion"			type="string"	length="32" />
+		<property name="releaseNotesUrl"	column="releaseNotesURL"		type="string"	length="2000" />
+		<property name="groupId"			column="groupId"				type="binary" />
+		
+	</class>
+</hibernate-mapping>
+		

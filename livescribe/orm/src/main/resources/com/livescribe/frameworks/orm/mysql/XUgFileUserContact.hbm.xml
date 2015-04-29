@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 21, 2011 12:15:27 PM by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="com.livescribe.frameworks.orm.mysql.XUgFileUserContact" table="x_ug_file_user_contact" catalog="consumer">
+        <composite-id name="id" class="com.livescribe.frameworks.orm.mysql.XUgFileUserContactId">
+            <key-property name="ugFileId" type="long">
+                <column name="ug_file_id" />
+            </key-property>
+            <key-property name="userContactId" type="long">
+                <column name="user_contact_id" />
+            </key-property>
+        </composite-id>
+        <property name="ugFileKey" type="string">
+            <column name="ug_file_key" length="64" />
+        </property>
+        <property name="userContactKey" type="string">
+            <column name="user_contact_key" length="64" />
+        </property>
+        <property name="created" type="timestamp">
+            <column name="created" length="19" not-null="true" />
+        </property>
+        <property name="lastModified" type="timestamp">
+            <column name="last_modified" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

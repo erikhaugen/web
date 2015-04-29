@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 21, 2011 12:15:27 PM by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="com.livescribe.frameworks.orm.mysql.UserProfile" table="user_profile" catalog="consumer">
+        <id name="id" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="primaryKey" type="string">
+            <column name="primary_key" length="64" />
+        </property>
+        <property name="addressId" type="java.lang.Long">
+            <column name="address_id" />
+        </property>
+        <property name="addressKey" type="string">
+            <column name="address_key" length="64" />
+        </property>
+        <property name="countryId" type="java.lang.Long">
+            <column name="country_id" />
+        </property>
+        <property name="countryKey" type="string">
+            <column name="country_key" length="64" />
+        </property>
+        <property name="developerProfileId" type="java.lang.Long">
+            <column name="developer_profile_id" />
+        </property>
+        <property name="developerProfileKey" type="string">
+            <column name="developer_profile_key" length="64" />
+        </property>
+        <property name="shortId" type="string">
+            <column name="shortId" length="64" />
+        </property>
+        <property name="birthYear" type="java.lang.Integer">
+            <column name="birth_year" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="128" />
+        </property>
+        <property name="firstName" type="string">
+            <column name="first_name" length="128" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="last_name" length="128" />
+        </property>
+        <property name="gradYear" type="java.lang.Integer">
+            <column name="grad_year" />
+        </property>
+        <property name="major" type="string">
+            <column name="major" length="128" />
+        </property>
+        <property name="occupation" type="string">
+            <column name="occupation" length="128" />
+        </property>
+        <property name="isMlsActive" type="java.lang.Integer">
+            <column name="is_mls_active" />
+        </property>
+        <property name="metaInfo" type="string">
+            <column name="meta_info" length="65535" />
+        </property>
+        <property name="profilePicture" type="binary">
+            <column name="profile_picture" />
+        </property>
+        <property name="profilePictureMimeType" type="string">
+            <column name="profile_picture_mime_type" length="64" />
+        </property>
+        <property name="profilePictureName" type="string">
+            <column name="profile_picture_name" length="64" />
+        </property>
+        <property name="screenName" type="string">
+            <column name="screen_name" length="64" />
+        </property>
+        <property name="sendEmail" type="string">
+            <column name="send_email" length="1" />
+        </property>
+        <property name="sex" type="string">
+            <column name="sex" length="1" />
+        </property>
+        <property name="university" type="string">
+            <column name="university" length="128" />
+        </property>
+        <property name="organization" type="string">
+            <column name="organization" length="64" />
+        </property>
+        <property name="phone" type="string">
+            <column name="phone" length="24" />
+        </property>
+        <property name="userPassword" type="string">
+            <column name="user_password" length="64" />
+        </property>
+        <property name="passwordResetString" type="string">
+            <column name="password_reset_string" length="12" />
+        </property>
+        <property name="avettiCustomerId" type="string">
+            <column name="avetti_customer_id" length="2047" />
+        </property>
+        <property name="avettiPassword" type="string">
+            <column name="avetti_password" length="2047" />
+        </property>
+        <property name="allowExceedQuota" type="java.lang.Boolean">
+            <column name="allow_exceed_quota" />
+        </property>
+        <property name="allowedStorageQuota" type="java.lang.Integer">
+            <column name="allowed_storage_quota" />
+        </property>
+        <property name="deprecatedAccount" type="java.lang.Integer">
+            <column name="deprecated_account" />
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_date" length="19" not-null="true" />
+        </property>
+        <property name="created" type="timestamp">
+            <column name="created" length="19" not-null="true" />
+        </property>
+        <property name="lastModified" type="timestamp">
+            <column name="last_modified" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

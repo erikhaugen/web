@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.livescribe.frameworks.orm.fb">
+	
+	<class name="ProvisionedPenApps" table="ProvisionedPenApps">
+	
+<!-- 		<composite-id> -->
+<!-- 			<key-property name="penSerialNum" type="string" /> -->
+<!-- 			<key-property name="productId" type="string" /> -->
+<!-- 		</composite-id> -->
+		
+		<composite-id name="id" class="com.livescribe.frameworks.orm.fb.ProvisionedPenAppsId">
+			<key-property name="penSerialNum" type="string">
+				<column name="penSerialNum" length="128" />
+			</key-property>
+			<key-property name="productId" type="string">
+				<column name="productId" length="200" />
+			</key-property>
+		</composite-id>
+
+		<timestamp name="dateProvisioned" column="dateProvisioned" />
+		
+		<many-to-one name="registeredProduct" class="RegisteredProduct" update="false" insert="false" fetch="select">
+			<column name="serialNumber" not-null="false" />
+		</many-to-one>
+
+		<many-to-one name="penApp" class="PenApps" update="false" insert="false" fetch="select">
+			<column name="productId" not-null="false" />
+		</many-to-one>
+
+<!-- 		<property name="dateProvisioned"	column="dateProvisioned"	type="timestamp" /> -->
+	</class>
+	
+</hibernate-mapping>

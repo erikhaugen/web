@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory name="sessionFactoryFB">
+        <property name="hibernate.connection.driver_class">com.frontbase.jdbc.FBJDriver</property>
+        <property name="hibernate.connection.password">c0d1ng</property>
+        <property name="hibernate.connection.url">jdbc:frontbase://db1-test.pensoft.local/qa.consumer/isolation=read_committed/locking=deferred/readonly=false/</property>
+        <property name="hibernate.connection.username">_system</property>
+<!--         <property name="hibernate.connection.default_schema">_system</property> -->
+<!--         <property name="hibernate.connection.default_catalog">qa.consumer</property> -->
+        <property name="hibernate.dialect">org.hibernate.dialect.FrontBaseDialect</property>
+        <mapping resource="com/livescribe/frameworks/orm/fb/CertShortTmp.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/Country.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/DeveloperProfile.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/DeveloperProgram.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/DownloadCounter.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/DownloadType.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/DupeEmailDeprecated.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/DuplicatedSerial.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/LDProductRegistrationInProgress.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/LDVersion.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/LSAvettiUser.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/LSPackage.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/LSPackageEntry.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/PenApps.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/PenFirmwareDownloads.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/PenSerialFirstRegistration.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/PreOrderProfile.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/ProductType.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/ProvisionedPenApps.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/RegisteredDownload.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/RegisteredDownloadVersion.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/RegisteredProduct.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/ReleaseGroup.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/UGCategory.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/UGComment.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/UGFile.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/UGType.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/UserAddress.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/UserContact.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/UserPenApps.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/UserProfile.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/USState.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/XReleaseGroupMember.hbm.xml" />
+        <mapping resource="com/livescribe/frameworks/orm/fb/XUGFileUserContact.hbm.xml" />
+
+		<mapping resource="com/livescribe/frameworks/orm/fb/RegDevOptAppDist.hbm.xml" />
+		<mapping resource="com/livescribe/frameworks/orm/fb/RegDevOptAppPrice.hbm.xml" />
+		<mapping resource="com/livescribe/frameworks/orm/fb/RegDevOptFirstYearSale.hbm.xml" />
+		<mapping resource="com/livescribe/frameworks/orm/fb/RegDevOptPaperDist.hbm.xml" />
+		<mapping resource="com/livescribe/frameworks/orm/fb/RegDevOptSelfDesc.hbm.xml" />
+		<mapping resource="com/livescribe/frameworks/orm/fb/RegDevOptUserBizSize.hbm.xml" />
+    </session-factory>
+
+</hibernate-configuration>

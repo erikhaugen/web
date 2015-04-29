@@ -1,0 +1,43 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: kmurdoff
+Build-Jdk: 1.6.0_65
+Specification-Title: Livescribe Login
+Specification-Version: 1.4.0-SNAPSHOT
+Implementation-Title: Livescribe Login
+Implementation-Version: 1.4.0-SNAPSHOT
+Implementation-Vendor-Id: com.livescribe.aws
+App-Name: Livescribe Login
+App-Version: 1.4.0-SNAPSHOT
+Build-Date: 20140310-2140
+Hudson-Build-Number: 
+Svn-Revision: 75689
+Class-Path: lsdomain-1.0.0-SNAPSHOT.jar xstream-1.4.3.jar xpp3_min-1.1
+ .4c.jar spring-context-3.0.3.RELEASE.jar spring-aop-3.0.3.RELEASE.jar
+  aopalliance-1.0.jar spring-asm-3.0.3.RELEASE.jar spring-beans-3.0.3.
+ RELEASE.jar spring-core-3.0.3.RELEASE.jar commons-logging-1.1.1.jar s
+ pring-expression-3.0.3.RELEASE.jar spring-web-3.0.3.RELEASE.jar sprin
+ g-webmvc-3.0.3.RELEASE.jar spring-context-support-3.0.3.RELEASE.jar l
+ sclient-1.2.0-SNAPSHOT.jar lswebbase-1.1.1-SNAPSHOT.jar log4j-1.2.16.
+ jar httpcore-4.2.1.jar httpclient-4.2.1.jar commons-codec-1.5.jar lsc
+ onfiguration-1.1.0.jar commons-configuration-1.6.jar commons-collecti
+ ons-3.2.1.jar commons-lang-2.5.jar commons-digester-1.8.jar commons-b
+ eanutils-1.8.0.jar commons-beanutils-core-1.8.0.jar hibernate-core-3.
+ 3.2.GA.jar antlr-2.7.6.jar dom4j-1.6.1.jar xml-apis-1.0.b2.jar jta-1.
+ 1.jar slf4j-api-1.6.2.jar baseutils-2.7.jar mail-1.4.1.jar activation
+ -1.1.jar orm-1.10.0-SNAPSHOT-consumer.jar hibernate-tools-3.2.4.GA.ja
+ r bsh-2.0b4.jar freemarker-2.3.8.jar jtidy-r8-20060801.jar mysql-conn
+ ector-java-5.1.12.jar c3p0-0.9.1.2.jar spring-jdbc-3.0.3.RELEASE.jar 
+ spring-tx-3.0.3.RELEASE.jar cglib-nodep-2.2.jar orm-1.10.0-SNAPSHOT-l
+ severnotedb.jar lsversion-1.2.0.jar spring-orm-3.0.3.RELEASE.jar spri
+ ng-oxm-3.0.3.RELEASE.jar spring-test-3.0.3.RELEASE.jar lsevent-1.0.0-
+ SNAPSHOT.jar purejavaafp-1.2.0.jar xmlrpc-client-3.1.3.jar xmlrpc-com
+ mon-3.1.3.jar ws-commons-util-1.0.2.jar jacksum-1.7.0.jar slf4j-log4j
+ 12-1.6.6.jar javassist-3.4.GA.jar jaxen-1.1.1.jar jdom-1.0.jar xerces
+ Impl-2.6.2.jar xom-1.0.jar xmlParserAPIs-2.6.2.jar xalan-2.6.0.jar ic
+ u4j-2.6.1.jar com.springsource.org.codehaus.jackson-1.0.0.jar com.spr
+ ingsource.org.codehaus.jackson.mapper-1.0.0.jar gelfj-1.0.jar json-si
+ mple-1.1.1.jar xmlpull-1.1.3.1.jar evernote-api-1.25.1.jar json-lib-2
+ .4-jdk15.jar ezmorph-1.0.6.jar log4jdbc-remix-0.2.7.jar jasypt-1.9.1.
+ jar jstl-1.2.jar jaxb-api-2.1.jar stax-api-1.0-2.jar

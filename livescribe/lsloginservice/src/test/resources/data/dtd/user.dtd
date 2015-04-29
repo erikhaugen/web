@@ -1,0 +1,39 @@
+<!ELEMENT dataset (user*, registered_device*, authenticated*, authorization*)>
+
+<!ELEMENT user EMPTY>
+<!ATTLIST user user_id					CDATA #IMPLIED>
+<!ATTLIST user primary_email			CDATA #IMPLIED>
+<!ATTLIST user password					CDATA #IMPLIED>
+<!ATTLIST user uid						CDATA #IMPLIED>
+<!ATTLIST user confirmation_date		CDATA #IMPLIED>
+<!ATTLIST user created					CDATA #IMPLIED>
+
+<!ELEMENT registered_device EMPTY>
+<!ATTLIST registered_device registered_device_id	CDATA #IMPLIED>
+<!ATTLIST registered_device user_id					CDATA #IMPLIED>
+<!ATTLIST registered_device device_id				CDATA #IMPLIED>
+<!ATTLIST registered_device device_serial_number	CDATA #IMPLIED>
+<!ATTLIST registered_device reg_token				CDATA #IMPLIED>
+<!ATTLIST registered_device device_type				CDATA #IMPLIED>
+<!ATTLIST registered_device complete				CDATA #IMPLIED>
+<!ATTLIST registered_device completed_date			CDATA #IMPLIED>
+<!ATTLIST registered_device created					CDATA #IMPLIED>
+
+<!ELEMENT authenticated EMPTY>
+<!ATTLIST authenticated id				CDATA #IMPLIED>
+<!ATTLIST authenticated user_id			CDATA #IMPLIED>
+<!ATTLIST authenticated login_token		CDATA #IMPLIED>
+<!ATTLIST authenticated login_domain	CDATA #IMPLIED>
+<!ATTLIST authenticated created			CDATA #IMPLIED>
+
+<!ELEMENT authorization EMPTY>
+<!ATTLIST authorization authorization_id	CDATA #IMPLIED>
+<!ATTLIST authorization user_id				CDATA #IMPLIED>
+<!ATTLIST authorization en_user_id			CDATA #IMPLIED>
+<!ATTLIST authorization en_username			CDATA #IMPLIED>
+<!ATTLIST authorization is_Primary			CDATA #IMPLIED>
+<!ATTLIST authorization expiration			CDATA #IMPLIED>
+<!ATTLIST authorization oauth_access_token	CDATA #IMPLIED>
+<!ATTLIST authorization provider			CDATA #IMPLIED>
+<!ATTLIST authorization en_shard_id			CDATA #IMPLIED>
+<!ATTLIST authorization created				CDATA #IMPLIED>

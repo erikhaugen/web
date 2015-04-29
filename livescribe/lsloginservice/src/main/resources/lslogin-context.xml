@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:p="http://www.springframework.org/schema/p"
+                xmlns:context="http://www.springframework.org/schema/context"
+                xmlns:aop="http://www.springframework.org/schema/aop"
+                xmlns:tx="http://www.springframework.org/schema/tx"
+                xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                                http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<context:component-scan base-package="com.livescribe" />
+	<context:annotation-config />
+	<tx:annotation-driven />
+	
+<!-- 	<tx:annotation-driven mode="aspectj" /> -->
+<!-- 	<context:load-time-weaver aspectj-weaving="on" /> -->
+	
+	<bean id="appProperties" class="com.livescribe.framework.config.AppProperties" init-method="init" destroy-method="destroy">
+		<!-- Gets the <display-name> value from the 'web.xml' file. -->
+		<property name="servletContextName" value="#{servletContext.servletContextName}" />
+        <property name="location">
+	        <value>classpath:app.properties</value>
+	    </property>
+	    <property name="searchSystemEnvironment"><value>true</value></property>
+	    <property name="systemPropertiesMode"><value>1</value></property>
+	</bean>
+
+	<bean id="emailValidator" class="com.livescribe.framework.web.validation.EmailValidator" />
+
+	<bean id="encryptionUtils" class="com.livescribe.framework.login.crypto.EncryptionUtils">
+		<constructor-arg name="appProperties" ref="appProperties" />
+	</bean>
+	
+	<bean id="lsdsClient" class="com.livescribe.aws.login.lsds.LSDSClient">
+        <constructor-arg name="appProperties" ref="appProperties" />
+    </bean>
+	
+	<!-- bean id="dataSourceConsumer" class="com.livescribe.aws.login.config.LoginServiceDataSource">
+		<property name="schemaName" value="consumer" />
+	</bean -->
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${consumer.jdbc.driverClassName}" />
+        <property name="jdbcUrl" value="${consumer.jdbc.url}" />
+        <property name="user" value="${consumer.jdbc.username}" />
+        <property name="password" value="${consumer.jdbc.password}" />
+    </bean>
+    
+    <bean id="lsEvernoteDbDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${lsevernotedb.jdbc.driverClassName}" />
+        <property name="jdbcUrl" value="${lsevernotedb.jdbc.url}" />
+        <property name="user" value="${lsevernotedb.jdbc.username}" />
+        <property name="password" value="${lsevernotedb.jdbc.password}" />
+    </bean>
+	
+	<bean id="sessionFactoryConsumer" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource"><ref local="dataSource" /></property>
+<!-- 		<property name="mappingJarLocations"> -->
+<!-- 			<list> -->
+<!-- 				<value>classpath:/orm-1.0.0-SNAPSHOT.jar</value> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:com/livescribe/framework/orm/consumer/Authenticated.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/Authorization.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/DeviceSetting.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/DeviceUpdate.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/Group.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/PremiumCode.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/RegisteredDevice.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/Role.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/User.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/UserSetting.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/XUserGroup.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/XUserRole.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean>
+
+    <bean id="sessionFactoryEvernote" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource"><ref local="lsEvernoteDbDataSource" /></property>
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:com/livescribe/framework/orm/lsevernotedb/Document.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties" ref="hibernateProperties" />
+    </bean>
+
+	<bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="properties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+				<prop key="connection.driver_class">com.mysql.jdbc.Driver</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop>
+			</props>
+		</property>
+	</bean>
+
+    <!-- Transaction Management -->
+    <bean id="txConsumer" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+    	<qualifier value="consumer" />
+		<property name="sessionFactory">
+			<ref local="sessionFactoryConsumer" />
+		</property>
+	</bean>
+	
+    <bean id="txEvernote" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+        <qualifier value="lsevernotedb" />
+        <property name="sessionFactory">
+            <ref local="sessionFactoryEvernote" />
+        </property>
+    </bean>
+	
+	<!-- 
+	==================================================
+		Service Beans
+	================================================== -->
+	
+	<!-- These beans will be 'instrumented' using Spring AOP. -->
+	<bean id="loginServiceBean"			class="com.livescribe.framework.login.service.LoginServiceImpl" />
+    <bean id="authorizationServiceBean" class="com.livescribe.framework.oauth.service.AuthorizationServiceImpl" />
+	<bean id="evernoteUserServiceBean"  class="com.livescribe.framework.oauth.service.EvernoteUserServiceImpl" />
+<!-- 	<bean id="mailServiceBean"          class="com.livescribe.aws.login.mail.LSMailSenderImpl"> -->
+<!--         <constructor-arg name="appProperties" ref="appProperties" /> -->
+<!--     </bean> -->
+	
+	<!-- Use these beans when not using LS Event and the Spring AOP beans. -->
+<!-- 	<bean id="loginService"			class="com.livescribe.framework.login.service.LoginServiceImpl" /> -->
+<!--     <bean id="authorizationService" class="com.livescribe.framework.oauth.service.AuthorizationServiceImpl" /> -->
+<!-- 	<bean id="evernoteUserService"  class="com.livescribe.framework.oauth.service.EvernoteUserServiceImpl" /> -->
+	<bean id="mailService"          class="com.livescribe.aws.login.mail.LSMailSenderImpl">
+        <constructor-arg name="appProperties" ref="appProperties" />
+    </bean>
+	<bean id="versionService"		class="com.livescribe.framework.version.service.VersionServiceImpl" />
+	<bean id="shareService"         class="com.livescribe.lsshareapi.service.ShareServiceImpl" />
+	
+	<!-- 
+	==================================================
+		DAO Beans
+	================================================== -->
+	
+	<!-- consumer beans -->	
+	<bean id="authenticatedDao"		class="com.livescribe.framework.orm.consumer.CustomAuthenticatedDao" />
+	<bean id="authorizationDao"     class="com.livescribe.framework.orm.consumer.CustomAuthorizationDao" />
+	<bean id="userDao"				class="com.livescribe.framework.orm.consumer.CustomUserDao" />
+	<bean id="registeredDeviceDao"  class="com.livescribe.framework.orm.consumer.CustomRegisteredDeviceDao" />
+	<bean id="premiumCodeDao"       class="com.livescribe.framework.orm.consumer.PremiumCodeDao" />
+	<bean id="documentDao"          class="com.livescribe.framework.orm.lsevernotedb.CustomDocumentDao" />
+
+<!-- 	<bean id="xUserGroupDao"		class="com.livescribe.framework.orm.consumer.XUserGroupDao" /> -->
+<!-- 	<bean id="xUserRoleDao"			class="com.livescribe.framework.orm.consumer.XUserRoleDao" /> -->
+
+
+	<!-- 
+	==================================================
+		Advice Beans
+	================================================== -->
+	<bean id="auditMethodAdvice"	class="com.livescribe.framework.audit.AuditMethodInterceptor" />
+	
+	<!-- 
+	==================================================
+		Advised Beans
+	================================================== -->
+	
+	<!-- Use these bean references when Autowiring them into other beans. -->
+	<bean id="loginService"			class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="loginServiceBean" />
+		<property name="interceptorNames">
+			<list>
+				<value>auditMethodAdvice</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="authorizationService"	class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="authorizationServiceBean" />
+		<property name="interceptorNames">
+			<list>
+				<value>auditMethodAdvice</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="evernoteUserService"	class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="evernoteUserServiceBean" />
+		<property name="interceptorNames">
+			<list>
+				<value>auditMethodAdvice</value>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

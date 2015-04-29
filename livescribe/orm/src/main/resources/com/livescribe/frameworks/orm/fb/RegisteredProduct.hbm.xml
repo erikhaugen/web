@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.livescribe.frameworks.orm.fb">
+	<class name="RegisteredProduct" table="RegisteredProduct">
+	
+		<id name="primaryKey" column="primaryKey" type="binary">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="confirmCode"			column="confirmCode"			type="string"	length="32" />
+		<property name="displayName"			column="displayName"			type="string"	length="64" />
+		<property name="metaInfo"				column="metaInfo"				type="clob" />
+		<property name="productTypeKey"			column="productTypeKey"			type="binary" />
+		<property name="registrationDate"		column="registrationDate"		type="date" />
+		<property name="serialNumber"			column="serialNumber"			type="string"	length="128" />
+		<property name="userProfileKey"			column="userProfileKey"			type="binary" />
+		<property name="origRegistrationDate"	column="OrigRegistrationDate"	type="timestamp" />
+		
+
+		<set name="provisionedApps" inverse="true">
+			<key>
+				<column name="serialNumber" length="128" />
+			</key>
+			<one-to-many class="ProvisionedPenApps" />
+		</set>
+
+	</class>
+</hibernate-mapping>

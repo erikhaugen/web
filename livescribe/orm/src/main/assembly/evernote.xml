@@ -1,0 +1,31 @@
+<assembly>
+
+	<id>evernote</id>
+	
+	<formats>
+		<format>jar</format>
+	</formats>
+	
+	<includeBaseDirectory>false</includeBaseDirectory>
+
+	<fileSets>
+  
+		<fileSet>
+			<directory>${project.build.outputDirectory}</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>**/evernote/*.class</include>
+			</includes>
+		</fileSet>
+    
+		<fileSet>
+			<directory>${basedir}/target/hibernate3/generated-mappings/</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>**/evernote/*.hbm.xml</include>
+			</includes>
+		</fileSet>
+
+	</fileSets>
+	
+</assembly>

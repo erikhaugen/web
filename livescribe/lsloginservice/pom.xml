@@ -1,0 +1,867 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.livescribe.aws</groupId>
+	<artifactId>lsloginservice</artifactId>
+	<packaging>war</packaging>
+	<version>1.4.0-SNAPSHOT</version>
+	<name>Livescribe Login</name>
+	<url>http://maven.apache.org</url>
+
+	<developers>
+		<developer>
+			<id>kmurdoff</id>
+			<name>Kevin Murdoff</name>
+			<email>kmurdoff@livescribe.com</email>
+			<url>http://www.livescribe.com</url>
+			<organization>Livescribe, Inc.</organization>
+			<organizationUrl>http://www.livescribe.com</organizationUrl>
+			<roles>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>-8</timezone>
+			<properties>
+				<picUrl>images/SYF-Stone.jpg</picUrl>
+			</properties>
+		</developer>
+		<developer>
+			<id>mnaqvi</id>
+			<name>Mohammad M. Naqvi</name>
+			<email>mnaqvi@livescribe.com</email>
+			<url>http://www.livescribe.com</url>
+			<organization>Livescribe, Inc.</organization>
+			<organizationUrl>http://www.livescribe.com</organizationUrl>
+			<roles>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>-8</timezone>
+		</developer>
+	</developers>
+	
+	<scm>
+		<connection>scm:svn:svn+ssh://${svn-user}@svn.livescribe.com/svn/LSRepository/WebCore/WebServices/lslogin/trunk/</connection>
+		<developerConnection>scm:svn:svn+ssh://${svn-user}@svn.livescribe.com/svn/LSRepository/WebCore/WebServices/lslogin/trunk/</developerConnection>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>nexus</id>
+			<name>Nexus Releases Repository</name>
+			<url>http://jenkins.pensoft.local:8081/nexus/content/repositories/releases</url>
+			<layout>default</layout>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>nexus-snapshots</id>
+			<name>Nexus Snapshots Repository</name>
+			<url>http://jenkins.pensoft.local:8081/nexus/content/repositories/snapshots</url>
+			<layout>default</layout>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>livescribe-repo</id>
+			<name>livescribe-repo</name>
+			<url>http://jenkins.pensoft.local:8081/nexus/content/groups/public/</url>
+		</repository>
+		<repository>
+      		<id>springsource-external</id>
+      		<url>http://repository.springsource.com/maven/bundles/external</url>
+		</repository>
+	</repositories>
+	
+	<profiles>
+	
+        <!-- 
+        ==============================================
+            Profile for Jenkins/Hudson builds
+        ============================================== -->
+		<profile>
+			<activation>
+				<property>
+					<name>buildfromhudson</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<directory>${hudson-build-folder}/${project.version}_${hudson-build-number}</directory>
+				<finalName>${project.artifactId}-${project.version}_${hudson-build-number}</finalName>
+				
+				<plugins>
+					<!-- 
+					==============================================
+						Maven Surefire Plugin
+					============================================== -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>2.14.1</version>
+						<configuration>
+							<argLine>-DENV=test</argLine>
+						</configuration>
+					</plugin>
+				</plugins>
+				
+			</build>
+		</profile>
+		
+        <!-- 
+        ==============================================
+            Profile for building locally
+        ============================================== -->
+		<profile>
+			<id>local</id>
+			<activation>
+				<property>
+					<name>local</name>
+					<value>true</value>
+				</property>
+			</activation>
+			
+			<repositories>
+				<repository>
+					<id>localhost-repo</id>
+					<name>localhost-repo</name>
+					<url>http://localhost:8081/nexus/content/groups/public/</url>
+				</repository>
+			</repositories>
+			
+			<distributionManagement>
+				<repository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>localhost-nexus</id>
+					<name>Nexus Releases Repository</name>
+					<url>http://localhost:8081/nexus/content/repositories/releases</url>
+					<layout>default</layout>
+				</repository>
+				<snapshotRepository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>localhost-nexus-snapshots</id>
+					<name>Nexus Snapshots Repository</name>
+					<url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+					<layout>default</layout>
+				</snapshotRepository>
+			</distributionManagement>
+
+			<build>
+				<plugins>
+					<!-- 
+					==============================================
+						Maven Surefire Plugin
+					============================================== -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>2.14.1</version>
+						<configuration>
+							<argLine>-DENV=local</argLine>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+
+		</profile>
+		
+	</profiles>
+    
+    <dependencies>
+    	
+		<!-- 
+		==============================================
+			Livescribe Dependencies
+		============================================== -->
+        <dependency>
+        	<groupId>com.livescribe.framework</groupId>
+        	<artifactId>lsdomain</artifactId>
+        	<version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+        	<groupId>com.livescribe.framework</groupId>
+        	<artifactId>lsclient</artifactId>
+        	<version>1.2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+        	<groupId>com.livescribe.framework</groupId>
+        	<artifactId>lsconfiguration</artifactId>
+        	<version>1.1.0</version>
+        </dependency>
+		<dependency>
+			<groupId>com.livescribe.framework</groupId>
+			<artifactId>orm</artifactId>
+			<version>1.10.0-SNAPSHOT</version>
+			<classifier>consumer</classifier>
+		</dependency>
+		<dependency>
+            <groupId>com.livescribe.framework</groupId>
+            <artifactId>orm</artifactId>
+            <version>1.10.0-SNAPSHOT</version>
+            <classifier>lsevernotedb</classifier>
+        </dependency>
+        
+		<dependency>
+			<groupId>com.livescribe.framework</groupId>
+			<artifactId>lsversion</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.livescribe.framework</groupId>
+			<artifactId>lsevent</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.livescribe.tools</groupId>
+			<artifactId>purejavaafp</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.livescribe.framework</groupId>
+			<artifactId>lswebbase</artifactId>
+			<version>1.1.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- 
+		==============================================
+			Apache Commons Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlrpc</groupId>
+			<artifactId>xmlrpc-client</artifactId>
+			<version>3.1.3</version>
+		</dependency>
+
+		<!-- 
+		==============================================
+			Misc Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>jonelo.jacksum</groupId>
+			<artifactId>jacksum</artifactId>
+			<version>1.7.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.6</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.4.GA</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>1.1.1</version>
+			<scope>runtime</scope>
+<!-- 			<exclusions> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>xalan</groupId> -->
+<!-- 					<artifactId>xalan</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 			</exclusions> -->
+		</dependency>	
+
+		<dependency>
+    		<groupId>org.codehaus.jackson</groupId>
+    		<artifactId>com.springsource.org.codehaus.jackson</artifactId>
+    		<version>1.0.0</version>
+		</dependency>
+	
+		<dependency>
+    		<groupId>org.codehaus.jackson</groupId>
+    		<artifactId>com.springsource.org.codehaus.jackson.mapper</artifactId>
+    		<version>1.0.0</version>
+		</dependency>
+		
+	    <dependency>
+	    	<groupId>log4j</groupId>
+	    	<artifactId>log4j</artifactId>
+	    	<version>1.2.16</version>
+	    </dependency>
+
+	    <dependency>
+	    	<groupId>org.graylog2</groupId>
+	    	<artifactId>gelfj</artifactId>
+	    	<version>1.0</version>
+	    </dependency>
+		<dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.3</version>
+		</dependency>
+
+<!-- 	
+		When using Evernote API 1.23, you must remove the Apache Thrift
+		dependency and change package names for some of the classes.
+		
+		From Evernote's GitHub page:
+		
+		"You will need to change references to Thrift components such as 
+		TBinaryProtocol, THttpClient and TTransportException from 
+		'org.apache.thrift' to 'com.evernote.thrift'."
+		
+		See:  https://github.com/evernote/evernote-sdk-java
+		
+		See LSShareRestAPI.getUserStore() method for how to use the new UserStore
+		class. -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.evernote</groupId> -->
+<!-- 			<artifactId>evernote-api</artifactId> -->
+<!-- 			<version>1.23</version> -->
+<!-- 		</dependency> -->
+		<dependency>
+			<groupId>com.evernote</groupId>
+			<artifactId>evernote-api</artifactId>
+			<version>1.25.1</version>
+		</dependency>
+<!--         <dependency> -->
+<!--             <groupId>org.apache.thrift</groupId> -->
+<!--             <artifactId>libthrift</artifactId> -->
+<!--             <version>0.9.0</version> -->
+<!--         </dependency> -->
+        <dependency>
+        	<groupId>net.sf.json-lib</groupId>
+        	<artifactId>json-lib</artifactId>
+        	<version>2.4</version>
+        	<classifier>jdk15</classifier>
+        </dependency>
+
+		<dependency>
+			<groupId>org.lazyluke</groupId>
+			<artifactId>log4jdbc-remix</artifactId>
+			<version>0.2.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.9.1</version>
+		</dependency>
+
+		<!-- 
+		==============================================
+			Database-related Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>3.3.2.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.12</version>
+			<scope>runtime</scope>
+		</dependency>  
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+		</dependency>
+
+		<!-- 
+		==============================================
+			Spring Dependencies
+		============================================== -->
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-beans</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-orm</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-oxm</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-test</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-tx</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-web</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-webmvc</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+
+		<!-- 
+		==============================================
+		  Java SDK Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.1</version>
+		</dependency>
+
+		<!-- 
+		==============================================
+		  Testing Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>2.4.9</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty</artifactId>
+			<version>6.1.26</version>
+			<scope>test</scope>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.eclipse.jetty</groupId> -->
+<!-- 			<artifactId>jetty-server</artifactId> -->
+<!-- 			<version>8.1.9.v20130131</version> -->
+<!-- 			<version>9.1.0.M0</version> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
+		
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.sun.net.httpserver</groupId> -->
+<!-- 			<artifactId>http</artifactId> -->
+<!-- 			<version>20070405</version> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>3.1</version>
+			<scope>test</scope>
+		</dependency>
+
+    </dependencies>
+    
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<finalName>${project.artifactId}-${project.version}</finalName>
+		
+	    <plugins>
+    
+			<!-- 
+			==============================================
+				Maven APT Plugin
+			============================================== -->
+			<!-- Used to auto-generate client class files. -->
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.codehaus.mojo</groupId> -->
+<!-- 				<artifactId>apt-maven-plugin</artifactId> -->
+<!-- 				<version>1.0-alpha-3</version> -->
+<!-- 				<configuration> -->
+<!-- 					<factory>com.livescribe.framework.web.apt.LSAnnotationProcessorFactory</factory> -->
+<!-- 				</configuration> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<goals> -->
+<!-- 							<goal>process</goal> -->
+<!-- 							<goal>test-process</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
+			
+			<!-- 
+			==============================================
+				Maven Resources Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<executions>
+					<execution>
+						<id>encode-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
+							<encoding>UTF-8</encoding>
+<!-- 							<resources> -->
+<!-- 								<resource> -->
+<!-- 									<directory>${basedir}/src/main/resources</directory> -->
+<!-- 								</resource> -->
+<!-- 							</resources> -->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+     
+			<!-- 
+			==============================================
+				Maven Compiler Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+					<encoding>utf-8</encoding>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Maven Surefire Plugin
+			============================================== --> 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<excludes>
+						<exclude>**/TestingDataSource.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			
+			<!-- 
+			==============================================
+				Javadoc Plugin
+			============================================== -->
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 				<artifactId>maven-javadoc-plugin</artifactId> -->
+<!-- 				<version>2.8</version> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<id>attach-javadoc</id> -->
+<!-- 						<phase>deploy</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>jar</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 				<configuration> -->
+<!-- 					<detectLinks>true</detectLinks> -->
+<!-- 					<stylesheetfile>${basedir}/src/site/resources/css/javadoc.css</stylesheetfile> -->
+<!-- 					<links> -->
+<!-- 						<link>http://java.sun.com/javase/6/docs/api/</link> -->
+<!-- 						<link>http://download.oracle.com/docs/cd/E17410_01/javaee/6/api/</link> -->
+<!-- 						<link>http://static.springsource.org/spring/docs/3.1.2.RELEASE/javadoc-api/</link> -->
+<!-- 						<link>http://docs.jboss.org/hibernate/core/4.1/api/index.html</link> -->
+<!-- 						<link>http://logging.apache.org/log4j/1.2/apidocs/index.html</link> -->
+<!-- 						<link>http://dom4j.sourceforge.net/dom4j-1.6.1/apidocs/index.html</link> -->
+<!-- 						<link>http://www.dbunit.org/apidocs/index.html</link> -->
+<!-- 						<link>http://www.csg.is.titech.ac.jp/~chiba/javassist/html/index.html</link> -->
+<!-- 						<link>http://gallardo.pensoft.local:8183/WebServices/AppDocs/orm/apidocs/index.html</link> -->
+<!-- 					</links> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
+			
+			<!-- 
+			==============================================
+				Maven Build Number Plugin
+			============================================== --> 
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.0-beta-4</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>false</doCheck>
+					<doUpdate>false</doUpdate>
+					<scmDirectory>${basedir}</scmDirectory>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Maven WAR Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<App-Name>${project.name}</App-Name>
+							<App-Version>${project.version}</App-Version>
+							<Svn-Revision>${buildNumber}</Svn-Revision>
+							<Hudson-Build-Number>${hudson-build-number}</Hudson-Build-Number>
+							<Build-Date>${maven.build.timestamp}</Build-Date>
+						</manifestEntries>
+					</archive>
+					<packagingExcludes>WEB-INF/classes/client.properties</packagingExcludes>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Maven Deploy Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<updateReleaseInfo>true</updateReleaseInfo>
+				</configuration>
+			</plugin>
+		
+			<!-- 
+			==============================================
+				Maven Tomcat Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<version>1.1</version>
+				<configuration>
+					<server>${TOMCAT_HOST}</server>
+					<url>${MANAGER_URL}</url>
+					<path>/${project.artifactId}</path>
+					<warFile>${WAR_FILE}</warFile>
+				</configuration>
+			</plugin>
+		
+			<!-- 
+			==============================================
+				Maven Release Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0</version>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>perform</goal>
+						</goals>
+						<configuration>
+							<workingDirectory>${project.build.directory}/checkout</workingDirectory>
+						</configuration>
+					</execution>
+				</executions>
+
+				<configuration>
+					<tagBase>svn+ssh://${svn-user}@svn.livescribe.com/svn/LSRepository/WebCore/WebServices/lslogin/tags</tagBase>
+				</configuration>
+			</plugin>
+            
+			<!-- 
+			==============================================
+				Maven Assembly Plugin
+			============================================== -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/client.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> 
+						<phase>package</phase> 
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Maven Site Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<inputDirectory>${project.reporting.outputDirectory}</inputDirectory>
+					<outputDirectory>/Library/WebServer/Documents/docs/lslogin</outputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>deploy-site</id>
+						<phase>site-deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+						<configuration>
+							
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		
+		</plugins>
+	
+	</build>
+	
+	<reporting>
+		<plugins>
+			<!-- 
+			==============================================
+				Javadoc Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<detectLinks>true</detectLinks>
+					<stylesheetfile>${basedir}/src/site/resources/css/javadoc.css</stylesheetfile>
+					<links>
+						<link>http://java.sun.com/javase/6/docs/api/</link>
+						<link>http://download.oracle.com/docs/cd/E17410_01/javaee/6/api/</link>
+						<link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
+						<link>http://static.springsource.org/spring-security/site/docs/3.0.x/apidocs/index.html</link>
+						<link>http://docs.jboss.org/hibernate/core/3.3/api/index.html</link>
+						<link>http://logging.apache.org/log4j/1.2/apidocs/index.html</link>
+						<link>http://dom4j.sourceforge.net/dom4j-1.6.1/apidocs/index.html</link>
+						<link>http://www.dbunit.org/apidocs/index.html</link>
+						<link>http://www.csg.is.titech.ac.jp/~chiba/javassist/html/index.html</link>
+						<link>http://gallardo.pensoft.local:8183/WebServices/AppDocs/orm/apidocs/index.html</link>
+					</links>
+				</configuration>
+			</plugin>
+			
+			<!-- 
+			==============================================
+				Change Log Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changelog-plugin</artifactId>
+				<version>2.2</version>
+<!--				<configuration>-->
+<!--				</configuration>-->
+			</plugin>
+					
+			<!-- 
+			==============================================
+				Project Info Reports Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.2</version>
+			</plugin>		
+
+			<!-- 
+			==============================================
+				Maven Surefire Report Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.6</version>
+			</plugin>
+		</plugins>
+	</reporting>
+				
+	<properties>
+		<svn-user>${env.USER}</svn-user>
+		<version.springframework>3.0.3.RELEASE</version.springframework>
+<!-- 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> -->
+<!-- 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding> -->
+		<WAR_FILE>target/${project.artifactId}-${project.version}.war</WAR_FILE>
+		<TOMCAT_HOST>localhost</TOMCAT_HOST>
+		<MANAGER_URL>http://localhost:10380/manager</MANAGER_URL>
+		<!-- 
+		<TOMCAT_HOST>app4-test</TOMCAT_HOST>
+		<MANAGER_URL>http://app4-test.pensoft.local:10380/manager</MANAGER_URL>
+		 -->
+    </properties>
+    
+</project>

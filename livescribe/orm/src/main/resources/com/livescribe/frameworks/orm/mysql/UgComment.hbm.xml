@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 21, 2011 12:15:27 PM by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="com.livescribe.frameworks.orm.mysql.UgComment" table="ug_comment" catalog="consumer">
+        <id name="id" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="commenterId" type="java.lang.Long">
+            <column name="commenter_id" />
+        </property>
+        <property name="commenterKey" type="string">
+            <column name="commenter_key" length="64" />
+        </property>
+        <property name="commentDescription" type="string">
+            <column name="comment_description" length="65535" />
+        </property>
+        <property name="displayName" type="string">
+            <column name="display_name" length="128" />
+        </property>
+        <property name="metaInfo" type="string">
+            <column name="meta_info" length="65535" />
+        </property>
+        <property name="primaryKey" type="string">
+            <column name="primary_key" length="64" />
+        </property>
+        <property name="rating" type="java.lang.Double">
+            <column name="rating" precision="22" scale="0" />
+        </property>
+        <property name="ugFileId" type="java.lang.Long">
+            <column name="ug_file_id" />
+        </property>
+        <property name="ugFileKey" type="string">
+            <column name="ug_file_key" length="64" />
+        </property>
+        <property name="posted" type="timestamp">
+            <column name="posted" length="19" not-null="true" />
+        </property>
+        <property name="ipAddress" type="string">
+            <column name="ip_address" length="128" />
+        </property>
+        <property name="isSafeComment" type="java.lang.Boolean">
+            <column name="is_safe_comment" />
+        </property>
+        <property name="inappropriateCounter" type="java.lang.Integer">
+            <column name="inappropriate_counter" />
+        </property>
+        <property name="created" type="timestamp">
+            <column name="created" length="19" not-null="true" />
+        </property>
+        <property name="lastModified" type="timestamp">
+            <column name="last_modified" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

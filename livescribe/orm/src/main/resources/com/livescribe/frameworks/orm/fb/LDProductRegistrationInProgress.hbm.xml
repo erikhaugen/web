@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.livescribe.frameworks.orm.fb">
+	<class name="LDProductRegistrationInProgress" table="LDProductRegistrationInProgress">
+	
+		<id name="primaryKey" column="primaryKey" type="binary">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="fk_consumerUserProfile"	column="fk_consumerUserProfile"	type="binary" />
+		<property name="productTypeId"			column="productTypeID"			type="string"	length="128" />
+		<property name="registrationId"			column="registrationID"			type="string"	length="128" />
+		<property name="registrationTimestamp"	column="registrationTimestamp"	type="timestamp" />
+		<property name="metaInformation"		column="metaInformation"		type="clob" />
+		<property name="remoteIPAddress"		column="remoteIPAddress"		type="string"	length="128" />
+		<property name="serialNumber"			column="serialNumber"			type="string"	length="128" />
+		<property name="productName"			column="productName"			type="string"	length="1048" />
+		
+	</class>
+</hibernate-mapping>

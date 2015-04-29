@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dataset SYSTEM "../dtd/user.dtd">
+<dataset>
+	<authenticated user_id="" login_token="" login_domain=""/>
+</dataset>

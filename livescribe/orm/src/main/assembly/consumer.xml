@@ -1,0 +1,47 @@
+<assembly>
+
+	<id>consumer</id>
+	
+	<formats>
+		<format>jar</format>
+	</formats>
+	
+	<includeBaseDirectory>false</includeBaseDirectory>
+
+	<fileSets>
+  
+		<fileSet>
+			<directory>${project.build.outputDirectory}</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>**/consumer/*.class</include>
+			</includes>
+		</fileSet>
+    
+<!-- 		<fileSet> -->
+<!-- 			<directory>${basedir}/src/main/resources/</directory> -->
+<!-- 			<outputDirectory>/</outputDirectory> -->
+<!-- 			<includes> -->
+<!-- 				<include>**/consumer/*.hbm.xml</include> -->
+<!-- 			</includes> -->
+<!-- 		</fileSet> -->
+
+<!-- 		<fileSet> -->
+<!-- 			<directory>${basedir}/target/hibernate3/generated-sources/</directory> -->
+<!-- 			<outputDirectory>/</outputDirectory> -->
+<!-- 			<includes> -->
+<!-- 				<include>**/consumer/*.hbm.xml</include> -->
+<!-- 			</includes> -->
+<!-- 		</fileSet> -->
+
+		<fileSet>
+			<directory>${basedir}/target/hibernate3/generated-mappings/</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>**/consumer/*.hbm.xml</include>
+			</includes>
+		</fileSet>
+
+	</fileSets>
+	
+</assembly>

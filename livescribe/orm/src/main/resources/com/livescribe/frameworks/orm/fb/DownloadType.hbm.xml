@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.livescribe.frameworks.orm.fb">
+	<class name="DownloadType" table="DownloadType">
+	
+		<id name="primaryKey" column="primaryKey" type="binary">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="metaInfo"	column="metaInfo"	type="clob" />
+		<property name="typeId"		column="typeID"		type="string"	length="64" />
+		<property name="typeName"	column="typeName"	type="string"	length="64" />
+		
+	</class>
+</hibernate-mapping>

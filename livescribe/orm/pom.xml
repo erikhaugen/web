@@ -1,0 +1,1111 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.livescribe.framework</groupId>
+  <artifactId>orm</artifactId>
+  <packaging>jar</packaging>
+  <version>1.10.0-SNAPSHOT</version>
+  <name>Livescribe Object Relational Mapping Layer</name>
+  <url>http://maven.apache.org</url>
+  
+	<scm>
+		<connection>scm:svn:svn+ssh://jenkins@svn.livescribe.com/svn/LSRepository/WebCore/WebServices/orm/trunk/</connection>
+		<developerConnection>scm:svn:svn+ssh://jenkins@svn.livescribe.com/svn/LSRepository/WebCore/WebServices/orm/trunk/</developerConnection>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>nexus</id>
+			<name>Nexus Releases Repository</name>
+			<url>http://jenkins.pensoft.local:8081/nexus/content/repositories/releases</url>
+			<layout>default</layout>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>nexus-snapshots</id>
+			<name>Nexus Snapshots Repository</name>
+			<url>http://jenkins.pensoft.local:8081/nexus/content/repositories/snapshots</url>
+			<layout>default</layout>
+		</snapshotRepository>
+	</distributionManagement>
+	
+	<repositories>
+      <repository>
+        <id>livescribe-repo</id>
+        <name>livescribe-repo</name>
+        <url>http://jenkins.pensoft.local:8081/nexus/content/groups/public/</url>
+      </repository>
+    </repositories>
+
+	<profiles>
+	
+		<profile>
+			<id>default-tools.jar</id>
+			<activation>
+				<property>
+					<name>java.vendor</name>
+					<value>Sun Microsystems Inc.</value>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>com.sun</groupId>
+					<artifactId>tools</artifactId>
+					<version>1.4.2</version>
+					<scope>system</scope>
+					<systemPath>${java.home}/../lib/tools.jar</systemPath>
+				</dependency>
+			</dependencies>
+		</profile>
+
+		<profile>
+			<activation>
+				<property>
+					<name>buildfromhudson</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+<!--				<directory>${hudson-build-folder}/${hudson-build-number}</directory>-->
+				<finalName>${project.artifactId}-${project.version}</finalName>
+			</build>
+		</profile>
+
+		<profile>
+			<id>local</id>
+			<activation>
+				<property>
+					<name>local</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<repositories>
+				<repository>
+					<id>localhost-repo</id>
+					<name>localhost-repo</name>
+					<url>http://localhost:8081/nexus/content/groups/public/</url>
+				</repository>
+<!-- 				<repository> -->
+<!-- 					<id>livescribe-repo</id> -->
+<!-- 					<name>livescribe-repo</name> -->
+<!-- 					<url>http://jenkins.pensoft.local:8081/nexus/content/groups/public/</url> -->
+<!-- 				</repository> -->
+			</repositories>
+			<distributionManagement>
+				<repository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>localhost-nexus</id>
+					<name>Nexus Releases Repository</name>
+					<url>http://localhost:8081/nexus/content/repositories/releases</url>
+					<layout>default</layout>
+				</repository>
+				<snapshotRepository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>localhost-nexus-snapshots</id>
+					<name>Nexus Snapshots Repository</name>
+					<url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+					<layout>default</layout>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+		
+	</profiles>
+
+	<dependencies>
+
+		<!-- 
+		==============================================
+			Livescribe Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- 
+		==============================================
+			Apache Dependencies
+		============================================== -->
+  		<dependency>
+		    <groupId>dom4j</groupId>
+		    <artifactId>dom4j</artifactId>
+		    <version>1.6.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+
+		<!-- 
+		==============================================
+			Database-related Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>3.3.2.GA</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-tools</artifactId>
+			<version>3.2.4.GA</version>
+		</dependency>
+
+	    <dependency>
+	      <groupId>mysql</groupId>
+	      <artifactId>mysql-connector-java</artifactId>
+	      <version>5.1.12</version>
+	    </dependency>  
+
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+		</dependency>
+
+		<!-- 
+		==============================================
+			Spring Dependencies
+		============================================== -->
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-beans</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-jdbc</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+
+		<!-- 
+		==============================================
+			Misc Dependencies
+		============================================== -->		
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>2.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+        
+	</dependencies>
+  
+	<build>
+		<finalName>${project.artifactId}-${project.version}</finalName>
+		
+		<plugins>
+			
+			<!-- 
+			==============================================
+			  Hibernate-related Plugins
+			============================================== -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>hibernate3-maven-plugin</artifactId>
+				<version>2.2</version>
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>5.1.12</version>
+					</dependency>
+					<dependency>
+						<groupId>cglib</groupId>
+						<artifactId>cglib</artifactId>
+						<version>2.2</version>
+					</dependency>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-tools</artifactId>
+						<version>3.2.4.GA</version>
+					</dependency>
+				</dependencies>
+				<executions>
+				
+<!-- ***** hibernate.cfg.xml ***** -->
+				
+					<!-- 
+					==================================================
+						MySQL	MySQL >> hibernate.cfg.xml (consumer)
+					================================================== -->
+					<execution>
+						<id>hbm2cfgxml-consumer</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>hbm2cfgxml</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2cfgxml</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<propertyfile>${basedir}/src/main/resources/database.consumer.properties</propertyfile>
+								<outputfilename>target/hibernate3/generated-sources/hibernate.consumer.cfg.xml</outputfilename>
+								<packagename>com.livescribe.framework.orm.consumer</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+					
+
+					<!-- 
+					==================================================
+						MySQL	MySQL >> hibernate.cfg.xml (manufacturing)
+					================================================== -->
+					<execution>
+						<id>hbm2cfgxml-manufacturing</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>hbm2cfgxml</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2cfgxml</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<propertyfile>src/main/resources/database.manufacturing.properties</propertyfile>
+								<outputfilename>target/hibernate3/generated-sources/hibernate.manufacturing.cfg.xml</outputfilename>
+								<packagename>com.livescribe.framework.orm.manufacturing</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					<!-- 
+					==================================================
+						MySQL	MySQL >> hibernate.cfg.xml (evernote)
+					================================================== -->
+					<execution>
+						<id>hbm2cfgxml-evernote</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>hbm2cfgxml</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2cfgxml</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<propertyfile>src/main/resources/database.evernote.properties</propertyfile>
+								<outputfilename>target/hibernate3/generated-sources/hibernate.evernote.cfg.xml</outputfilename>
+								<packagename>com.livescribe.framework.orm.evernote</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					<!-- 
+					==================================================
+						MySQL	MySQL >> hibernate.cfg.xml (lspaperclouddb)
+					================================================== -->
+					<execution>
+						<id>hbm2cfgxml-lspaperclouddb</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>hbm2cfgxml</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2cfgxml</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<propertyfile>${basedir}/src/main/resources/database.lspaperclouddb.properties</propertyfile>
+								<outputfilename>target/hibernate3/generated-sources/hibernate.lspaperclouddb.cfg.xml</outputfilename>
+								<packagename>com.livescribe.framework.orm.lspaperclouddb</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+					
+					<!-- 
+					==================================================
+						MySQL	MySQL >> hibernate.cfg.xml (vectordb)
+					================================================== -->
+					<execution>
+						<id>hbm2cfgxml-vectordb</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>hbm2cfgxml</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2cfgxml</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<propertyfile>src/main/resources/database.vectordb.properties</propertyfile>
+								<outputfilename>target/hibernate3/generated-sources/hibernate.vectordb.cfg.xml</outputfilename>
+								<packagename>com.livescribe.framework.orm.vectordb</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+<!-- ***** hbm.xml ***** -->
+
+					<!-- 
+					==================================================
+						MySQL	MySQL >> hbm.xml  (consumer)
+					================================================== -->
+					<execution>
+						<id>hbm2hbmxml-consumer</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>hbm2hbmxml</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2hbmxml</name>
+									<outputDirectory>target/hibernate3/generated-mappings</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<propertyfile>${basedir}/src/main/resources/database.consumer.properties</propertyfile>
+<!-- 								<configurationfile>${basedir}/target/hibernate3/generated-sources/hibernate.cfg.xml</configurationfile> -->
+								<revengfile>${basedir}/src/main/resources/hibernate.reveng.xml</revengfile>
+								<packagename>com.livescribe.framework.orm.consumer</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					<!-- 
+					==================================================
+						MySQL	MySQL >> hbm.xml  (manufacturing)
+					================================================== -->
+					<execution>
+						<id>hbm2hbmxml-manufacturing</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>hbm2hbmxml</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2hbmxml</name>
+									<outputDirectory>target/hibernate3/generated-mappings</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<propertyfile>${basedir}/src/main/resources/database.manufacturing.properties</propertyfile>
+<!-- 								<configurationfile>${basedir}/target/hibernate3/generated-sources/hibernate.cfg.xml</configurationfile> -->
+<!-- 								<revengfile>${basedir}/src/main/resources/hibernate.reveng.xml</revengfile> -->
+								<packagename>com.livescribe.framework.orm.manufacturing</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					<!-- 
+					==================================================
+						MySQL	MySQL >> hbm.xml  (evernote)
+					================================================== -->
+					<execution>
+						<id>hbm2hbmxml-evernote</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>hbm2hbmxml</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2hbmxml</name>
+									<outputDirectory>target/hibernate3/generated-mappings</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<propertyfile>${basedir}/src/main/resources/database.evernote.properties</propertyfile>
+<!-- 								<configurationfile>${basedir}/target/hibernate3/generated-sources/hibernate.cfg.xml</configurationfile> -->
+<!-- 								<revengfile>${basedir}/src/main/resources/hibernate.reveng.xml</revengfile> -->
+								<packagename>com.livescribe.framework.orm.evernote</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					<!-- 
+					==================================================
+						MySQL	MySQL >> hbm.xml  (lspaperclouddb)
+					================================================== -->
+					<execution>
+						<id>hbm2hbmxml-lspaperclouddb</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>hbm2hbmxml</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2hbmxml</name>
+									<outputDirectory>target/hibernate3/generated-mappings</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<propertyfile>${basedir}/src/main/resources/database.lspaperclouddb.properties</propertyfile>
+<!-- 								<configurationfile>${basedir}/target/hibernate3/generated-sources/hibernate.cfg.xml</configurationfile> -->
+								<revengfile>${basedir}/src/main/resources/hibernate.reveng.xml</revengfile>
+								<packagename>com.livescribe.framework.orm.lspaperclouddb</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					<!-- 
+					==================================================
+						MySQL	MySQL >> hbm.xml  (vectordb)
+					================================================== -->
+					<execution>
+						<id>hbm2hbmxml-vectordb</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>hbm2hbmxml</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2hbmxml</name>
+									<outputDirectory>target/hibernate3/generated-mappings</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<propertyfile>${basedir}/src/main/resources/database.vectordb.properties</propertyfile>
+<!-- 								<configurationfile>${basedir}/target/hibernate3/generated-sources/hibernate.cfg.xml</configurationfile> -->
+<!-- 								<revengfile>${basedir}/src/main/resources/hibernate.reveng.xml</revengfile> -->
+								<packagename>com.livescribe.framework.orm.vectordb</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+<!-- ***** template (Pojo) ***** -->
+
+					<!-- 
+					==================================================
+						MySQL	hbm.xml >> Java  (template-consumer)
+					================================================== -->
+					<execution>
+						<id>hbm2java-consumer</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>hbm2java</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2java</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<revengfile>${basedir}/src/main/resources/hibernate.reveng.xml</revengfile>
+								<detail>true</detail>
+								<templatepath>src/main/templates/mysql</templatepath>
+								<filepattern>{package-name}/{class-name}Dao.java</filepattern>
+								<templateprefix>pojo/</templateprefix>
+								<jdk5>true</jdk5>
+								<ejb3>false</ejb3>
+								<template>pojo/Pojo.ftl</template>
+								<propertyfile>${basedir}/src/main/resources/database.consumer.properties</propertyfile>
+								<configurationfile>target/hibernate3/generated-sources/hibernate.consumer.cfg.xml</configurationfile>
+								<packagename>com.livescribe.framework.orm.consumer</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					<!-- 
+					==================================================
+						MySQL	hbm.xml >> Java  (manufacturing)
+					================================================== -->
+					<execution>
+						<id>hbm2java-manufacturing</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>hbm2java</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2java</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<propertyfile>${basedir}/src/main/resources/database.manufacturing.properties</propertyfile>
+								<packagename>com.livescribe.framework.orm.manufacturing</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					<!-- 
+					==================================================
+						MySQL	hbm.xml >> Java  (template-evernote)
+					================================================== -->
+					<execution>
+						<id>hbm2java-evernote</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>hbm2java</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2java</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<revengfile>${basedir}/src/main/resources/hibernate.reveng.xml</revengfile>
+								<detail>true</detail>
+								<templatepath>src/main/templates/mysql</templatepath>
+								<filepattern>{package-name}/{class-name}Dao.java</filepattern>
+								<templateprefix>pojo/</templateprefix>
+								<jdk5>true</jdk5>
+								<ejb3>false</ejb3>
+								<template>pojo/Pojo.ftl</template>
+								<propertyfile>${basedir}/src/main/resources/database.evernote.properties</propertyfile>
+								<configurationfile>target/hibernate3/generated-sources/hibernate.evernote.cfg.xml</configurationfile>
+								<packagename>com.livescribe.framework.orm.evernote</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					<!-- 
+					==================================================
+						MySQL	hbm.xml >> Java  (template-lspaperclouddb)
+					================================================== -->
+					<execution>
+						<id>hbm2java-lspaperclouddb</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>hbm2java</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2java</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<revengfile>${basedir}/src/main/resources/hibernate.reveng.xml</revengfile>
+								<detail>true</detail>
+								<templatepath>src/main/templates/mysql</templatepath>
+								<filepattern>{package-name}/{class-name}Dao.java</filepattern>
+								<templateprefix>pojo/</templateprefix>
+								<jdk5>true</jdk5>
+								<ejb3>false</ejb3>
+								<template>pojo/Pojo.ftl</template>
+								<propertyfile>${basedir}/src/main/resources/database.lspaperclouddb.properties</propertyfile>
+								<configurationfile>target/hibernate3/generated-sources/hibernate.lspaperclouddb.cfg.xml</configurationfile>
+								<packagename>com.livescribe.framework.orm.lspaperclouddb</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+					
+					<!-- 
+					==================================================
+						MySQL	hbm.xml >> Java  (template-vectordb)
+					================================================== -->
+					<execution>
+						<id>hbm2java-vectordb</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>hbm2java</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2java</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<revengfile>${basedir}/src/main/resources/hibernate.reveng.xml</revengfile>
+								<detail>true</detail>
+								<templatepath>src/main/templates/mysql</templatepath>
+								<filepattern>{package-name}/{class-name}Dao.java</filepattern>
+								<templateprefix>pojo/</templateprefix>
+								<jdk5>true</jdk5>
+								<ejb3>false</ejb3>
+								<template>pojo/Pojo.ftl</template>
+								<propertyfile>${basedir}/src/main/resources/database.vectordb.properties</propertyfile>
+								<configurationfile>target/hibernate3/generated-sources/hibernate.vectordb.cfg.xml</configurationfile>
+								<packagename>com.livescribe.framework.orm.vectordb</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+<!-- ***** template (DAO) ***** -->
+
+					<!-- 
+					==================================================
+						MySQL	hbm.xml >> DAO (template-consumer)
+					================================================== -->
+					<execution>
+						<id>hbm2template-consumer</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>hbmtemplate</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbmtemplate</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<detail>true</detail>
+								<templatepath>src/main/templates/mysql</templatepath>
+								<filepattern>{package-name}/{class-name}Dao.java</filepattern>
+								<templateprefix>dao/</templateprefix>
+								<jdk5>true</jdk5>
+								<ejb3>false</ejb3>
+								<template>dao/consumer_daohome.ftl</template>
+								<propertyfile>${basedir}/src/main/resources/database.consumer.properties</propertyfile>
+								<configurationfile>target/hibernate3/generated-sources/hibernate.consumer.cfg.xml</configurationfile>
+								<packagename>com.livescribe.framework.orm.consumer</packagename>
+								<sessionFactoryName>sessionFactoryConsumer</sessionFactoryName>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					<!-- 
+					==================================================
+						MySQL	hbm.xml >> DAO (template-manufacturing)
+					================================================== -->
+					<execution>
+						<id>hbm2template-manufacturing</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>hbmtemplate</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbmtemplate</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<detail>true</detail>
+								<templatepath>src/main/templates/mysql</templatepath>
+								<filepattern>{package-name}/{class-name}Dao.java</filepattern>
+								<templateprefix>dao/</templateprefix>
+								<jdk5>true</jdk5>
+								<ejb3>false</ejb3>
+								<template>dao/manufacturing_daohome.ftl</template>
+								<propertyfile>${basedir}/src/main/resources/database.manufacturing.properties</propertyfile>
+								<configurationfile>target/hibernate3/generated-sources/hibernate.manufacturing.cfg.xml</configurationfile>
+								<packagename>com.livescribe.framework.orm.manufacturing</packagename>
+								<sessionFactoryName>sessionFactoryManufacturing</sessionFactoryName>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					<!-- 
+					==================================================
+						MySQL	hbm.xml >> DAO (template-evernote)
+					================================================== -->
+					<execution>
+						<id>hbm2template-ls</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>hbmtemplate</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbmtemplate</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<detail>true</detail>
+								<templatepath>src/main/templates/mysql</templatepath>
+								<filepattern>{package-name}/{class-name}Dao.java</filepattern>
+								<templateprefix>dao/</templateprefix>
+								<jdk5>true</jdk5>
+								<ejb3>false</ejb3>
+								<template>dao/evernote_daohome.ftl</template>
+								<propertyfile>${basedir}/src/main/resources/database.evernote.properties</propertyfile>
+								<configurationfile>target/hibernate3/generated-sources/hibernate.evernote.cfg.xml</configurationfile>
+								<packagename>com.livescribe.framework.orm.evernote</packagename>
+								<sessionFactoryName>sessionFactoryEvernote</sessionFactoryName>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					<!-- 
+					==================================================
+						MySQL	hbm.xml >> DAO (template-lspaperclouddb)
+					================================================== -->
+					<execution>
+						<id>hbm2template-lspaperclouddb</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>hbmtemplate</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbmtemplate</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<detail>true</detail>
+								<templatepath>src/main/templates/mysql</templatepath>
+								<filepattern>{package-name}/{class-name}Dao.java</filepattern>
+								<templateprefix>dao/</templateprefix>
+								<jdk5>true</jdk5>
+								<ejb3>false</ejb3>
+								<template>dao/lspaperclouddb_daohome.ftl</template>
+								<propertyfile>${basedir}/src/main/resources/database.lspaperclouddb.properties</propertyfile>
+								<configurationfile>target/hibernate3/generated-sources/hibernate.lspaperclouddb.cfg.xml</configurationfile>
+								<packagename>com.livescribe.framework.orm.lspaperclouddb</packagename>
+								<sessionFactoryName>sessionFactoryPaperCloud</sessionFactoryName>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					<!-- 
+					==================================================
+						MySQL	hbm.xml >> DAO (template-vectordb)
+					================================================== -->
+					<execution>
+						<id>hbm2template-vectordb</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>hbmtemplate</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbmtemplate</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<detail>true</detail>
+								<templatepath>src/main/templates/mysql</templatepath>
+								<filepattern>{package-name}/{class-name}Dao.java</filepattern>
+								<templateprefix>dao/</templateprefix>
+								<jdk5>true</jdk5>
+								<ejb3>false</ejb3>
+								<template>dao/vectordb_daohome.ftl</template>
+								<propertyfile>${basedir}/src/main/resources/database.vectordb.properties</propertyfile>
+								<configurationfile>target/hibernate3/generated-sources/hibernate.vectordb.cfg.xml</configurationfile>
+								<packagename>com.livescribe.framework.orm.vectordb</packagename>
+								<sessionFactoryName>sessionFactoryVectorDB</sessionFactoryName>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+				</executions>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Maven Resources Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/classes/</outputDirectory>
+							<encoding>UTF-8</encoding>
+							<resources>
+								<resource>
+									<directory>target/hibernate3/generated-mappings</directory>
+									<filtering>true</filtering>
+								</resource>
+<!-- 								<resource> -->
+<!-- 									<directory>target/hibernate3/generated-sources</directory> -->
+<!-- 									<excludes> -->
+<!-- 										<exclude>hibernate.cfg.xml</exclude> -->
+<!-- 									</excludes> -->
+<!-- 									<filtering>true</filtering> -->
+<!-- 								</resource> -->
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+     
+			<!-- 
+			==============================================
+				Maven Assembly Plugin
+			============================================== -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/consumer.xml</descriptor>
+						<descriptor>src/main/assembly/manufacturing.xml</descriptor>
+						<descriptor>src/main/assembly/evernote.xml</descriptor>
+						<descriptor>src/main/assembly/lspaperclouddb.xml</descriptor>
+						<descriptor>src/main/assembly/vectordb.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> 
+						<phase>package</phase> 
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		
+			<!-- 
+			==============================================
+				Maven Compiler Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+             
+			<!-- 
+			==============================================
+				Maven Build Number Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.0-beta-4</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>false</doCheck>
+					<doUpdate>false</doUpdate>
+					<scmDirectory>${basedir}</scmDirectory>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Maven JAR Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<Svn-Revision>${buildNumber}</Svn-Revision>
+							<Hudson-Build-Number>${hudson-build-number}</Hudson-Build-Number>
+							<Build-Date>${maven.build.timestamp}</Build-Date>
+						</manifestEntries>
+					</archive>
+					<classesDirectory>${project.build.directory}/classes</classesDirectory>
+				</configuration>
+			</plugin>
+			
+			<!-- 
+			==============================================
+				Maven Deploy Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.5</version>
+			</plugin>
+		
+			<!-- 
+			==============================================
+				Maven Release Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0</version>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>perform</goal>
+						</goals>
+						<configuration>
+							<workingDirectory>${project.build.directory}/checkout</workingDirectory>
+						</configuration>
+					</execution>
+				</executions>
+
+				<configuration>
+					<tagBase>svn+ssh://${svn-user}@svn.livescribe.com/svn/LSRepository/WebCore/WebServices/orm/tags</tagBase>
+				</configuration>
+			</plugin>
+            
+			<!-- 
+			==============================================
+				Maven Site Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<inputDirectory>${project.reporting.outputDirectory}</inputDirectory>
+					<outputDirectory>/Library/WebServer/Documents/framework/orm</outputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>deploy-site</id>
+						<phase>site-deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+						<configuration>
+							
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		
+		</plugins>
+
+	</build>
+	
+	<reporting>
+		<plugins>
+			<!-- 
+			==============================================
+				Javadoc Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<detectLinks>true</detectLinks>
+<!-- 					<stylesheetfile>${basedir}/src/site/resources/css/javadoc.css</stylesheetfile> -->
+					<links>
+						<link>http://docs.oracle.com/javase/6/docs/api/</link>
+						<link>http://docs.oracle.com/javaee/6/api/</link>
+						<link>http://docs.spring.io/spring/docs/3.1.x/javadoc-api/</link>
+						<link>http://docs.jboss.org/hibernate/orm/3.3/api/</link>
+						<link>http://logging.apache.org/log4j/1.2/apidocs/</link>
+						<link>http://dom4j.sourceforge.net/dom4j-1.6.1/apidocs/</link>
+						<link>http://dbunit.sourceforge.net/apidocs/index.html</link>
+						<link>http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/html/index.html</link>
+					</links>
+				</configuration>
+			</plugin>
+			
+			<!-- 
+			==============================================
+				Change Log Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changelog-plugin</artifactId>
+				<version>2.2</version>
+<!--				<configuration>-->
+<!--				</configuration>-->
+			</plugin>
+					
+			<!-- 
+			==============================================
+				Project Info Reports Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.2</version>
+			</plugin>		
+
+			<!-- 
+			==============================================
+				Maven Surefire Report Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.6</version>
+			</plugin>
+		</plugins>
+	</reporting>
+				
+	<properties>
+		<svn-user>${env.USER}</svn-user>
+		<version.springframework>3.0.3.RELEASE</version.springframework>
+		<version.hibernate-anno>3.4.0.GA</version.hibernate-anno>
+		<version.hibernate-core>3.3.2.GA</version.hibernate-core>
+<!-- 		<version.springframework>3.1.2.RELEASE</version.springframework> -->
+<!-- 		<version.hibernate-anno>3.5.6-Final</version.hibernate-anno> -->
+<!-- 		<version.hibernate-core>4.1.4.Final</version.hibernate-core> -->
+		<version.hibernate-tools>3.3.0.GA</version.hibernate-tools>
+	</properties>
+		
+</project>

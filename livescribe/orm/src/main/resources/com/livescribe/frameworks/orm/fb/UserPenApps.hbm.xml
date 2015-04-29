@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.livescribe.frameworks.orm.fb.UserPenApps" table="UserPenApps">
+
+		<id name="primaryKey" column="primaryKey" type="binary">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="shortId"		column="shortId"		type="string"	length="18" />
+		<property name="itemId"			column="itemId"			type="integer" />
+		<property name="itemCode"		column="itemCode"		type="string"	length="20" />
+		<property name="datePurchased"	column="datePurchased"	type="timestamp" />
+		<property name="infoUrl"		column="infoURL"		type="string"	length="2000" />
+		
+	</class>
+</hibernate-mapping>

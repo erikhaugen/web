@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 21, 2011 12:15:27 PM by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="com.livescribe.frameworks.orm.mysql.UserAddress" table="user_address" catalog="consumer">
+        <id name="id" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="primaryKey" type="string">
+            <column name="primary_key" length="64" />
+        </property>
+        <property name="countryKey" type="string">
+            <column name="country_key" length="64" />
+        </property>
+        <property name="countryId" type="java.lang.Long">
+            <column name="country_id" />
+        </property>
+        <property name="stateKey" type="string">
+            <column name="state_key" length="64" />
+        </property>
+        <property name="stateId" type="java.lang.Long">
+            <column name="state_id" />
+        </property>
+        <property name="address1" type="string">
+            <column name="address1" length="256" />
+        </property>
+        <property name="address2" type="string">
+            <column name="address2" length="256" />
+        </property>
+        <property name="city" type="string">
+            <column name="city" length="128" />
+        </property>
+        <property name="county" type="string">
+            <column name="county" length="128" />
+        </property>
+        <property name="metaInfo" type="string">
+            <column name="meta_info" length="65535" />
+        </property>
+        <property name="postCode" type="string">
+            <column name="post_code" length="10" />
+        </property>
+        <property name="province" type="string">
+            <column name="province" length="128" />
+        </property>
+        <property name="lastValidation" type="timestamp">
+            <column name="last_validation" length="19" not-null="true" />
+        </property>
+        <property name="created" type="timestamp">
+            <column name="created" length="19" not-null="true" />
+        </property>
+        <property name="lastModified" type="timestamp">
+            <column name="last_modified" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

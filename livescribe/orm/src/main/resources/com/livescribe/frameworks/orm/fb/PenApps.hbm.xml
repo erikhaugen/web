@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.livescribe.frameworks.orm.fb">
+	<class name="PenApps" table="PenApps">
+	
+		<id name="downloadGuid" column="downloadGUID" type="integer">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="itemCode"			column="itemCode"				type="string"	length="18" />
+		<property name="appFileName"		column="appFileName"			type="string"	length="200" />
+		<property name="appFilePath"		column="appFilePath"			type="string"	length="2000" />
+		<property name="downloadName"		column="downloadName"			type="string"	length="200" />
+		<property name="downloadDescriptor"	column="downloadDescriptior"	type="string"	length="2000" />
+		<property name="penLocale"			column="penLocale"				type="string"	length="10" />
+		<property name="penTypes"			column="penTypes"				type="string"	length="200" />
+		<property name="productId"			column="productId"				type="string"	length="200" />
+		<property name="productVersion"		column="productVersion"			type="string"	length="200" />
+		<property name="sizeInBytes"		column="sizeInBytes"			type="double" />
+		<property name="infoUrl"			column="infoURL"				type="string"	length="2000" />
+		<property name="icon"				column="icon"					type="blob" />
+		<property name="docUrl"				column="docURL"					type="string"	length="2000" />
+		<property name="releaseNotesUrl"	column="releaseNotesURL"		type="string"	length="2000" />
+
+		<set name="provisionedPens" inverse="true">
+			<key>
+				<column name="productId" length="200" />
+			</key>
+			<one-to-many class="ProvisionedPenApps" />
+		</set>
+		
+	</class>
+</hibernate-mapping>
+		
