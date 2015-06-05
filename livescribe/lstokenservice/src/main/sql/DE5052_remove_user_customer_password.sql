@@ -1,0 +1,1 @@
+ALTER TABLE `consumer`.`user` DROP COLUMN `customer_password`;

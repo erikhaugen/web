@@ -1,0 +1,71 @@
+<!ELEMENT dataset (country*, us_state*, address*,
+    	user*, user_email*, user_setting*, registered_device*, device_setting*, group*, role*,
+    	x_user_group*, x_user_role*)>
+
+<!ELEMENT country EMPTY>
+<!ATTLIST country country_id			CDATA #IMPLIED>
+<!ATTLIST country name					CDATA #IMPLIED>
+<!ATTLIST country iso_code_2			CDATA #IMPLIED>
+<!ATTLIST country iso_code_3			CDATA #IMPLIED>
+
+<!ELEMENT us_state EMPTY>
+<!ATTLIST us_state us_state_id			CDATA #IMPLIED>
+<!ATTLIST us_state state_name			CDATA #IMPLIED>
+
+<!ELEMENT address EMPTY>
+<!ATTLIST address address_id			CDATA #IMPLIED>
+<!ATTLIST address country_id			CDATA #IMPLIED>
+<!ATTLIST address us_state_id			CDATA #IMPLIED>
+<!ATTLIST address address1				CDATA #IMPLIED>
+<!ATTLIST address city					CDATA #IMPLIED>
+
+<!ELEMENT user EMPTY>
+<!ATTLIST user user_id					CDATA #IMPLIED>
+<!ATTLIST user address_id				CDATA #IMPLIED>
+<!ATTLIST user preferred_country_id		CDATA #IMPLIED>
+<!ATTLIST user first_name				CDATA #IMPLIED>
+<!ATTLIST user last_name				CDATA #IMPLIED>
+<!ATTLIST user primary_email			CDATA #IMPLIED>
+<!ATTLIST user password					CDATA #IMPLIED>
+
+<!ELEMENT user_email EMPTY>
+<!ATTLIST user_email user_email_id		CDATA #IMPLIED>
+<!ATTLIST user_email user_id			CDATA #IMPLIED>
+<!ATTLIST user_email email_address		CDATA #IMPLIED>
+
+<!ELEMENT user_setting EMPTY>
+<!ATTLIST user_setting user_setting_id	CDATA #IMPLIED>
+<!ATTLIST user_setting user_id			CDATA #IMPLIED>
+<!ATTLIST user_setting setting_name		CDATA #IMPLIED>
+<!ATTLIST user_setting setting_value	CDATA #IMPLIED>
+
+<!ELEMENT registered_device EMPTY>
+<!ATTLIST registered_device registered_device_id	CDATA #IMPLIED>
+<!ATTLIST registered_device user_id					CDATA #IMPLIED>
+<!ATTLIST registered_device device_id				CDATA #IMPLIED>
+<!ATTLIST registered_device device_serial_number	CDATA #IMPLIED>
+<!ATTLIST registered_device reg_token				CDATA #IMPLIED>
+<!ATTLIST registered_device device_type				CDATA #IMPLIED>
+
+<!ELEMENT device_setting EMPTY>
+<!ATTLIST device_setting device_setting_id		CDATA #IMPLIED>
+<!ATTLIST device_setting registered_device_id	CDATA #IMPLIED>
+<!ATTLIST device_setting setting_name			CDATA #IMPLIED>
+<!ATTLIST device_setting setting_value			CDATA #IMPLIED>
+
+<!ELEMENT group EMPTY>
+<!ATTLIST group group_id	CDATA #IMPLIED>
+<!ATTLIST group group_name	CDATA #IMPLIED>
+<!ATTLIST group group_type	CDATA #IMPLIED>
+
+<!ELEMENT role EMPTY>
+<!ATTLIST role role_id		CDATA #IMPLIED>
+<!ATTLIST role role_name	CDATA #IMPLIED>
+
+<!ELEMENT x_user_group EMPTY>
+<!ATTLIST x_user_group user_id	CDATA #IMPLIED>
+<!ATTLIST x_user_group group_id	CDATA #IMPLIED>
+
+<!ELEMENT x_user_role EMPTY>
+<!ATTLIST x_user_role user_id	CDATA #IMPLIED>
+<!ATTLIST x_user_role role_id	CDATA #IMPLIED>

@@ -1,0 +1,17 @@
+<!ELEMENT dataset (registered_device*)>
+
+<!ELEMENT registered_device EMPTY>
+<!-- Must include 'registered_device_id' column to workaround 'bug' in DbUnit when
+	 deleting DataSet records from database. -->
+<!ATTLIST registered_device registered_device_id	CDATA #IMPLIED>
+<!ATTLIST registered_device user_id					CDATA #IMPLIED>
+<!ATTLIST registered_device device_id				CDATA #IMPLIED>
+<!ATTLIST registered_device device_serial_number	CDATA #IMPLIED>
+<!ATTLIST registered_device device_type				CDATA #IMPLIED>
+<!ATTLIST registered_device reg_code				CDATA #IMPLIED>
+<!ATTLIST registered_device reg_token				CDATA #IMPLIED>
+<!ATTLIST registered_device complete				CDATA #IMPLIED>
+<!ATTLIST registered_device completed_date			CDATA #IMPLIED>
+<!ATTLIST registered_device created					CDATA #IMPLIED>
+<!ATTLIST registered_device last_modified			CDATA #IMPLIED>
+<!ATTLIST registered_device last_modified_by		CDATA #IMPLIED>

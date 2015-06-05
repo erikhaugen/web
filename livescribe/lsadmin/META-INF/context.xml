@@ -1,0 +1,5 @@
+<Context antiResourceLocking="true" privileged="true">
+<!-- Uncomment to restrict usage of the Tomcat Manager from the specified IP address.
+	<Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="127\.0\.0\.1"/>
+ -->
+</Context>

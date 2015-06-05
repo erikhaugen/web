@@ -1,0 +1,163 @@
+Script started on Tue Sep 20 13:32:40 2011
+kmurdoff - livescribes-MacBook-Pro-3:/Workspaces/livescribe/tokenservice/src/main/resources $ openssl genrsa -des3
+kmurdoff - livescribes-MacBook-Pro-3:/Workspaces/livescribe/tokenservice/src/main/resources $ ls
+total 80
+drwxr-xr-x  14 kmurdoff  admin   476 Sep 20 16:51 ./
+drwxr-xr-x   9 kmurdoff  admin   306 Sep 20 13:29 ../
+drwxr-xr-x   7 kmurdoff  admin   238 Sep 15 15:17 .svn/
+-rw-r--r--   1 kmurdoff  admin  3102 Sep 20 15:17 app.properties
+drwxr-xr-x   3 kmurdoff  admin   102 Sep 17 00:36 com/
+-rw-r--r--   1 kmurdoff  admin   312 Sep 20 16:54 database.manufacturing.properties
+-rw-r--r--   1 kmurdoff  admin   307 Sep 17 00:38 database.properties
+-rw-r--r--   1 kmurdoff  admin  1420 Sep 17 00:14 hibernate.cfg.xml.old
+-rw-r--r--   1 kmurdoff  admin  1350 Sep  4  2009 livescribeca.crt
+-rw-r--r--   1 kmurdoff  admin   963 Sep  4  2009 livescribeca.key
+-rwxr-xr-x   1 kmurdoff  admin  2699 Sep 15 16:01 log4j.xml*
+-rw-r--r--   1 kmurdoff  admin   256 Sep 20 16:59 notes_on_certificates.txt
+-rw-r--r--   1 kmurdoff  admin  1633 Sep 20 15:05 token-context.xml
+-rw-r--r--   1 kmurdoff  admin  2786 Sep 16 12:48 token-servlet.xml
+kmurdoff - livescribes-MacBook-Pro-3:/Workspaces/livescribe/tokenservice/src/main/resources $ ls[Kmvn clean package
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Maven Default Project
+[INFO]    task-segment: [clean, package]
+[INFO] ------------------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD ERROR
+[INFO] ------------------------------------------------------------------------
+[INFO] Cannot execute mojo: clean. It requires a project with an existing pom.xml, but the build is not using one.
+[INFO] ------------------------------------------------------------------------
+[INFO] For more information, run Maven with the -e switch
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: < 1 second
+[INFO] Finished at: Tue Sep 20 16:59:16 PDT 2011
+[INFO] Final Memory: 3M/528M
+[INFO] ------------------------------------------------------------------------
+kmurdoff - livescribes-MacBook-Pro-3:/Workspaces/livescribe/tokenservice/src/main/resources $ cd ../../..
+kmurdoff - livescribes-MacBook-Pro-3:/Workspaces/livescribe/tokenservice $ cd ../../..[Kls
+total 72
+drwxr-xr-x  11 kmurdoff  admin    374 Sep 19 12:46 ./
+drwxr-xr-x  37 kmurdoff  admin   1258 Sep 19 10:25 ../
+-rw-r--r--@  1 kmurdoff  admin   6148 Sep 20 14:06 .DS_Store
+-rw-r--r--   1 kmurdoff  admin   5327 Sep 20 11:52 .classpath
+-rw-r--r--   1 kmurdoff  admin    409 Sep 20 11:52 .project
+drwxr-xr-x   3 kmurdoff  admin    102 Sep 15 15:13 .settings/
+drwxr-xr-x   7 kmurdoff  admin    238 Sep 15 15:17 .svn/
+drwxr-xr-x   2 kmurdoff  admin     68 Sep 15 15:13 bin/
+-rw-r--r--@  1 kmurdoff  staff  15736 Sep 20 16:58 pom.xml
+drwxr-xr-x   6 kmurdoff  admin    204 Sep 17 00:47 src/
+drwxr-xr-x   8 kmurdoff  admin    272 Sep 19 12:46 target/
+kmurdoff - livescribes-MacBook-Pro-3:/Workspaces/livescribe/tokenservice $ lscd ../../..mvn clean package
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[ERROR] FATAL ERROR
+[INFO] ------------------------------------------------------------------------
+[INFO] Error building POM (may not be this project's POM).
+
+
+Project ID: com.livescribe:tokenservice
+POM Location: /Workspaces/livescribe/tokenservice/pom.xml
+Validation Messages:
+
+    [0]  You cannot have two plugin executions with the same (or missing) <id/> elements.
+Offending execution
+
+Id: 'hbm2cfgxml-mysql'
+Plugin:'org.codehaus.mojo:hibernate3-maven-plugin'
+
+
+
+
+Reason: Failed to validate POM for project com.livescribe:tokenservice at /Workspaces/livescribe/tokenservice/pom.xml
+
+
+[INFO] ------------------------------------------------------------------------
+[INFO] Trace
+org.apache.maven.reactor.MavenExecutionException: Failed to validate POM for project com.livescribe:tokenservice at /Workspaces/livescribe/tokenservice/pom.xml
+	at org.apache.maven.DefaultMaven.getProjects(DefaultMaven.java:432)
+	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:300)
+	at org.apache.maven.DefaultMaven.execute(DefaultMaven.java:137)
+	at org.apache.maven.cli.MavenCli.main(MavenCli.java:362)
+	at org.apache.maven.cli.compat.CompatibleMain.main(CompatibleMain.java:41)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.codehaus.classworlds.Launcher.launchEnhanced(Launcher.java:315)
+	at org.codehaus.classworlds.Launcher.launch(Launcher.java:255)
+	at org.codehaus.classworlds.Launcher.mainWithExitCode(Launcher.java:430)
+	at org.codehaus.classworlds.Launcher.main(Launcher.java:375)
+Caused by: org.apache.maven.project.InvalidProjectModelException: Failed to validate POM for project com.livescribe:tokenservice at /Workspaces/livescribe/tokenservice/pom.xml
+	at org.apache.maven.project.DefaultMavenProjectBuilder.processProjectLogic(DefaultMavenProjectBuilder.java:1077)
+	at org.apache.maven.project.DefaultMavenProjectBuilder.buildInternal(DefaultMavenProjectBuilder.java:880)
+	at org.apache.maven.project.DefaultMavenProjectBuilder.buildFromSourceFileInternal(DefaultMavenProjectBuilder.java:508)
+	at org.apache.maven.project.DefaultMavenProjectBuilder.build(DefaultMavenProjectBuilder.java:200)
+	at org.apache.maven.DefaultMaven.getProject(DefaultMaven.java:632)
+	at org.apache.maven.DefaultMaven.collectProjects(DefaultMaven.java:515)
+	at org.apache.maven.DefaultMaven.getProjects(DefaultMaven.java:419)
+	... 12 more
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: < 1 second
+[INFO] Finished at: Tue Sep 20 16:59:33 PDT 2011
+[INFO] Final Memory: 3M/528M
+[INFO] ------------------------------------------------------------------------
+kmurdoff - livescribes-MacBook-Pro-3:/Workspaces/livescribe/tokenservice $ mvn clean package
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[ERROR] FATAL ERROR
+[INFO] ------------------------------------------------------------------------
+[INFO] Error building POM (may not be this project's POM).
+
+
+Project ID: com.livescribe:tokenservice
+POM Location: /Workspaces/livescribe/tokenservice/pom.xml
+Validation Messages:
+
+    [0]  You cannot have two plugin executions with the same (or missing) <id/> elements.
+Offending execution
+
+Id: 'hbm2cfgxml-mysql'
+Plugin:'org.codehaus.mojo:hibernate3-maven-plugin'
+
+
+
+
+Reason: Failed to validate POM for project com.livescribe:tokenservice at /Workspaces/livescribe/tokenservice/pom.xml
+
+
+[INFO] ------------------------------------------------------------------------
+[INFO] Trace
+org.apache.maven.reactor.MavenExecutionException: Failed to validate POM for project com.livescribe:tokenservice at /Workspaces/livescribe/tokenservice/pom.xml
+	at org.apache.maven.DefaultMaven.getProjects(DefaultMaven.java:432)
+	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:300)
+	at org.apache.maven.DefaultMaven.execute(DefaultMaven.java:137)
+	at org.apache.maven.cli.MavenCli.main(MavenCli.java:362)
+	at org.apache.maven.cli.compat.CompatibleMain.main(CompatibleMain.java:41)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.codehaus.classworlds.Launcher.launchEnhanced(Launcher.java:315)
+	at org.codehaus.classworlds.Launcher.launch(Launcher.java:255)
+	at org.codehaus.classworlds.Launcher.mainWithExitCode(Launcher.java:430)
+	at org.codehaus.classworlds.Launcher.main(Launcher.java:375)
+Caused by: org.apache.maven.project.InvalidProjectModelException: Failed to validate POM for project com.livescribe:tokenservice at /Workspaces/livescribe/tokenservice/pom.xml
+	at org.apache.maven.project.DefaultMavenProjectBuilder.processProjectLogic(DefaultMavenProjectBuilder.java:1077)
+	at org.apache.maven.project.DefaultMavenProjectBuilder.buildInternal(DefaultMavenProjectBuilder.java:880)
+	at org.apache.maven.project.DefaultMavenProjectBuilder.buildFromSourceFileInternal(DefaultMavenProjectBuilder.java:508)
+	at org.apache.maven.project.DefaultMavenProjectBuilder.build(DefaultMavenProjectBuilder.java:200)
+	at org.apache.maven.DefaultMaven.getProject(DefaultMaven.java:632)
+	at org.apache.maven.DefaultMaven.collectProjects(DefaultMaven.java:515)
+	at org.apache.maven.DefaultMaven.getProjects(DefaultMaven.java:419)
+	... 12 more
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: < 1 second
+[INFO] Finished at: Tue Sep 20 17:00:01 PDT 2011
+[INFO] Final Memory: 3M/528M
+[INFO] ------------------------------------------------------------------------
+kmurdoff - livescribes-MacBook-Pro-3:/Workspaces/livescribe/tokenservice $ pwd
+/Workspaces/livescribe/tokenservice
+kmurdoff - livescribes-MacBook-Pro-3:/Workspaces/livescribe/tokenservice $ exit
+exit
+
+Script done on Tue Sep 20 17:00:14 2011

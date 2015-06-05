@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+                xmlns:oxm="http://www.springframework.org/schema/oxm"
+                xmlns:tx="http://www.springframework.org/schema/tx"
+                xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                                http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
+								http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<context:component-scan base-package="com.livescribe.admin" />
+	<context:annotation-config />
+	<tx:annotation-driven />
+
+	<bean id="appProperties" class="com.livescribe.admin.config.AppProperties" init-method="init" destroy-method="destroy">
+		<!-- Gets the <display-name> value from the 'web.xml' file. -->
+		<property name="servletContextName" value="#{servletContext.servletContextName}" />
+        <property name="location">
+	        <value>classpath:app.properties</value>
+	    </property>
+	    <property name="searchSystemEnvironment"><value>true</value></property>
+	    <property name="systemPropertiesMode"><value>1</value></property>
+	</bean>
+
+	<!-- 
+	==================================================
+		DataSource Beans
+	================================================== -->
+    <bean id="dataSourceConsumer" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${consumer.jdbc.driverClassName}" />
+        <property name="jdbcUrl" value="${consumer.jdbc.url}" />
+        <property name="user" value="${consumer.jdbc.username}" />
+        <property name="password" value="${consumer.jdbc.password}" />
+    </bean>
+    <bean id="dataSourceManufacturing" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${manufacturing.jdbc.driverClassName}" />
+        <property name="jdbcUrl" value="${manufacturing.jdbc.url}" />
+        <property name="user" value="${manufacturing.jdbc.username}" />
+        <property name="password" value="${manufacturing.jdbc.password}" />
+    </bean>
+    <bean id="dataSourceEvernote" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${lsevernotedb.jdbc.driverClassName}" />
+        <property name="jdbcUrl" value="${lsevernotedb.jdbc.url}" />
+        <property name="user" value="${lsevernotedb.jdbc.username}" />
+        <property name="password" value="${lsevernotedb.jdbc.password}" />
+    </bean>
+    <bean id="dataSourceFBCorp" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${corp.fb.jdbc.driverClassName}" />
+        <property name="jdbcUrl" value="${corp.fb.jdbc.url}" />
+        <property name="user" value="${corp.fb.jdbc.username}" />
+        <property name="password" value="${corp.fb.jdbc.password}" />
+    </bean>
+	
+	<!-- 
+	==================================================
+		SessionFactory Beans
+	================================================== -->
+	<bean id="sessionFactoryConsumer" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource"><ref local="dataSourceConsumer" /></property>
+        <property name="mappingLocations">
+			<list>
+ 				<value>classpath:com/livescribe/framework/orm/consumer/Authenticated.hbm.xml</value>
+ 				<value>classpath:com/livescribe/framework/orm/consumer/Authorization.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/DeviceSetting.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/DeviceUpdate.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/Group.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/PremiumCode.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/RegisteredDevice.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/Role.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/User.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/UserSetting.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/XUserGroup.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/XUserRole.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean>
+	<bean id="sessionFactoryManufacturing" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource"><ref local="dataSourceManufacturing" /></property>
+        <property name="mappingLocations">
+			<list>
+				<value>classpath:com/livescribe/framework/orm/manufacturing/Pen.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/manufacturing/PenCertificate.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/manufacturing/PenRequest.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean>
+	<bean id="sessionFactoryEvernote" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource"><ref local="dataSourceEvernote" /></property>
+        <property name="mappingLocations">
+			<list>
+				<value>classpath:com/livescribe/framework/orm/lsevernotedb/AfdImage.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/lsevernotedb/Archive.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/lsevernotedb/Audio.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/lsevernotedb/AudioError.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/lsevernotedb/ContentAccess.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/lsevernotedb/Document.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/lsevernotedb/Image.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/lsevernotedb/Page.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/lsevernotedb/Session.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/lsevernotedb/SyncConfig.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/lsevernotedb/SyncTimesInfo.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/lsevernotedb/Template.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/lsevernotedb/Timemap.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean>
+	<!-- <bean id="sessionFactoryFBCorp" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource"><ref local="dataSourceFBCorp" /></property>
+        <property name="mappingLocations">
+			<list>
+ 				<value>classpath:com/livescribe/framework/orm/fb/corp/CorpUserProfile.hbm.xml</value>
+ 				<value>classpath:com/livescribe/framework/orm/fb/corp/RegisteredProduct.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean> -->
+
+	<bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="properties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+				<prop key="connection.driver_class">com.mysql.jdbc.Driver</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop>
+			</props>
+		</property>
+	</bean>
+
+
+    <!-- Transaction Management -->
+    <bean id="txConsumer" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+    	<qualifier value="consumer" />
+		<property name="sessionFactory">
+			<ref local="sessionFactoryConsumer" />
+		</property>
+	</bean>
+    <bean id="txManufacturing" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+    	<qualifier value="manufacturing" />
+		<property name="sessionFactory">
+			<ref local="sessionFactoryManufacturing" />
+		</property>
+	</bean>
+    <bean id="txEvernote" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+    	<qualifier value="evernote" />
+		<property name="sessionFactory">
+			<ref local="sessionFactoryEvernote" />
+		</property>
+	</bean>
+   <!--  <bean id="txFBCorp" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+    	<qualifier value="fbCorp" />
+		<property name="sessionFactory">
+			<ref local="sessionFactoryFBCorp" />
+		</property>
+	</bean> -->
+
+	<!-- 
+	==================================================
+		Service Beans
+	================================================== -->
+	
+	<bean id="infoLookupService"		class="com.livescribe.admin.service.InfoLookupServiceImpl" />
+	<bean id="adminService"		class="com.livescribe.admin.service.AdminServiceImpl" />
+	<bean id="userService"		class="com.livescribe.admin.service.UserServiceImpl" />
+	<bean id="versionService"	class="com.livescribe.framework.version.service.VersionServiceImpl" />
+	<bean id="penService"		class="com.livescribe.admin.service.PenServiceImpl" />
+	
+	<!-- 
+	==================================================
+		DAO Beans
+	================================================== -->
+	<bean id="documentDao"             class="com.livescribe.admin.dao.CustomDocumentDao" />
+	<bean id="pageDao"                 class="com.livescribe.admin.dao.CustomPageDao" />
+	<bean id="sessionDao"              class="com.livescribe.admin.dao.CustomSessionDao" />
+	<bean id="userDao"                 class="com.livescribe.admin.dao.CustomUserDao" />
+	<bean id="penDao"                  class="com.livescribe.admin.dao.CustomPenDao" />
+	<bean id="registeredDeviceDao"     class="com.livescribe.admin.dao.CustomRegisteredDeviceDao" />
+	<bean id="authorizationDao"        class="com.livescribe.admin.dao.CustomAuthorizationDao" />
+	
+	<!-- Utility Beans -->
+	<bean id="evernoteUtils"           class="com.livescribe.admin.utils.EvernoteAPIUtils" factory-method="getInstance" scope="singleton">
+	   <property name="adminService">
+	       <ref local="adminService" />
+	   </property>
+	</bean>
+</beans>

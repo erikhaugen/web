@@ -1,0 +1,19 @@
+<!ELEMENT dataset (pen*)>
+
+<!ELEMENT pen EMPTY>
+<!-- Must include 'pen_id' column to workaround 'bug' in DbUnit when
+	 deleting DataSet records from database. -->
+<!ATTLIST pen pen_id							CDATA #IMPLIED>
+<!ATTLIST pen display_id						CDATA #IMPLIED>
+<!ATTLIST pen serialnumber						CDATA #IMPLIED>
+<!ATTLIST pen serialnumber_hex					CDATA #IMPLIED>
+<!ATTLIST pen firmware_version					CDATA #IMPLIED>
+<!ATTLIST pen pen_type							CDATA #IMPLIED>
+<!ATTLIST pen pen_certificate_id				CDATA #IMPLIED>
+<!ATTLIST pen pen_request_id					CDATA #IMPLIED>
+
+<!ELEMENT pen_certificate EMPTY>
+<!ATTLIST pen_certificate certificate_path		CDATA #IMPLIED>
+
+<!ELEMENT pen_request EMPTY>
+<!ATTLIST pen_request vendor_id					CDATA #IMPLIED>

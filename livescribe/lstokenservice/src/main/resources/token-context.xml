@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:p="http://www.springframework.org/schema/p"
+                xmlns:context="http://www.springframework.org/schema/context"
+                xmlns:aop="http://www.springframework.org/schema/aop"
+                xmlns:tx="http://www.springframework.org/schema/tx"
+                xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                                http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<context:component-scan base-package="com.livescribe.aws.tokensvc" />
+	<context:annotation-config />
+	<tx:annotation-driven />
+	
+<!-- 	<tx:annotation-driven mode="aspectj" /> -->
+<!-- 	<context:load-time-weaver aspectj-weaving="on" /> -->
+	
+	<bean id="appProperties" class="com.livescribe.aws.tokensvc.config.AppProperties" init-method="init" destroy-method="destroy">
+		<!-- Gets the <display-name> value from the 'web.xml' file. -->
+		<property name="servletContextName" value="#{servletContext.servletContextName}" />
+        <property name="location">
+	        <value>classpath:app.properties</value>
+	    </property>
+	    <property name="searchSystemEnvironment"><value>true</value></property>
+	    <property name="systemPropertiesMode"><value>1</value></property>
+	</bean>
+
+	<bean id="emailValidator" class="com.livescribe.framework.web.validation.EmailValidator" />
+	<bean id="policyGenerator" class="com.livescribe.aws.tokensvc.util.PolicyGenerator" />
+
+	<bean id="encryptionUtils" class="com.livescribe.aws.tokensvc.crypto.EncryptionUtils">
+<!-- 		<property name="appProperties" ref="appProperties" /> -->
+		<constructor-arg name="appProperties" ref="appProperties" />
+	</bean>
+	
+    <bean id="lsdsClient" class="com.livescribe.aws.tokensvc.lsds.LSDSClient">
+        <constructor-arg name="appProperties" ref="appProperties" />
+    </bean>	
+	
+	<!-- bean id="dataSourceConsumer" class="com.livescribe.aws.tokensvc.config.TokenServiceDataSource">
+		<property name="schemaName" value="consumer" />
+	</bean>
+	
+	<bean id="dataSourceManufacturing" class="com.livescribe.aws.tokensvc.config.TokenServiceDataSource">
+		<property name="schemaName" value="manufacturing" />
+	</bean>
+
+	<bean id="dataSourceEvernote" class="com.livescribe.aws.tokensvc.config.TokenServiceDataSource">
+		<property name="schemaName" value="lsevernotedb" />
+	</bean -->
+	
+	<bean id="dataSourceConsumer" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${consumer.jdbc.driverClassName}" />
+        <property name="jdbcUrl" value="${consumer.jdbc.url}" />
+        <property name="user" value="${consumer.jdbc.username}" />
+        <property name="password" value="${consumer.jdbc.password}" />
+    </bean>
+    
+    <bean id="dataSourceManufacturing" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${manufacturing.jdbc.driverClassName}" />
+        <property name="jdbcUrl" value="${manufacturing.jdbc.url}" />
+        <property name="user" value="${manufacturing.jdbc.username}" />
+        <property name="password" value="${manufacturing.jdbc.password}" />
+    </bean>
+
+	<bean id="sessionFactoryConsumer" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource"><ref local="dataSourceConsumer" /></property>
+<!-- 		<property name="mappingJarLocations"> -->
+<!-- 			<list> -->
+<!-- 				<value>classpath:/orm-1.0.0-SNAPSHOT.jar</value> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:com/livescribe/framework/orm/consumer/Authenticated.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/Authorization.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/DeviceSetting.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/DeviceUpdate.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/Group.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/PremiumCode.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/RegisteredDevice.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/Role.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/User.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/UserSetting.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/XUserGroup.hbm.xml</value>
+				<value>classpath:com/livescribe/framework/orm/consumer/XUserRole.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean>
+
+	<bean id="sessionFactoryManufacturing" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource"><ref local="dataSourceManufacturing" /></property>
+        <property name="mappingResources">
+			<list>
+				<value>com/livescribe/framework/orm/manufacturing/Pen.hbm.xml</value>
+				<value>com/livescribe/framework/orm/manufacturing/PenCertificate.hbm.xml</value>
+				<value>com/livescribe/framework/orm/manufacturing/PenRequest.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean>
+
+	<bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="properties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+				<prop key="connection.driver_class">com.mysql.jdbc.Driver</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<!-- prop key="hibernate.c3p0.acquire_increment">3</prop>
+				<prop key="hibernate.c3p0.timeout">1800</prop>
+				<prop key="hibernate.c3p0.max_size">20</prop>
+				<prop key="hibernate.c3p0.max_statements">50</prop>
+				<prop key="hibernate.c3p0.min_size">5</prop>
+				<prop key="hibernate.c3p0.idle_test_period">1200</prop>
+                <prop key="hibernate.c3p0.preferredTestQuery">select 1;</prop -->
+				<prop key="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop>
+			</props>
+		</property>
+	</bean>
+
+    <!-- Transaction Management -->
+    <bean id="txConsumer" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+    	<qualifier value="consumer" />
+		<property name="sessionFactory">
+			<ref local="sessionFactoryConsumer" />
+		</property>
+	</bean>
+    <bean id="txManufacturing" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+    	<qualifier value="manufacturing" />
+		<property name="sessionFactory">
+			<ref local="sessionFactoryManufacturing" />
+		</property>
+	</bean>	
+
+	<!-- 
+	==================================================
+		Service Beans
+	================================================== -->
+	<bean id="authorizationServiceBean"	class="com.livescribe.aws.tokensvc.service.AuthorizationServiceImpl" />
+	<bean id="certificateServiceBean"	class="com.livescribe.aws.tokensvc.service.CertificateServiceImpl" />
+	<bean id="manufacturingServiceBean"	class="com.livescribe.aws.tokensvc.service.ManufacturingServiceImpl" />
+	<bean id="registrationServiceBean"	class="com.livescribe.aws.tokensvc.service.RegistrationServiceImpl" />
+	<bean id="tokenServiceBean"			class="com.livescribe.aws.tokensvc.service.TokenServiceImpl" />
+	<bean id="userServiceBean"			class="com.livescribe.aws.tokensvc.service.UserServiceImpl" />
+<!-- 	<bean id="authorizationService"	class="com.livescribe.aws.tokensvc.service.AuthorizationServiceImpl" /> -->
+<!-- 	<bean id="certificateService"	class="com.livescribe.aws.tokensvc.service.CertificateServiceImpl" /> -->
+<!-- 	<bean id="manufacturingService"	class="com.livescribe.aws.tokensvc.service.ManufacturingServiceImpl" /> -->
+<!-- 	<bean id="registrationService"	class="com.livescribe.aws.tokensvc.service.RegistrationServiceImpl" /> -->
+<!-- 	<bean id="tokenService"			class="com.livescribe.aws.tokensvc.service.TokenServiceImpl" /> -->
+<!-- 	<bean id="userService"			class="com.livescribe.aws.tokensvc.service.UserServiceImpl" /> -->
+	
+	<bean id="versionService"		class="com.livescribe.framework.version.service.VersionServiceImpl" />
+<!-- 	<bean id="mailService"			class="org.springframework.mail.javamail.JavaMailSenderImpl" /> -->
+	<bean id="mailService" class="com.livescribe.aws.tokensvc.mail.LSMailSenderImpl">
+		<constructor-arg name="appProperties" ref="appProperties" />
+	</bean>
+	
+	<!-- 
+	==================================================
+		DAO Beans
+	================================================== -->
+	
+	<!-- consumer beans -->
+	<bean id="deviceSettingDao"		class="com.livescribe.framework.orm.consumer.DeviceSettingDao" />
+	<bean id="registeredDeviceDao"	class="com.livescribe.aws.tokensvc.orm.consumer.CustomRegisteredDeviceDao" />
+	<bean id="userDao"				class="com.livescribe.aws.tokensvc.orm.consumer.CustomUserDao" />
+	<bean id="authenticatedDao"		class="com.livescribe.aws.tokensvc.orm.consumer.CustomAuthenticatedDao" />
+	<bean id="xUserGroupDao"		class="com.livescribe.framework.orm.consumer.XUserGroupDao" />
+	<bean id="xUserRoleDao"			class="com.livescribe.framework.orm.consumer.XUserRoleDao" />
+
+	<!--  manufacturing beans -->
+	<bean id="penDao" 				class="com.livescribe.framework.orm.manufacturing.PenDao" />
+	<bean id="penCertificateDao" 	class="com.livescribe.framework.orm.manufacturing.PenCertificateDao" />
+	
+	<!-- 
+	==================================================
+		Advice Beans
+	================================================== -->
+	<bean id="auditMethodAdvice"	class="com.livescribe.framework.audit.AuditMethodInterceptor" />
+	
+	<!-- 
+	==================================================
+		Advised Beans
+	================================================== -->
+	
+	<!-- Use these bean references when Autowiring them into other beans. -->
+	<bean id="authorizationService"		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="authorizationServiceBean" />
+		<property name="interceptorNames">
+			<list>
+				<value>auditMethodAdvice</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="certificateService"		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="certificateServiceBean" />
+		<property name="interceptorNames">
+			<list>
+				<value>auditMethodAdvice</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="manufacturingService"		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="manufacturingServiceBean" />
+		<property name="interceptorNames">
+			<list>
+				<value>auditMethodAdvice</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="registrationService"		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="registrationServiceBean" />
+		<property name="interceptorNames">
+			<list>
+				<value>auditMethodAdvice</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="tokenService"		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="tokenServiceBean" />
+		<property name="interceptorNames">
+			<list>
+				<value>auditMethodAdvice</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="userService"		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="userServiceBean" />
+		<property name="interceptorNames">
+			<list>
+				<value>auditMethodAdvice</value>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- - Sample namespace-based configuration - -->
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+    <global-method-security pre-post-annotations="enabled">
+        <!-- AspectJ pointcut expression that locates our "post" method and 
+            applies security that way <protect-pointcut expression="execution(* bigbank.*Service.post*(..))" 
+            access="ROLE_TELLER"/> -->
+    </global-method-security>
+
+    <http use-expressions="true">
+        <intercept-url pattern="/version.xml" filters="none" />
+        <intercept-url pattern="/configInfo.xml" filters="none" />
+        <intercept-url pattern="/allConfigInfo.xml" filters="none" />
+        <intercept-url pattern="/test.html" filters="none" />
+        <intercept-url pattern="/login.jsp*" filters="none"/> 
+        <!-- <intercept-url pattern="/**" access="hasRole('ROLE_SupportUser')" /> -->
+        <!-- Disable web URI authorization, as we're using <global-method-security> 
+            and have @Secured the services layer instead <intercept-url pattern="/listAccounts.html" 
+            access="isRememberMe()" /> <intercept-url pattern="/post.html" access="hasRole('ROLE_TELLER')" 
+            /> -->
+        <intercept-url pattern="/deleteuser.xml*" access="hasAnyRole('superUser')"/>
+        <intercept-url pattern="/clear/*" access="hasAnyRole('superUser', 'deleteInformationUser')"/>
+        <intercept-url pattern="/unregister/*" access="hasAnyRole('superUser', 'deleteInformationUser')"/>
+        <intercept-url pattern="/auth/remove/*" access="hasAnyRole('superUser', 'deleteInformationUser')"/>
+        <intercept-url pattern="/**" access="isAuthenticated()" />
+        <form-login login-page="/login.jsp" login-processing-url="/j_spring_security_check" 
+                    authentication-failure-url="/login.jsp?login_error=1"  default-target-url="/infoLookup.htm"/>
+        <logout invalidate-session="true" logout-success-url="/login.jsp" logout-url="/j_spring_security_logout" />
+        <!-- Uncomment to enable X509 client authentication support <x509 
+            /> -->
+        <!-- Uncomment to limit the number of sessions a user can have -->
+        <!-- <session-management>
+            <concurrency-control max-sessions="1"
+                error-if-maximum-exceeded="true" />
+        </session-management> -->
+        
+    </http>
+    
+    <beans:bean id="lspasswordencode" class="com.livescribe.admin.config.LSPasswordEncoder"/>
+    
+    <!-- Usernames/Passwords are rod/koala dianne/emu scott/wombat peter/opal -->
+    <authentication-manager alias="authenticationManager">
+    
+        <authentication-provider>
+            <password-encoder ref="lspasswordencode" />
+            <jdbc-user-service
+                data-source-ref="dataSourceFBCorp" 
+                authorities-by-username-query="select distinct u.email as username, p.permissionName as authority from CorpUserProfile u, xPermissionListMember x, Permission p where p.permissionId = x.permissionId and x.corpUserId = u.primaryKey and u.email=?"
+                users-by-username-query="select u.email as username, u.userPassword as password, 1 from CorpUserProfile u where u.email=?"/>
+        </authentication-provider> 
+        
+        <!-- <authentication-provider>
+            <password-encoder hash="md5" />
+            <user-service>
+                <user name="admin" password="a564de63c2d0da68cf47586ee05984d7"
+                    authorities="ROLE_SuperUser" />
+            </user-service>
+        </authentication-provider> -->
+    </authentication-manager>
+    
+</beans:beans>

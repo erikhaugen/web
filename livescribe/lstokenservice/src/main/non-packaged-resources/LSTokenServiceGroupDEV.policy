@@ -1,0 +1,30 @@
+{
+  "Statement":[{
+      "Action":"sqs:*",
+      "Effect":"Allow",
+      "Resource":"arn:aws:sqs:*:811011210524:*"
+    },
+    {
+      "Action":"sts:*",
+      "Effect":"Allow",
+      "Resource":"arn:aws:sts::811011210524:*"
+    },
+    {
+      "Action":["s3:AbortMultipartUpload",
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket",
+        "s3:ListBucketMultipartUploads",
+        "s3:ListBucketVersions",
+        "s3:ListMultipartUploadParts",
+        "s3:PutBucketAcl",
+        "s3:PutBucketVersioning",
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:PutObjectVersionAcl"
+      ],
+      "Effect":"Allow",
+      "Resource":"arn:aws:s3:::ccsendbucketdev/*"
+    }
+  ]
+}
+

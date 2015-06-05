@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dataset SYSTEM "../dtd/user.dtd">
+<dataset>
+	<address address_id="10000" country_id="221" us_state_id="6" address1="225 Kilt Court" city="Stockton" />
+	<user user_id="10000" address_id="10000" preferred_country_id="221" first_name="Kevin" last_name="Murdoff" primary_email="kmurdoff@livescribe.com" password="jGoXSJvLOpOD-7-2E2UwuPra7b4" />
+	<user user_id="20000" address_id="10000" preferred_country_id="221" first_name="Jack" last_name="Straw" primary_email="jackstr@livescribe.com" password="jGoXSJvLOpOD-7-2E2UwuPra7b4" />
+	<user_email user_email_id="10000" user_id="10000" email_address="kmurdoff@livescribe.com" /> 
+	<user_email user_email_id="20000" user_id="20000" email_address="jackstr@livescribe.com" />
+	<user_email user_email_id="30000" user_id="20000" email_address="bob@livescribe.com" />
+	<user_email user_email_id="40000" user_id="20000" email_address="jerry@livescribe.com" />
+	<user_setting user_setting_id="10000" user_id="10000" setting_name="intials" setting_value="KFM" />
+	<device_setting device_setting_id="10000" registered_device_id="10000" setting_name="pen_name" setting_value="KFM" />
+	<registered_device user_id="10000" device_serial_number="2594160246848" device_id="66" reg_token="845a43647d3f01a1ff11eb41fb9475cd" device_type="Pulse" />
+	<registered_device user_id="10000" device_serial_number="2594160246933" device_id="151" reg_token="14419b21d6fe29495586b9318954f038" device_type="Pulse" />
+	<registered_device user_id="20000" device_serial_number="7823948029286" device_id="20000" reg_token="9766d7617c405ed94981ad75f0eb43a2" device_type="Echo Wi-Fi" />
+<!-- 	<group group_id="10000" group_name="Test Group" group_type="Testing Group Type" /> -->
+	<role role_id="10000" role_name="Test Role" />
+	<x_user_group user_id="10000" group_id="1" />
+	<x_user_role user_id="10000" role_id="10000" />
+</dataset>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Register Your Pen</title>
+		<script language="javascript">
+
+			function submitForm() {
+
+				var optIn = document.getElementById("optIn");
+				alert("optIn: " + optIn.value);
+				if (optIn.checked == false) {
+					optIn.checked == true;
+					optIn.value = false;
+				}
+			}
+			
+		</script>
+	</head>
+	<body>
+	
+		<h1>Register Your Pen</h1>
+		
+		<form id="regForm" name="regForm" method="post" action="/services/lstokenservice/registration/complete.xml" onsubmit="submitForm()">
+		
+			<table>
+				<tr>
+					<td><label for="regCode">Registration Code:&nbsp;&nbsp;</label></td><td><input id="regCode" name="regCode" type="text" /></td>
+				</tr>
+				<tr>
+					<td><label for="email">Email Address:&nbsp;&nbsp;</label></td><td><input id="email" name="email" type="text" /></td>
+				</tr>
+				<tr>
+					<td><label for="password">Password:&nbsp;&nbsp;</label></td><td><input id="password" name="password" type="password" /></td>
+				</tr>
+				<tr>
+					<td>
+						<label for="locale">locale:&nbsp;&nbsp;</label></td><td>
+						<select id="locale" name="locale">
+							<option value="fr-FR">France</option>
+							<option value="de-DE">Germany</option>
+							<option value="it-IT">Italy</option>
+							<option value="es-ES">Spain</option>
+							<option value="en-US">United States</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="optIn">Opt-In:&nbsp;&nbsp;</label></td><td><input type="hidden" name="optIn" value=""></input><input id="optIn" name="optIn" type="checkbox" value="true" /></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input id="submit" name="submit" type="submit" value="Submit" /></td>
+				</tr>
+			</table>
+			
+		</form>
+
+	</body>
+</html>

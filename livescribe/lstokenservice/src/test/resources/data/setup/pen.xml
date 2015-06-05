@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dataset SYSTEM "../dtd/pen.dtd">
+<dataset>
+	<pen pen_id="66" display_id="AYE-AAA-ACE-8F" serialnumber="2594160246848" serialnumber_hex="25C00000040" firmware_version="1.4" pen_type="Pulse"/>
+	<pen pen_id="151" display_id="AYE-AAA-AE9-B3" serialnumber="2594160246933" serialnumber_hex="25C00000095" firmware_version="2.7" pen_type="Pulse"/>
+	<pen pen_id="20000" display_id="QBX-018-XVR-QQ" serialnumber="7823948029286" serialnumber_hex="78A00000066" firmware_version="1.5" pen_type="Echo Wi-Fi"/>
+	<pen pen_id="2304957" display_id="AYE-AAA-AQB-K5" serialnumber="2594160247175" serialnumber_hex="25C00000187" firmware_version="1.5" pen_type="Echo Wi-Fi"/>
+</dataset>

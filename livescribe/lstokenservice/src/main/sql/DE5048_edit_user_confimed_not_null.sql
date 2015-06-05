@@ -1,0 +1,1 @@
+ALTER TABLE `consumer`.`user` MODIFY COLUMN `confirmed` bit(1) NOT NULL DEFAULT b'0';

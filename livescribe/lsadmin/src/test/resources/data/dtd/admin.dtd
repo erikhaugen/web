@@ -1,0 +1,20 @@
+<!ELEMENT dataset (document*, page*, session*, timemap*)>
+
+<!ELEMENT document EMPTY>
+<!ATTLIST document guid						CDATA #IMPLIED>
+<!ATTLIST document user						CDATA #IMPLIED>
+<!ATTLIST document en_user_id				CDATA #IMPLIED>
+<!ATTLIST document doc_name					CDATA #IMPLIED>
+<!ATTLIST document copy						CDATA #IMPLIED>
+<!ATTLIST document archive					CDATA #IMPLIED>
+<!ATTLIST document evernote_guid_notebook	CDATA #IMPLIED>
+<!ATTLIST document pen_serial				CDATA #IMPLIED>
+<!ATTLIST document created					CDATA #IMPLIED>
+<!ATTLIST document last_modified			CDATA #IMPLIED>
+<!ATTLIST document last_modified_by			CDATA #IMPLIED>
+
+<!ELEMENT page EMPTY>
+
+<!ELEMENT session EMPTY>
+
+<!ELEMENT timemap EMPTY>
