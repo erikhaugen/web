@@ -1,0 +1,28 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+        version="1.0">
+    <persistence-unit name="evernotePersist" transaction-type="RESOURCE_LOCAL">
+    	<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+    	
+    	<class>org.kfm.jpa.AfdImage</class>
+    	<class>org.kfm.jpa.Archive</class>
+    	<class>org.kfm.jpa.Audio</class>
+    	<class>org.kfm.jpa.AudioError</class>
+    	<class>org.kfm.jpa.ContentAccess</class>
+    	<class>org.kfm.jpa.Document</class>
+    	<class>org.kfm.jpa.Image</class>
+    	<class>org.kfm.jpa.Page</class>
+    	<class>org.kfm.jpa.Session</class>
+    	<class>org.kfm.jpa.SyncConfig</class>
+    	<class>org.kfm.jpa.SyncTimesInfo</class>
+    	<class>org.kfm.jpa.Template</class>
+    	<class>org.kfm.jpa.TimeMap</class>
+    	<properties>
+    		<property name="openjpa.ConnectionURL" value="jdbc:mysql://localhost:3306/evernote"/>
+    		<property name="openjpa.ConnectionUserName" value="lsshareuser"/>
+    		<property name="openjpa.ConnectionPassword" value="5up3r53cr3t"/>
+    		<property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+    	</properties>
+    </persistence-unit>
+</persistence>
