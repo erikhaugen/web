@@ -1,0 +1,282 @@
+<dataConfig>
+
+	<dataSource type="JdbcDataSource" driver="com.frontbase.jdbc.FBJDriver" url="jdbc:frontbase://db1-test.pensoft.local/qa.consumer/isolation=read_committed/locking=optimistic/readonly=true/" user="_system" password="c0d1ng" />
+
+	<document name="pencasts">
+        
+        <!-- Cartoons -->
+		<entity name="UGFile" pk="primaryKey" transformer="com.livescribe.community.search.PrimaryKeyTransformer, ClobTransformer" query="select * from UGFile where categoryKey = x'00000a0101c90000f1d50c000000011760ad35e3203ce0de'">
+			<field column="primaryKey"			name="filePrimaryKey" />
+			<field column="displayName"			name="fileDisplayName" />
+			<field column="fileDate"			name="fileFileDate" />
+			<field column="globalShare"			name="fileGlobalShare" />
+			<field column="rating"				name="fileRating" />
+			
+			<entity name="UGCategory" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select displayName from UGCategory where primaryKey = x'${UGFile.categoryKey}'">
+				
+				<field column="displayName"			name="catDisplayName" />
+			</entity>
+			
+			<entity name="UserProfile" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select email, firstName, lastName, shortId, screenName from UserProfile where primaryKey = x'${UGFile.userProfileKey}'">
+				
+				<field column="screenName"			name="authorScreenName" />
+			</entity>
+			
+		</entity>
+		
+        <!-- Blogs -->
+		<entity name="UGFile" pk="primaryKey" transformer="com.livescribe.community.search.PrimaryKeyTransformer" query="select * from UGFile where categoryKey = x'00000a0101c90000f1d50e000000011760ad35e3203ce0de'">
+			<field column="primaryKey"			name="filePrimaryKey" />
+			<field column="displayName"			name="fileDisplayName" />
+			<field column="fileDate"			name="fileFileDate" />
+			<field column="globalShare"			name="fileGlobalShare" />
+			<field column="rating"				name="fileRating" />
+			
+			<entity name="UGCategory" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select displayName from UGCategory where primaryKey = x'${UGFile.categoryKey}'">
+				
+				<field column="displayName"			name="catDisplayName" />
+			</entity>
+			
+			<entity name="UserProfile" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select email, firstName, lastName, shortId, screenName from UserProfile where primaryKey = x'${UGFile.userProfileKey}'">
+				
+				<field column="screenName"			name="authorScreenName" />
+			</entity>
+			
+		</entity>
+		
+        <!-- Academic -->
+		<entity name="UGFile" pk="primaryKey" transformer="com.livescribe.community.search.PrimaryKeyTransformer" query="select * from UGFile where categoryKey = x'00000a0101c90000f1d510000000011760ad35e3203ce0de'">
+
+			<field column="primaryKey"			name="filePrimaryKey" />
+			<field column="displayName"			name="fileDisplayName" />
+			<field column="fileDate"			name="fileFileDate" />
+			<field column="globalShare"			name="fileGlobalShare" />
+			<field column="rating"				name="fileRating" />
+			
+			<entity name="UGCategory" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select displayName from UGCategory where primaryKey = x'${UGFile.categoryKey}'">
+				
+				<field column="displayName"			name="catDisplayName" />
+			</entity>
+			
+			<entity name="UserProfile" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select email, firstName, lastName, shortId, screenName from UserProfile where primaryKey = x'${UGFile.userProfileKey}'">
+				
+				<field column="screenName"			name="authorScreenName" />
+			</entity>
+			
+		</entity>
+		
+        <!-- Unspecified
+		<entity name="UGFile" pk="primaryKey" transformer="com.livescribe.community.search.PrimaryKeyTransformer" query="select * from UGFile where categoryKey = x'00000a01012700002afb020000000118e2c379693d597a10'">
+			
+			<field column="primaryKey"			name="filePrimaryKey" />
+			<field column="displayName"			name="fileDisplayName" />
+			<field column="fileDate"			name="fileFileDate" />
+			<field column="globalShare"			name="fileGlobalShare" />
+			<field column="rating"				name="fileRating" />
+			
+			<entity name="UGCategory" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select displayName from UGCategory where primaryKey = x'${UGFile.categoryKey}'">
+				
+				<field column="displayName"			name="catDisplayName" />
+			</entity>
+			
+			<entity name="UserProfile" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select email, firstName, lastName, shortId, screenName from UserProfile where primaryKey = x'${UGFile.userProfileKey}'">
+				
+				<field column="screenName"			name="authorScreenName" />
+			</entity>
+			
+		</entity>
+		-->
+        <!-- Creative -->
+		<entity name="UGFile" pk="primaryKey" transformer="com.livescribe.community.search.PrimaryKeyTransformer" query="select * from UGFile where categoryKey = x'00000a0101c90000f1d504000000011760ad35e3203ce0de'">
+
+			<field column="primaryKey"			name="filePrimaryKey" />
+			<field column="displayName"			name="fileDisplayName" />
+			<field column="fileDate"			name="fileFileDate" />
+			<field column="globalShare"			name="fileGlobalShare" />
+			<field column="rating"				name="fileRating" />
+			
+			<entity name="UGCategory" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select displayName from UGCategory where primaryKey = x'${UGFile.categoryKey}'">
+				
+				<field column="displayName"			name="catDisplayName" />
+			</entity>
+			
+			<entity name="UserProfile" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select email, firstName, lastName, shortId, screenName from UserProfile where primaryKey = x'${UGFile.userProfileKey}'">
+				
+				<field column="screenName"			name="authorScreenName" />
+			</entity>
+			
+		</entity>
+		
+        <!-- Random -->
+		<entity name="UGFile" pk="primaryKey" transformer="com.livescribe.community.search.PrimaryKeyTransformer" query="select * from UGFile where categoryKey = x'00000A0101C90000F1D502000000011760AD35E3203CE0DE'">
+
+			<field column="primaryKey"			name="filePrimaryKey" />
+			<field column="displayName"			name="fileDisplayName" />
+			<field column="fileDate"			name="fileFileDate" />
+			<field column="globalShare"			name="fileGlobalShare" />
+			<field column="rating"				name="fileRating" />
+			
+			<entity name="UGCategory" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select displayName from UGCategory where primaryKey = x'${UGFile.categoryKey}'">
+				
+				<field column="displayName"			name="catDisplayName" />
+			</entity>
+			
+			<entity name="UserProfile" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select email, firstName, lastName, shortId, screenName from UserProfile where primaryKey = x'${UGFile.userProfileKey}'">
+				
+				<field column="screenName"			name="authorScreenName" />
+			</entity>
+			
+		</entity>
+		
+        <!-- How-Tos -->
+		<entity name="UGFile" pk="primaryKey" transformer="com.livescribe.community.search.PrimaryKeyTransformer" query="select * from UGFile where categoryKey = x'00000A0101C90000F1D506000000011760AD35E3203CE0DE'">
+
+			<field column="primaryKey"			name="filePrimaryKey" />
+			<field column="displayName"			name="fileDisplayName" />
+			<field column="fileDate"			name="fileFileDate" />
+			<field column="globalShare"			name="fileGlobalShare" />
+			<field column="rating"				name="fileRating" />
+			
+			<entity name="UGCategory" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select displayName from UGCategory where primaryKey = x'${UGFile.categoryKey}'">
+				
+				<field column="displayName"			name="catDisplayName" />
+			</entity>
+			
+			<entity name="UserProfile" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select email, firstName, lastName, shortId, screenName from UserProfile where primaryKey = x'${UGFile.userProfileKey}'">
+				
+				<field column="screenName"			name="authorScreenName" />
+			</entity>
+			
+		</entity>
+		
+        <!-- Business -->
+		<entity name="UGFile" pk="primaryKey" transformer="com.livescribe.community.search.PrimaryKeyTransformer" query="select * from UGFile where categoryKey = x'00000A0101C90000F1D508000000011760AD35E3203CE0DE'">
+
+			<field column="primaryKey"			name="filePrimaryKey" />
+			<field column="displayName"			name="fileDisplayName" />
+			<field column="fileDate"			name="fileFileDate" />
+			<field column="globalShare"			name="fileGlobalShare" />
+			<field column="rating"				name="fileRating" />
+			
+			<entity name="UGCategory" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select displayName from UGCategory where primaryKey = x'${UGFile.categoryKey}'">
+				
+				<field column="displayName"			name="catDisplayName" />
+			</entity>
+			
+			<entity name="UserProfile" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select email, firstName, lastName, shortId, screenName from UserProfile where primaryKey = x'${UGFile.userProfileKey}'">
+				
+				<field column="screenName"			name="authorScreenName" />
+			</entity>
+			
+		</entity>
+		
+        <!-- Fun Stuff -->
+		<entity name="UGFile" pk="primaryKey" transformer="com.livescribe.community.search.PrimaryKeyTransformer" query="select * from UGFile where categoryKey = x'00000A0101C90000F1D50A000000011760AD35E3203CE0DE'">
+			
+			<field column="primaryKey"			name="filePrimaryKey" />
+			<field column="displayName"			name="fileDisplayName" />
+			<field column="fileDate"			name="fileFileDate" />
+			<field column="globalShare"			name="fileGlobalShare" />
+			<field column="rating"				name="fileRating" />
+			
+			<entity name="UGCategory" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select displayName from UGCategory where primaryKey = x'${UGFile.categoryKey}'">
+				
+				<field column="displayName"			name="catDisplayName" />
+			</entity>
+			
+			<entity name="UserProfile" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select email, firstName, lastName, shortId, screenName from UserProfile where primaryKey = x'${UGFile.userProfileKey}'">
+				
+				<field column="screenName"			name="authorScreenName" />
+			</entity>
+			
+		</entity>
+		
+        <!-- Moments -->
+		<entity name="UGFile" pk="primaryKey" transformer="com.livescribe.community.search.PrimaryKeyTransformer" query="select * from UGFile where categoryKey = x'484A1CB3000AF44B00F90000000000000000000000000000'">
+			
+			<field column="primaryKey"			name="filePrimaryKey" />
+			<field column="displayName"			name="fileDisplayName" />
+			<field column="fileDate"			name="fileFileDate" />
+			<field column="globalShare"			name="fileGlobalShare" />
+			<field column="rating"				name="fileRating" />
+			
+			<entity name="UGCategory" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select displayName from UGCategory where primaryKey = x'${UGFile.categoryKey}'">
+				
+				<field column="displayName"			name="catDisplayName" />
+			</entity>
+			
+			<entity name="UserProfile" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select email, firstName, lastName, shortId, screenName from UserProfile where primaryKey = x'${UGFile.userProfileKey}'">
+				
+				<field column="screenName"			name="authorScreenName" />
+			</entity>
+			
+		</entity>
+		
+        <!-- Unspecified -->
+		<entity name="UGFile" pk="primaryKey" transformer="com.livescribe.community.search.PrimaryKeyTransformer" query="select * from UGFile where categoryKey = x'00000A01012700002AFB020000000118E2C379693D597A10'">
+			
+			<field column="primaryKey"			name="filePrimaryKey" />
+			<field column="displayName"			name="fileDisplayName" />
+			<field column="fileDate"			name="fileFileDate"		dateTimeFormat="yyyy-MM-dd' 'hh:mm:ss" />
+			<field column="globalShare"			name="fileGlobalShare" />
+			<field column="rating"				name="fileRating" />
+			
+			<entity name="UGCategory" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select displayName from UGCategory where primaryKey = x'${UGFile.categoryKey}'">
+				
+				<field column="displayName"			name="catDisplayName" />
+			</entity>
+			
+			<entity name="UserProfile" 
+				transformer="com.livescribe.community.search.PrimaryKeyTransformer" 
+				query="select email, firstName, lastName, shortId, screenName from UserProfile where primaryKey = x'${UGFile.userProfileKey}'">
+				
+				<field column="screenName"			name="authorScreenName" />
+			</entity>
+			
+		</entity>
+		
+	</document>
+	
+</dataConfig>

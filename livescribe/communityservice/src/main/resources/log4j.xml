@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="ERROR" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/Livescribe/Tomcat/Logs/community/community-error-${logfile}.log"/>
+		<param name="Threshold" value="ERROR"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c] - %m%n"/>
+		</layout>
+	</appender>
+	
+	<appender name="logfileall" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="/Livescribe/Tomcat/Logs/community/lscommunity-${logfile}.log4j.log" />
+		<param name="MaxFileSize" value="20MB" />
+		<param name="MaxBackupIndex" value="9" />
+		<param name="Threshold" value="info" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%c] %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="debug" />
+			<param name="LevelMax" value="fatal" />
+			<param name="AcceptOnMatch" value="true" />
+		</filter> 
+		<filter class="org.apache.log4j.varia.DenyAllFilter" />
+	</appender>
+        
+	<appender name="COMMUNITY" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/Livescribe/Tomcat/Logs/community/community-app-${logfile}.log"/>
+		<param name="Threshold" value="debug"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%25c{1}] - %m%n"/>
+		</layout>
+	</appender>
+
+  <logger name="org.hibernate.cache">
+    <level value="warn" />
+    <appender-ref ref="logfileall" />
+  </logger>
+
+  <logger name="org.hibernate.hql.ast.tree">
+    <level value="info" />
+    <appender-ref ref="logfileall" />
+  </logger>
+        
+  <logger name="org.hibernate">
+    <level value="debug" />
+    <appender-ref ref="logfileall" />
+  </logger>
+	
+  <logger name="org.spring">
+    <level value="debug" />
+    <appender-ref ref="logfileall" />
+  </logger>
+        
+  <logger name="com.livescribe">
+    <level value="debug" />
+    <appender-ref ref="COMMUNITY"/>
+  </logger>
+
+  <root>
+    <priority value="error" />
+    <appender-ref ref="ERROR" />
+  </root>
+        
+</log4j:configuration>

@@ -1,0 +1,920 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.livescribe</groupId>
+	<artifactId>communityservice</artifactId>
+	<packaging>war</packaging>
+	<version>2.2.0-SNAPSHOT</version>
+	<name>LSCommunityService</name>
+	<url>http://www.livescribe.com/services/community</url>
+
+	<organization>
+		<name>Livescribe, Inc.</name>
+		<url>http://www.livescribe.com</url>
+	</organization>
+	
+	<developers>
+		<developer>
+			<id>smukker</id>
+			<name>Surat Mukker</name>
+			<email>smukker@livescribe.com</email>
+			<url>http://www.livescribe.com</url>
+			<organization>Livescribe, Inc.</organization>
+			<organizationUrl>http://www.livescribe.com</organizationUrl>
+			<roles>
+				<role>Team Lead</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>-8</timezone>
+			<properties>
+				<picUrl>/images/maven-feature.png</picUrl>
+			</properties>
+		</developer>
+		<developer>
+			<id>kmurdoff</id>
+			<name>Kevin Murdoff</name>
+			<email>kmurdoff@livescribe.com</email>
+			<url>http://www.livescribe.com</url>
+			<organization>Livescribe, Inc.</organization>
+			<organizationUrl>http://www.livescribe.com</organizationUrl>
+			<roles>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>-8</timezone>
+			<properties>
+				<picUrl>images/SYF-Stone.jpg</picUrl>
+			</properties>
+		</developer>
+	</developers>
+	
+	<scm>
+		<connection>scm:svn:svn+ssh://svnaccess@svn.livescribe.com/svn/LSRepository/WebCore/opensource/communityservice/trunk/</connection>
+		<developerConnection>scm:svn:svn+ssh://svnaccess@svn.livescribe.com/svn/LSRepository/WebCore/opensource/communityservice/trunk/</developerConnection>
+	</scm>
+  
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>nexus</id>
+			<name>Nexus Releases Repository</name>
+			<url>http://svn.livescribe.com:8081/nexus/content/repositories/releases</url>
+			<layout>default</layout>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>nexus-snapshots</id>
+			<name>Nexus Snapshots Repository</name>
+			<url>http://svn.livescribe.com:8081/nexus/content/repositories/snapshots</url>
+			<layout>default</layout>
+		</snapshotRepository>
+	</distributionManagement>
+
+    <repositories>
+      <repository>
+        <id>livescribe-repo</id>
+        <name>livescribe-repo</name>
+        <url>
+          http://svn.livescribe.com:8081/nexus/content/groups/public/
+        </url>
+      </repository>
+      <!-- 
+		<repository>
+			<id>maven2-repo1</id>
+			<name>Maven 2 Repository</name>
+			<url>http://repo1.maven.org/maven2/</url>
+			<layout>default</layout>
+		</repository>
+		<repository>
+			<id>jboss-maven2-repo1</id>
+			<name>JBoss Maven 2 Repository</name>
+			<url>http://repository.jboss.org/maven2/</url>
+			<layout>default</layout>
+		</repository>
+      -->
+    </repositories>
+      
+	<profiles>
+	
+		<profile>
+			<id>Build From Hudson</id>
+			<activation>
+				<property>
+					<name>buildfromhudson</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<directory>${hudson-build-folder}/${project.version}_${hudson-build-number}</directory>
+				<finalName>${project.artifactId}-${project.version}_${hudson-build-number}</finalName>
+				<plugins>
+					<!-- 
+					==============================================
+						Maven Surefire Plugin
+					============================================== -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<phase>test</phase>
+								<configuration>
+									<excludes>
+										<exclude>**/*.java</exclude>
+									</excludes>
+<!--									<skipTests>true</skipTests>-->
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>local</id>
+			<activation>
+				<property>
+					<name>local</name>
+					<value>true</value>
+				</property>
+			</activation>
+			
+			<repositories>
+				<repository>
+					<id>localhost-repo</id>
+					<name>localhost-repo</name>
+					<url>http://localhost:8081/nexus/content/groups/public/</url>
+				</repository>
+				<repository>
+					<id>livescribe-repo</id>
+					<name>livescribe-repo</name>
+					<url>http://svn.livescribe.com:8081/nexus/content/groups/public/</url>
+				</repository>
+			</repositories>
+			
+			<distributionManagement>
+				<repository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>nexus</id>
+					<name>Nexus Releases Repository</name>
+					<url>http://localhost:8081/nexus/content/repositories/releases</url>
+					<layout>default</layout>
+				</repository>
+				<snapshotRepository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>nexus-snapshots</id>
+					<name>Nexus Snapshots Repository</name>
+					<url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+					<layout>default</layout>
+				</snapshotRepository>
+				<site>
+					<id>community.website</id>
+					<name>Community Service Website</name>
+					<url>file://Library/WebServer/Documents/services/communityservice</url>
+				</site>
+			</distributionManagement>
+		</profile>
+		
+	</profiles>
+	
+	<dependencies>
+
+		<!-- 
+		==============================================
+			Testing Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>2.4.7</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>3.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>httpunit</groupId>
+			<artifactId>httpunit</artifactId>
+			<version>1.7</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.0.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.frontbase</groupId>
+			<artifactId>frontbase-driver</artifactId>
+			<version>2.5</version>
+		</dependency>
+
+		<!-- 
+		==============================================
+			Jakarta Commons Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.6</version>
+		</dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.4</version>
+        </dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.5</version>
+		</dependency>
+    
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+		
+		<dependency>
+            <groupId>com.danga</groupId>
+            <artifactId>memcached</artifactId>
+            <version>2.0</version>
+        </dependency>        
+		
+		<!-- 
+		==============================================
+			Livescribe Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>com.livescribe</groupId>
+			<artifactId>baseutils</artifactId>
+			<version>2.7-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.livescribe</groupId>
+			<artifactId>lsconfig</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.livescribe.framework</groupId>
+			<artifactId>services</artifactId>
+			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.livescribe</groupId>
+			<artifactId>lsauthservice</artifactId>
+			<version>1.1.0-SNAPSHOT</version>
+			<classifier>client</classifier>
+<!--			<scope>compile</scope>-->
+		</dependency>
+
+		<!-- 
+		==============================================
+			Spring Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-beans</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-jdbc</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-jmx</artifactId>
+	    	<version>2.0.8</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-remoting</artifactId>
+	    	<version>2.0.8</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-test</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-tx</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-orm</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-web</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-webmvc</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+	    <!-- OAuth 2.0 -->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.security.oauth</groupId>-->
+<!--			<artifactId>spring-security-oauth</artifactId>-->
+<!--			<version>1.0.0.M1</version>-->
+<!--		</dependency>-->
+		<!-- OAuth 1.0 -->
+<!--		<dependency>-->
+<!--			<groupId>org.codehaus.spring-security-oauth</groupId>-->
+<!--			<artifactId>spring-security-oauth</artifactId>-->
+<!--			<version>3.19.SS3</version>-->
+<!--		</dependency>-->
+	    
+	    <!-- 
+	    ==============================================
+	    	memcached Client Dependencies
+	    ============================================== -->
+	<!-- 	<dependency>
+			<groupId>spy</groupId>
+			<artifactId>memcached</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.danga</groupId>
+			<artifactId>memcached</artifactId>
+			<version>2.0</version>
+		</dependency>
+	 -->
+	    <!-- 
+	    ==============================================
+	    	Hibernate Dependencies
+	    ============================================== -->
+	    <dependency>
+	    	<groupId>org.hibernate</groupId>
+	    	<artifactId>hibernate-core</artifactId>
+	    	<version>${version.hibernate-core}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.hibernate</groupId>
+	    	<artifactId>hibernate-annotations</artifactId>
+	    	<version>${version.hibernate-anno}</version>
+	    </dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>3.3.0.CR2</version>
+		</dependency>
+	    <dependency>
+	    	<groupId>org.hibernate</groupId>
+	    	<artifactId>hibernate-jbosscache2</artifactId>
+	    	<version>${version.hibernate-core}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.hibernate</groupId>
+	    	<artifactId>hibernate-jmx</artifactId>
+	    	<version>${version.hibernate-core}</version>
+	    </dependency>
+	    
+		<!-- Used for reverse engineering
+	    <dependency>
+	    	<groupId>org.hibernate</groupId>
+	    	<artifactId>hibernate-tools</artifactId>
+	    	<version>${version.hibernate-tools}</version>
+	    </dependency>
+		-->
+	    <dependency>
+	    	<groupId>javassist</groupId>
+	    	<artifactId>javassist</artifactId>
+	    	<version>3.8.0.GA</version>
+	    </dependency>
+	    
+<!--	    <dependency>-->
+<!--	    	<groupId>com.frontbase</groupId>-->
+<!--	    	<artifactId>frontbase-driver</artifactId>-->
+<!--	    	<version>2.5</version>-->
+<!--	    </dependency>-->
+	    
+	    <dependency>
+	      <groupId>org.aspectj</groupId>
+	      <artifactId>aspectjrt</artifactId>
+	      <version>1.6.9</version>
+	    </dependency>
+	     
+	    <dependency>
+	      <groupId>org.aspectj</groupId>
+	      <artifactId>aspectjweaver</artifactId>
+	      <version>1.6.9</version>
+	    </dependency>
+	
+		<dependency>
+	    	<groupId>org.slf4j</groupId>
+	    	<artifactId>slf4j-api</artifactId>
+	    	<version>1.5.8</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.slf4j</groupId>
+	    	<artifactId>slf4j-simple</artifactId>
+	    	<version>1.5.8</version>
+	    </dependency>
+	
+	    <dependency>
+	    	<groupId>antlr</groupId>
+	    	<artifactId>antlr</artifactId>
+	    	<version>2.7.7</version>
+	    </dependency>
+	
+	    <dependency>
+	    	<groupId>cglib</groupId>
+	    	<artifactId>cglib</artifactId>
+	    	<version>2.2</version>
+	    </dependency>
+		
+		<!-- Used in parsing 'flash.xml' files. -->
+	    <dependency>
+	    	<groupId>dom4j</groupId>
+	    	<artifactId>dom4j</artifactId>
+	    	<version>1.6.1</version>
+	    </dependency>
+		
+	    <dependency>
+	    	<groupId>jaxen</groupId>
+	    	<artifactId>jaxen</artifactId>
+	    	<version>1.1.1</version>
+	    </dependency>
+	
+		<!-- Reference implementation of Atom/RSS spec. -->
+		<dependency>
+			<groupId>rome</groupId>
+			<artifactId>rome</artifactId>
+			<version>1.0</version>
+		</dependency>
+	    
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+	
+	    <!-- 
+	    ==============================================
+	    	Apache XML-RPC Dependencies
+	    ============================================== -->
+		<dependency>
+			<groupId>org.apache.xmlrpc</groupId>
+			<artifactId>xmlrpc-common</artifactId>
+			<version>3.1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlrpc</groupId>
+			<artifactId>xmlrpc-client</artifactId>
+			<version>3.1.3</version>
+		</dependency>
+
+	    <!-- 
+	    ==============================================
+	    	Apache Solr Dependencies
+	    ============================================== -->
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-core</artifactId>
+			<version>1.4.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-solrj</artifactId>
+			<version>1.4.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-dataimporthandler</artifactId>
+			<version>1.4.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-dataimporthandler-extras</artifactId>
+			<version>1.4.1</version>
+			<scope>compile</scope>
+		</dependency>
+
+	    <!-- 
+	    ==============================================
+	    	JBoss Cache Dependencies
+	    ============================================== -->
+	    <dependency>
+	    	<groupId>org.jboss.cache</groupId>
+	    	<artifactId>jbosscache-core</artifactId>
+	    	<version>3.2.2.GA</version>
+	    </dependency>
+	
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.1</version>
+		</dependency>
+	
+		<!-- 
+		==============================================
+			Java SE & EE Dependencies
+		============================================== -->
+	    <dependency>
+	    	<groupId>javax.servlet</groupId>
+	    	<artifactId>jstl</artifactId>
+	    	<version>1.2</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>javax.servlet</groupId>
+	    	<artifactId>servlet-api</artifactId>
+	    	<version>2.5</version>
+	    	<scope>provided</scope>
+	    </dependency>
+	    <dependency>
+	    	<groupId>javax.transaction</groupId>
+	    	<artifactId>transaction-api</artifactId>
+	    	<version>1.1</version>
+	    </dependency>
+	    
+	</dependencies>
+	
+	<build>
+		<plugins>
+		
+			<!-- 
+			==============================================
+				Maven APT Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+                <version>1.0-alpha-4</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+							<goal>test-process</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+	      
+			<!-- 
+			==============================================
+				Maven Compiler Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Maven Assembly Plugin
+			============================================== -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<!-- <descriptorRefs>
+					<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs> -->
+					<descriptors>
+						<descriptor>src/main/assembly/solr.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- append to the packaging phase. -->
+						<goals>
+							<goal>single</goal> <!-- goals == mojos -->
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		
+			<!-- 
+			==============================================
+				Maven Surefire Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>com/livescribe/community/ConfigTest.java</include>
+						<include>com/livescribe/community/dao/PencastDaoTest.java</include>
+<!--						<include>com/livescribe/community/dao/SolrDaoTest.java</include>-->
+<!--						<include>com/livescribe/community/dao/UserDaoTest.java</include>-->
+<!-- 						<include>com/livescribe/community/service/CachingTest.java</include> -->
+						<include>com/livescribe/community/service/PencastServiceTest.java</include>
+<!--						<include>com/livescribe/community/service/SearchServiceTest.java</include>-->
+<!-- 						<include>com/livescribe/community/service/UserServiceTest.java</include> -->
+					</includes>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Build Number Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.0-beta-4</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>false</doCheck>
+					<doUpdate>false</doUpdate>
+					<scmDirectory>${basedir}</scmDirectory>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Tomcat Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<configuration>
+					<url>http://localhost:8380/manager</url>
+				  	<path>/community</path>
+				</configuration>
+			</plugin>
+		
+			<!-- 
+			==============================================
+				Jetty Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<configuration>
+<!--					<contextPath>/community</contextPath>-->
+<!--					<tmpDir>${basedir}/target/${project.artifactId}-${project.version}</tmpDir>-->
+					<webAppSourceDirectory>${basedir}/target/${project.artifactId}-${project.version}</webAppSourceDirectory>
+					<webXml>${basedir}/target/${project.artifactId}-${project.version}/WEB-INF/web.xml</webXml>
+					<classesDirectory>${basedir}/target/${project.artifactId}-${project.version}/WEB-INF/classes</classesDirectory>
+<!--					<scanTargets>-->
+<!--						<scanTarget>${basedir}/src/main/resources</scanTarget>-->
+<!--					</scanTargets>-->
+					<connectors>
+						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+							<port>8888</port>
+						</connector>
+					</connectors>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Resource Encodings Plugin
+			============================================== -->
+			<plugin>
+	          <groupId>org.apache.maven.plugins</groupId>
+	          <artifactId>maven-resources-plugin</artifactId>
+	          <configuration>
+	            <encoding>UTF-8</encoding>
+	          </configuration>
+	        </plugin>
+	        
+	        <plugin>
+	          <groupId>org.apache.maven.plugins</groupId>
+	          <artifactId>maven-eclipse-plugin</artifactId>
+	          <configuration>
+	            <ajdtVersion>none</ajdtVersion>
+	          </configuration>
+	        </plugin> 
+	        
+			<!-- 
+			==============================================
+				Javadoc Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<stylesheetfile>${basedir}/src/site/resources/css/javadoc.css</stylesheetfile>
+					<links>
+						<link>http://java.sun.com/javase/6/docs/api/</link>
+						<link>http://download.oracle.com/docs/cd/E17410_01/javaee/6/api/</link>
+						<link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
+						<link>http://docs.jboss.org/hibernate/core/3.3/api/index.html</link>
+						<link>http://logging.apache.org/log4j/1.2/apidocs/index.html</link>
+						<link>http://dom4j.sourceforge.net/dom4j-1.6.1/apidocs/index.html</link>
+						<link>http://www.dbunit.org/apidocs/index.html</link>
+					</links>
+				</configuration>
+			</plugin>
+		
+			<!-- 
+			==============================================
+				Maven WAR Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<SVN-Revision>${buildNumber}</SVN-Revision>
+							<Hudson-Build-Number>${hudson-build-number}</Hudson-Build-Number>
+							<Build-Date>${maven.build.timestamp}</Build-Date>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Maven Deploy Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.5</version>
+			</plugin>
+		
+			<!-- 
+			==============================================
+				Maven Release Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0</version>
+				<configuration>
+					<tagBase>svn+ssh://${svn-user}@svn.livescribe.com/svn/LSRepository/WebCore/opensource/communityservice/tags</tagBase>
+					<archive>
+						<manifestEntries>
+							<Svn-Revision>${buildNumber}</Svn-Revision>
+							<Hudson-Build-Number>${hudson-build-number}</Hudson-Build-Number>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+				
+			<!-- 
+			==============================================
+				Maven Site Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<inputDirectory>${project.reporting.outputDirectory}</inputDirectory>
+					<outputDirectory>/Library/WebServer/Documents/services/community</outputDirectory>
+				</configuration>
+			</plugin>
+		
+		</plugins>
+	</build>
+	
+	<reporting>
+		<plugins>
+			<!-- 
+			==============================================
+				Javadoc Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<detectLinks>true</detectLinks>
+					<stylesheetfile>${basedir}/src/site/resources/css/javadoc.css</stylesheetfile>
+					<links>
+						<link>http://java.sun.com/javase/6/docs/api/</link>
+						<link>http://download.oracle.com/docs/cd/E17410_01/javaee/6/api/</link>
+						<link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
+						<link>http://static.springsource.org/spring-security/site/docs/3.0.x/apidocs/index.html</link>
+						<link>http://docs.jboss.org/hibernate/core/3.3/api/index.html</link>
+						<link>http://logging.apache.org/log4j/1.2/apidocs/index.html</link>
+						<link>http://dom4j.sourceforge.net/dom4j-1.6.1/apidocs/index.html</link>
+						<link>http://www.dbunit.org/apidocs/index.html</link>
+						<link>http://ws.apache.org/xmlrpc/apidocs/index.html</link>
+						<link>http://lucene.apache.org/solr/api/solrj/index.html</link>
+					</links>
+				</configuration>
+			</plugin>
+			
+			<!-- 
+			==============================================
+				Change Log Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changelog-plugin</artifactId>
+				<version>2.2</version>
+<!--				<configuration>-->
+<!--				</configuration>-->
+			</plugin>
+					
+			<!-- 
+			==============================================
+				Project Info Reports Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.2</version>
+			</plugin>		
+
+			<!-- 
+			==============================================
+				Maven Surefire Report Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.6</version>
+			</plugin>
+		</plugins>
+	</reporting>
+	
+	<properties>
+		<svn-user>${env.USER}</svn-user>
+		<version.springframework>3.0.3.RELEASE</version.springframework>
+		<version.hibernate-anno>3.4.0.GA</version.hibernate-anno>
+		<version.hibernate-core>3.3.2.GA</version.hibernate-core>
+		<version.hibernate-tools>3.3.0.GA</version.hibernate-tools>
+<!--		<test.db.driver>org.hsqldb.jdbcDriver</test.db.driver>-->
+<!--		<test.db.url>jdbc:hsqldb:file:/Users/kmurdoff/wkspc/communityservice/target/test-classes/testdb;server.remote_open=true</test.db.url>-->
+	</properties>
+	
+</project>

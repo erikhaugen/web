@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<configuration>
+
+  <appName>CommunityService</appName>
+
+  <context>
+    <name>CommunityService</name>
+    <isApplication>true</isApplication>
+  </context>
+  
+  <pencast>
+    <cache>
+      <interval>
+        <default>15</default>
+      </interval>
+      <shortid>
+      	<interval>30</interval>
+    	<fetchSize>
+			<default>20</default>
+			<max>100</max>
+      	</fetchSize>
+      </shortid>
+      <categorylist>
+      	<interval>360</interval>
+    	<fetchSize>
+			<default>20</default>
+			<max>100</max>
+      	</fetchSize>
+      </categorylist>
+      <mostviewed>
+      	<interval>60</interval>
+    	<fetchSize>
+			<default>20</default>
+			<max>100</max>
+      	</fetchSize>
+      </mostviewed>
+      <top>
+      	<interval>60</interval>
+    	<fetchSize>
+			<default>20</default>
+			<max>100</max>
+      	</fetchSize>
+      </top>
+      <recent>
+      	<interval>15</interval>
+    	<fetchSize>
+			<default>20</default>
+			<max>100</max>
+      	</fetchSize>
+      </recent>
+      <category>
+        <interval>60</interval>
+    	<fetchSize>
+			<default>20</default>
+			<max>100</max>
+      	</fetchSize>
+      </category>
+      <user>
+      	<interval>15</interval>
+    	<fetchSize>
+			<default>20</default>
+			<max>100</max>
+      	</fetchSize>
+      </user>
+    </cache>
+    <list>
+      <fetchSize>
+        <default>20</default>
+        <max>100</max>
+      </fetchSize>
+    </list>
+  </pencast>
+  
+  <memcache>
+    <woapps>
+      <activeUserMemcacheGroupName>activeuser</activeUserMemcacheGroupName>
+    </woapps>
+  </memcache>
+  
+</configuration>

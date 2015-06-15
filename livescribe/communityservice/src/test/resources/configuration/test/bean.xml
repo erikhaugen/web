@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+       
+<!--	<bean id="testDataSource" name="testDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
+<!--		<property name="jdbcUrl"><value>jdbc:hsqldb:mem:testdb</value></property>-->
+<!--		<property name="user"><value>sa</value></property>-->
+<!--		<property name="password"><value></value></property>-->
+<!--	</bean>-->
+
+<!--	<bean id="hibernatePropertiesOverride" name="hibernatePropertiesOverride" class="org.springframework.beans.factory.config.PropertiesFactoryBean">-->
+<!--		<property name="properties">-->
+<!--			<props>-->
+<!--				<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>-->
+<!--				<prop key="connection.driver_class">org.hsqldb.jdbcDriver</prop>-->
+<!--				<prop key="hibernate.show_sql">false</prop>-->
+<!--				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>-->
+<!--			</props>-->
+<!--		</property>-->
+<!--	</bean>-->
+	
+	<bean id="testDataSource" name="testDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="jdbcUrl">
+			<value>jdbc:frontbase://dbfb-test.pensoft.local/qa.consumer/isolation=read_committed/locking=deferred/readonly=false/</value>
+		</property>
+		<property name="user"><value>_communityuser</value></property>
+		<property name="password"><value>_comdev123_</value></property>
+	</bean>
+
+	<bean id="testLoginDataSource" name="testLoginDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="jdbcUrl">
+			<value>jdbc:frontbase://dbfb-test.pensoft.local/qa.consumer.login/isolation=read_committed/locking=deferred/readonly=false/</value>
+		</property>
+		<property name="user"><value>_communityuser</value></property>
+		<property name="password"><value>_comdev123_</value></property>
+	</bean>
+
+</beans>

@@ -1,0 +1,23 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="consumerDatasource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass"><value>com.frontbase.jdbc.FBJDriver</value></property>
+		<property name="jdbcUrl">
+			<value>jdbc:frontbase://dbfb-test.pensoft.local/qa.consumer/isolation=read_committed/locking=deferred/readonly=true/</value>
+		</property>
+		<property name="user"><value>_communityuser</value></property>
+		<property name="password"><value>_comdev123_</value></property>
+	</bean>
+	       
+	<bean id="consumerLoginDatasource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass"><value>com.frontbase.jdbc.FBJDriver</value></property>
+		<property name="jdbcUrl">
+			<value>jdbc:frontbase://dbfb-test.pensoft.local/qa.consumer.login/isolation=read_committed/locking=deferred/readonly=true/</value>
+		</property>
+		<property name="user"><value>_communityuser</value></property>
+		<property name="password"><value>_comdev123_</value></property>
+	</bean>
+	       
+</beans>

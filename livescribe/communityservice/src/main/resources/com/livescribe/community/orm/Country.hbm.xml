@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.livescribe.community.orm">
+	<class name="Country" table="Country">
+	
+		<id name="primaryKey" column="primaryKey" type="binary">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="isActive"			column="isActive"			type="integer" />
+		<property name="IsoCode2"			column="ISOCode2"			type="string"	length="2" />
+		<property name="IsoCode3"			column="ISOCode3"			type="string"	length="3" />
+		<property name="IsoNumericCode"		column="ISONumericCode"		type="integer" />
+		<property name="metaInfo"			column="metaInfo"			type="clob" />
+		<property name="name"				column="name"				type="string"	length="64" />
+		
+	</class>
+</hibernate-mapping>

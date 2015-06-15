@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security-3.0.3.xsd
+		http://www.springframework.org/schema/security/oauth2
+		http://www.springframework.org/schema/security/spring-security-oauth2.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/jdbc
+		http://www.springframework.org/schema/jdbcspring-jdbc-3.0.xsd">
+
+	<context:annotation-config />
+	<aop:aspectj-autoproxy />
+<!-- 	
+	<security:http auto-config="true" access-denied-page="/login.jsp">
+		<security:intercept-url pattern="/community/pencast/user*" access="ROLE_USER" />
+		<security:session-management invalid-session-url="/sessionTimeout.html" />
+		<security:form-login 
+			login-page="/services/auth/login.jsp" 
+			login-processing-url="/services/auth/ws/login"
+			authentication-failure-url="/login.jsp?err=1" />
+	</security:http>
+	
+	<security:authentication-manager>
+		<security:authentication-provider user-service-ref="userService" />
+	</security:authentication-manager>
+	
+	<oauth:client>
+		<oauth:url pattern="/facebook/**" resources="facebook"/>
+	</oauth:client>
+ -->
+	<!-- OAuth 2 resource for Authentication Service
+	<oauth:resource id="authsvc" type="authorization_code" clientId="commsvc"
+		accessTokenUri="http://localhost:8480/auth/ws/authorize"
+		userAuthorizationUri="http://localhost:8480/auth/ws/user/authorize"/>
+ -->
+    <!-- this bean is here for completeness  -->
+	<bean id="consumerDatasource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="jdbcUrl">
+			<value>jdbc:frontbase://dbfb.livescribe.com/qa.consumer/isolation=read_committed/locking=deferred/readonly=false/</value>
+		</property>
+		<property name="user"><value>_communityuser</value></property>
+		<property name="password"><value>_comdev123_</value></property>
+	</bean>
+
+    <!-- this bean is here for completeness  -->
+	<bean id="consumerLoginDatasource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="jdbcUrl">
+			<value>jdbc:frontbase://dbfb.livescribe.com/qa.consumer.login/isolation=read_committed/locking=deferred/readonly=false/</value>
+		</property>
+		<property name="user"><value>_communityuser</value></property>
+		<property name="password"><value>_comdev123_</value></property>
+	</bean>
+	
+	<bean id="sessionFactory" class="com.livescribe.utils.hibernate.LSSessionFactoryBean">
+		<constructor-arg type="java.lang.String"><value>consumerDatasource</value></constructor-arg>
+		<property name="dataSource"><ref local="consumerDatasource" /></property>
+        <property name="mappingResources">
+			<list>
+<!--				<value>com/livescribe/community/orm/Country.hbm.xml</value>-->
+				<value>com/livescribe/community/orm/UGComment.hbm.xml</value>
+		        <value>com/livescribe/community/orm/UGCategory.hbm.xml</value>
+				<value>com/livescribe/community/orm/UGFile.hbm.xml</value>
+				<value>com/livescribe/community/orm/UserProfile.hbm.xml</value>
+				<value>com/livescribe/community/dao/NamedQueries.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean>
+	
+	<bean id="loginSessionFactory" class="com.livescribe.utils.hibernate.LSSessionFactoryBean">
+		<constructor-arg type="java.lang.String"><value>consumerLoginDatasource</value></constructor-arg>
+		<property name="dataSource"><ref local="consumerLoginDatasource" /></property>
+        <property name="mappingResources">
+			<list>
+				<value>com/livescribe/community/orm/ActiveUser.hbm.xml</value>
+				<value>com/livescribe/community/dao/NamedQueries.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean>
+	
+	<bean id="hibernateProperties" name="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+     	<property name="properties">
+       		<props>
+        	<prop key="hibernate.dialect">org.hibernate.dialect.FrontBaseDialect</prop>
+       		<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop> 
+       		<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+       		<prop key="hibernate.connection.isolation">2</prop>
+			<prop key="hibernate.connection.locking">deferred</prop>
+			<prop key="hibernate.connection.readonly">true</prop>
+       		<prop key="hibernate.show_sql">false</prop>
+			<prop key="hibernate.c3p0.acquire_increment">3</prop>
+       		<prop key="hibernate.c3p0.timeout">1800</prop>
+       		<prop key="hibernate.c3p0.max_size">20</prop>
+       		<prop key="hibernate.c3p0.max_statements">50</prop>
+       		<prop key="hibernate.c3p0.min_size">5</prop>
+       		<prop key="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop>
+       		</props>
+       	</property>
+	</bean>
+	
+	<tx:annotation-driven  transaction-manager="transactionManager"/>
+
+    <!-- Transaction management -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+	<!-- <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="false"> -->
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+	
+    <bean id="loginTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+	<!-- <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="false"> -->
+		<property name="sessionFactory">
+			<ref local="loginSessionFactory" />
+		</property>
+	</bean>
+
+	<!-- 
+	=============================================
+		Multipart Resolver
+	============================================= -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+		<!-- one of the properties available; the maximum file size in bytes -->
+		<property name="maxUploadSize" value="100000"/>
+	</bean>
+
+	<!-- 
+	=============================================
+		Service Beans
+	============================================= -->
+	<bean id="pencastService"	class="com.livescribe.community.service.PencastService" />
+	<bean id="userService"		class="com.livescribe.community.service.UserService" />
+	<bean id="searchService"	class="com.livescribe.community.service.SearchService">
+		<property name="solrDao"><ref local="solrDao" /></property>
+	</bean>
+	
+	<!-- 
+	=============================================
+		DAO Beans
+	============================================= -->
+	<bean id="categoryDao"		class="com.livescribe.community.dao.CategoryDao">
+    	<property name="sessionFactory"><ref local="sessionFactory"/></property>
+	</bean>
+	<bean id="pencastDao"		class="com.livescribe.community.dao.PencastDao">
+    	<property name="sessionFactory"><ref local="sessionFactory"/></property>
+	</bean>
+	<bean id="userDao"			class="com.livescribe.community.dao.UserDao">
+    	<property name="sessionFactory"><ref local="sessionFactory"/></property>
+    	<property name="loginSessionFactory"><ref local="loginSessionFactory"/></property>
+	</bean>
+	<bean id="solrDao"			class="com.livescribe.community.dao.SolrDao" />
+	<bean id="ugCategoryHome"	class="com.livescribe.community.orm.UGCategoryHome" >
+    	<property name="sessionFactory"><ref local="sessionFactory"/></property>
+	</bean>
+	<bean id="ugFileHome"		class="com.livescribe.community.orm.UGFileHome" >
+    	<property name="sessionFactory"><ref local="sessionFactory"/></property>
+	</bean>
+	<bean id="userProfileHome"	class="com.livescribe.community.orm.UserProfileHome" >
+    	<property name="sessionFactory"><ref local="sessionFactory"/></property>
+	</bean>
+	
+	<bean id="responseUnmarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+		<property name="autodetectAnnotations" value="false" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.livescribe.framework.services.ServiceResponse</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 
+	=============================================
+		JNDI Registry Bean
+	============================================= -->
+<!-- 	<bean id="registry" class="org.springframework.remoting.rmi.RmiRegistryFactoryBean">
+		<property name="port" value="1099" />
+	</bean>
+ -->
+	<!-- 
+	=============================================
+		Statistics Service Bean
+	============================================= -->
+<!-- 
+	<bean id="statisticsBean" class="org.hibernate.jmx.StatisticsService">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+ -->
+	<!-- 
+	=============================================
+		JMX Bean Exporter
+	============================================= -->
+<!-- 
+	<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
+		<property name="beans">
+			<map>
+				<entry key="bean:name=statistics" value-ref="statisticsBean" />
+			</map>
+		</property>
+	</bean>
+ -->
+	<!-- 
+	=============================================
+		Client Connector Bean
+	============================================= -->
+<!-- 
+	<bean id="clientConnector" class="org.springframework.jmx.support.ConnectorServerFactoryBean">
+		<property name="objectName" value="connector:name=rmi" />
+		<property name="serviceUrl" value="service:jmx:rmi://localhost/jndi/rmi://localhost:1099/myconnector" />
+	</bean>
+ -->	
+</beans>

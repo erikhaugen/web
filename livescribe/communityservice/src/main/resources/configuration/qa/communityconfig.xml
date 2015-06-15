@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<configuration>
+  <appName>CommunityService</appName>
+  
+  <memcache>
+    <serverlist>
+      <default>app1-qa.pensoft.local:11211,app2-qa.pensoft.local:11211</default>
+    </serverlist>
+  </memcache>
+  
+  <services>
+  
+    <auth>
+      <url>http://app1-qa.pensoft.local:8480/auth</url>
+    </auth>
+  
+    <solr>
+      <url>http://admin1-qa.pensoft.local:8580/solr/ls-community-core</url>
+    </solr>
+  
+  </services>
+  
+  <beanfiles>
+    <path>bean.xml</path>
+  </beanfiles>
+
+</configuration>

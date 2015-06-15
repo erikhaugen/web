@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  Log4j Configuration                                                  -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+	<appender name="ERROR" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/Livescribe/Tomcat/Logs/lscommunity-test-error.log"/>
+		<param name="Threshold" value="ERROR"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c] - %m%n"/>
+		</layout>
+	</appender>
+	
+	<appender name="SYSTEM" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/Livescribe/Tomcat/Logs/lscommunity-test-system.log"/>
+		<param name="Threshold" value="DEBUG"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n"/>
+		</layout>
+	</appender>
+
+	<appender name="COMMUNITY" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/Livescribe/Tomcat/Logs/lscommunity-test-community.log"/>
+		<param name="Threshold" value="DEBUG"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%25c{1}] - %m%n"/>
+		</layout>
+	</appender>
+
+	<!-- Categories for logging -->
+	<logger name="org.mchange">
+		<level value="DEBUG" />
+		<appender-ref ref="SYSTEM" />
+	</logger>
+
+	<logger name="org.apache.xmlrpc">
+		<level value="DEBUG" />
+		<appender-ref ref="COMMUNITY" />
+	</logger>
+
+	<logger name="org.springframework">
+		<level value="DEBUG" />
+		<appender-ref ref="SYSTEM" />
+	</logger>
+
+	<logger name="com.livescribe.community">
+		<level value="DEBUG" />
+		<appender-ref ref="COMMUNITY" />
+	</logger>
+	
+	<logger name="com.livescribe.utils">
+		<level value="DEBUG" />
+		<appender-ref ref="COMMUNITY" />
+	</logger>
+
+	<!-- Setup the Root category -->
+	<root>
+		<priority value="debug" />
+
+<!--		<appender-ref ref="SYSTEM"/>-->
+<!--		<appender-ref ref="COMMUNITY"/>-->
+
+		<appender-ref ref="ERROR"/>
+	</root>
+</log4j:configuration>
+		

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<configuration>
+  <appName>CommunityService</appName>
+  
+  <memcache>
+    <serverlist>
+      <default>app1-test.pensoft.local:11211</default>
+    </serverlist>
+  </memcache>
+  
+  <beanfiles>
+    <path>bean.xml</path>
+  </beanfiles>
+
+</configuration>

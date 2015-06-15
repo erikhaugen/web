@@ -1,0 +1,593 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<!-- 
+	=======================================================
+			Get ALL Pencasts
+	======================================================= -->
+	<sql-query name="getAllPencasts" cacheable="false" callable="false">
+	
+		<return-scalar column="primaryKey"			type="binary"/>
+		<return-scalar column="shortId"				type="string"/>
+		<return-scalar column="categoryName"		type="string"/>
+		<return-scalar column="contentDescription"	type="clob"/>
+		<return-scalar column="fileDate"			type="date"/>
+		<return-scalar column="displayName"			type="string"/>
+		<return-scalar column="filePath"			type="string"/>
+		<return-scalar column="fileSize"			type="int"/>
+		<return-scalar column="numberOfViews"		type="int"/>
+		<return-scalar column="rating"				type="double"/>
+		<return-scalar column="authorFirstName"		type="string"/>
+		<return-scalar column="authorLastName"		type="string"/>
+		<return-scalar column="authorEmail"			type="string"/>
+		<return-scalar column="authorScreenName"	type="string"/>
+		
+<![CDATA[
+	SELECT	DISTINCT "f"."primaryKey" as "primaryKey",
+			"f"."shortId" as "shortId",
+			"c"."displayName" as "categoryName",
+			"f"."contentDescription" as "contentDescription",
+			"f"."displayName" as "displayName",
+			"f"."fileDate" as "fileDate",
+			"f"."filePath" as "filePath",
+			"f"."fileSize" as "fileSize",
+			"f"."views" as "numberOfViews",
+			"f"."rating" as "rating",
+			"p"."firstName" as "authorFirstName",
+			"p"."lastName" as "authorLastName",
+			"p"."email" as "authorEmail",
+			"p"."screenName" as "authorScreenName"
+			
+	 FROM	"UGFile" "f",
+  			"UGCategory" "c",
+  			"UGComment" "cmnt",
+  			"UserProfile" "p"
+ 	WHERE	
+ 			"f"."categoryKey" = "c"."primaryKey"
+ 			AND "f"."userProfileKey" = "p"."primaryKey"
+-- 			AND "f"."primaryKey" = "cmnt"."ugFileKey"
+-- 			AND "cmnt"."rating" > 0
+ 			AND "f"."fileSize" > 0
+ 			AND "f"."globalShare" = :share
+ 			AND "f"."inappropriateCounter" < :inappropCount
+ 
+ ORDER BY	"f"."fileDate" DESC
+ 
+]]>
+	</sql-query>
+	
+	<!-- 
+	=======================================================
+			Get MOST VIEWED Pencasts
+	======================================================= -->
+	<sql-query name="getMostViewedPencasts" cacheable="false" callable="false">
+
+		<return-scalar column="primaryKey"			type="binary"/>
+		<return-scalar column="shortId"				type="string"/>
+		<return-scalar column="categoryName"		type="string"/>
+		<return-scalar column="contentDescription"	type="clob"/>
+		<return-scalar column="fileDate"			type="date"/>
+		<return-scalar column="displayName"			type="string"/>
+		<return-scalar column="filePath"			type="string"/>
+		<return-scalar column="fileSize"			type="int"/>
+		<return-scalar column="globalShare"			type="int"/>
+		<return-scalar column="numberOfViews"		type="int"/>
+		<return-scalar column="rating"				type="double"/>
+		<return-scalar column="authorFirstName"		type="string"/>
+		<return-scalar column="authorLastName"		type="string"/>
+		<return-scalar column="authorEmail"			type="string"/>
+		<return-scalar column="authorScreenName"	type="string"/>
+
+<![CDATA[
+		
+	SELECT	TOP 10 "f"."primaryKey" as "primaryKey",
+			"f"."shortId" as "shortId",
+			"c"."displayName" as "categoryName",
+			"f"."contentDescription" as "contentDescription",
+			"f"."displayName" as "displayName",
+			"f"."fileDate" as "fileDate",
+			"f"."filePath" as "filePath",
+			"f"."fileSize" as "fileSize",
+			"f"."globalShare" as "globalShare",
+			"f"."views" as "numberOfViews",
+			"f"."rating" as "rating",
+			"p"."firstName" as "authorFirstName",
+			"p"."lastName" as "authorLastName",
+			"p"."email" as "authorEmail",
+			"p"."screenName" as "authorScreenName"
+			
+	  FROM	"UGFile" "f",
+	  		"UGCategory" "c",
+	  		"UserProfile" "p"
+	 WHERE	
+ 			"f"."categoryKey" = "c"."primaryKey"
+ 			AND "f"."userProfileKey" = "p"."primaryKey"
+ 			AND "f"."filePath" is not null
+ 			AND "f"."fileSize" > 0
+ 			AND "f"."globalShare" = 1
+ 			AND "f"."inappropriateCounter" < 3
+ 			
+  ORDER BY	"f"."views" DESC
+  
+]]>
+	</sql-query>
+	
+	<!-- 
+	=======================================================
+			Get TOP Pencasts
+	======================================================= -->
+	<sql-query name="getTopPencasts" cacheable="false" callable="false">
+	
+		<return-scalar column="primaryKey"			type="binary"/>
+		<return-scalar column="shortId"				type="string"/>
+		<return-scalar column="categoryName"		type="string"/>
+		<return-scalar column="contentDescription"	type="clob"/>
+		<return-scalar column="fileDate"			type="date"/>
+		<return-scalar column="displayName"			type="string"/>
+		<return-scalar column="filePath"			type="string"/>
+		<return-scalar column="fileSize"			type="int"/>
+		<return-scalar column="globalShare"			type="int"/>
+		<return-scalar column="numberOfViews"		type="int"/>
+		<return-scalar column="rating"				type="double"/>
+		<return-scalar column="authorFirstName"		type="string"/>
+		<return-scalar column="authorLastName"		type="string"/>
+		<return-scalar column="authorEmail"			type="string"/>
+		<return-scalar column="authorScreenName"	type="string"/>
+		<return-scalar column="averageRating"		type="double"/>
+		
+<![CDATA[
+	SELECT	TOP 10 "cmnt"."ugFileKey" as "primaryKey",
+			"f"."shortId" as "shortId",
+			"c"."displayName" as "categoryName",
+			"f"."contentDescription" as "contentDescription",
+			"f"."displayName" as "displayName",
+			"f"."fileDate" as "fileDate",
+			"f"."filePath" as "filePath",
+			"f"."fileSize" as "fileSize",
+			"f"."globalShare" as "globalShare",
+			"f"."views" as "numberOfViews",
+			"f"."rating" as "rating",
+			"p"."firstName" as "authorFirstName",
+			"p"."lastName" as "authorLastName",
+			"p"."email" as "authorEmail",
+			"p"."screenName" as "authorScreenName",
+			(sum("cmnt"."rating")/count(*)) AS "averageRating"
+			
+	  FROM	"UGFile" "f",
+	  		"UGCategory" "c",
+	  		"UGComment" "cmnt",
+	  		"UserProfile" "p"
+	 WHERE	
+ 			"f"."categoryKey" = "c"."primaryKey"
+ 			AND "cmnt"."ugFileKey" = "f"."primaryKey"
+ 			AND "f"."userProfileKey" = "p"."primaryKey"
+ 			AND "f"."filePath" is not null
+ 			AND "f"."fileSize" > 0
+ 			AND "f"."globalShare" = :share
+ 			AND "f"."inappropriateCounter" < :inappropCount
+ 			
+  GROUP BY	"primaryKey",
+			"shortId", 
+			"categoryName", 
+			"contentDescription", 
+			"displayName", 
+			"fileDate",
+			"filePath",
+			"fileSize",
+			"globalShare",
+			"numberOfViews",
+			"rating",
+			"authorFirstName",
+			"authorLastName",
+			"authorEmail",
+			"authorScreenName"
+
+	HAVING	count(*) >  3
+
+  ORDER BY	"averageRating" desc
+]]>
+	</sql-query>
+	
+	<!-- 
+	=======================================================
+			Get USER Pencasts
+	======================================================= -->
+	<sql-query name="getUserPencasts" cacheable="false" callable="false">
+		
+		<return-scalar column="primaryKey"			type="binary"/>
+		<return-scalar column="shortId"				type="string"/>
+		<return-scalar column="categoryName"		type="string"/>
+		<return-scalar column="contentDescription"	type="clob"/>
+		<return-scalar column="fileDate"			type="date"/>
+		<return-scalar column="displayName"			type="string"/>
+		<return-scalar column="filePath"			type="string"/>
+		<return-scalar column="fileSize"			type="int"/>
+		<return-scalar column="globalShare"			type="int"/>
+		<return-scalar column="numberOfViews"		type="int"/>
+		<return-scalar column="rating"				type="double"/>
+<!--  -->
+		<return-scalar column="authorFirstName"		type="string"/>
+		<return-scalar column="authorLastName"		type="string"/>
+		<return-scalar column="authorEmail"			type="string"/>
+		<return-scalar column="authorScreenName"	type="string"/>
+
+<![CDATA[
+	SELECT	"f"."primaryKey" as "primaryKey",
+			"f"."shortId" as "shortId",
+			"c"."displayName" as "categoryName",
+			"f"."contentDescription" as "contentDescription",
+			"f"."displayName" as "displayName",
+			"f"."fileDate" as "fileDate",
+			"f"."filePath" as "filePath",
+			"f"."fileSize" as "fileSize",
+			"f"."globalShare" as "globalShare",
+			"f"."views" as "numberOfViews",
+			"f"."rating" as "rating",
+			"p"."firstName" as "authorFirstName",
+			"p"."lastName" as "authorLastName",
+			"p"."email" as "authorEmail",
+			"p"."screenName" as "authorScreenName"
+			
+	 FROM	"UGCategory" "c",
+	 		"UGFile" "f",
+	 		"UserProfile" "p"
+	 		
+ 	WHERE	"f"."categoryKey" = "c"."primaryKey"
+ 			AND "f"."userProfileKey" = "p"."primaryKey"
+ 			AND "p"."primaryKey" = :userPK
+ 
+ ORDER BY	"f"."fileDate" ASC
+ 
+]]>
+	</sql-query>
+	
+	<!-- 
+	=======================================================
+			Get CATEGORY Pencasts
+	======================================================= -->
+	<sql-query name="getPencastsByCategoryName" cacheable="false" callable="false">
+	
+		<return-scalar column="primaryKey"			type="binary"/>
+		<return-scalar column="shortId"				type="string"/>
+		<return-scalar column="categoryName"		type="string"/>
+		<return-scalar column="contentDescription"	type="clob"/>
+		<return-scalar column="fileDate"			type="date"/>
+		<return-scalar column="displayName"			type="string"/>
+		<return-scalar column="filePath"			type="string"/>
+		<return-scalar column="fileSize"			type="int"/>
+		<return-scalar column="globalShare"			type="int"/>
+		<return-scalar column="numberOfViews"		type="int"/>
+		<return-scalar column="rating"				type="double"/>
+		<return-scalar column="authorFirstName"		type="string"/>
+		<return-scalar column="authorLastName"		type="string"/>
+		<return-scalar column="authorEmail"			type="string"/>
+		<return-scalar column="authorScreenName"	type="string"/>
+		
+<![CDATA[
+	SELECT	"f"."primaryKey" as "primaryKey",
+			"f"."shortId" as "shortId",
+			"c"."displayName" as "categoryName",
+			"f"."contentDescription" as "contentDescription",
+			"f"."displayName" as "displayName",
+			"f"."fileDate" as "fileDate",
+			"f"."filePath" as "filePath",
+			"f"."fileSize" as "fileSize",
+			"f"."globalShare" as "globalShare",
+			"f"."views" as "numberOfViews",
+			"f"."rating" as "rating",
+			"p"."firstName" as "authorFirstName",
+			"p"."lastName" as "authorLastName",
+			"p"."email" as "authorEmail",
+			"p"."screenName" as "authorScreenName"
+			
+	 FROM	"UGFile" "f",
+  			"UGCategory" "c",
+  			"UGComment" "cmnt",
+  			"UserProfile" "p"
+ 	WHERE	
+ 			"f"."categoryKey" = "c"."primaryKey"
+ 			AND "cmnt"."ugFileKey" = "f"."primaryKey"
+ 			AND "f"."userProfileKey" = "p"."primaryKey"
+ 			AND "cmnt"."rating" > 0
+ 			AND "f"."filePath" is not null
+ 			AND "f"."fileSize" > 0
+ 			AND "f"."globalShare" = :share
+ 			AND "f"."inappropriateCounter" < :inappropCount
+ 			AND "c"."displayName" = :categoryName
+ 			
+ ORDER BY	"f"."fileDate" DESC
+ 
+]]>
+	</sql-query>
+	
+	<!-- 
+	=======================================================
+			Find Active User
+	======================================================= -->
+	<sql-query name="findActiveUser" cacheable="false" callable="false">
+		
+		<return-scalar column="primaryKey"			type="binary"/>
+		<return-scalar column="userId"				type="binary"/>
+		<return-scalar column="domain"				type="string"/>
+		<return-scalar column="loginTime"			type="timestamp"/>
+		<return-scalar column="loginToken"			type="string"/>
+		
+<![CDATA[
+	SELECT	"au"."primaryKey" as "primaryKey",
+			"au"."fk_user" as "userId",
+			"au"."domain" as "domain",
+			"au"."loginTime" as "loginTime",
+			"au"."loginToken" as "loginToken"
+			
+	 FROM	ActiveUser au
+	 		
+ 	WHERE	"au"."loginToken" = :token
+]]>
+	</sql-query>
+	
+	<!-- 
+	=======================================================
+			Find User Profile
+	======================================================= -->
+	<sql-query name="findUserProfile" cacheable="false" callable="false">
+		
+		<return-scalar column="primaryKey"			type="binary"/>
+		<return-scalar column="addressKey"			type="binary"/>
+		<return-scalar column="birthYear"			type="int"/>
+		<return-scalar column="createdate"			type="timestamp"/>
+		<return-scalar column="developerProfileKey"	type="binary"/>
+		<return-scalar column="email"				type="string"/>
+		<return-scalar column="firstName"			type="string"/>
+		<return-scalar column="fk_avetti_customerID"	type="string"/>
+		<return-scalar column="fk_avetti_password"	type="string"/>
+		<return-scalar column="fk_preferred_country"	type="binary"/>
+		<return-scalar column="gradYear"			type="int"/>
+		<return-scalar column="isMLSActive"			type="int"/>
+		<return-scalar column="lastModifyDate"		type="timestamp"/>
+		<return-scalar column="lastName"			type="string"/>
+		<return-scalar column="major"				type="string"/>
+<!--		<return-scalar column="metaInfo"			type="clob"/> -->
+		<return-scalar column="occupation"			type="string"/>
+		<return-scalar column="organization"		type="string"/>
+		<return-scalar column="passwordResetString"	type="string"/>
+		<return-scalar column="phone"				type="string"/>
+<!-- 		<return-scalar column="profilePicture"		type="blob"/> -->
+		<return-scalar column="profilePictureMimeType"	type="string"/>
+		<return-scalar column="profilePictureName"	type="string"/>
+		<return-scalar column="screenName"			type="string"/>
+		<return-scalar column="sex"					type="string"/>
+		<return-scalar column="shortId"				type="string"/>
+		<return-scalar column="university"			type="string"/>
+		<return-scalar column="userPassword"		type="string"/>
+		
+<![CDATA[
+	SELECT	"p"."primaryKey" as "primaryKey",
+			"p"."addressKey" as "addressKey",
+			"p"."birthYear" as "birthYear",
+			"p"."createdate" as "createdate",
+			"p"."developerProfileKey" as "developerProfileKey",
+			"p"."email" as "email",
+			"p"."firstName" as "firstName",
+			"p"."fk_avetti_customerID" as "fk_avetti_customerID",
+			"p"."fk_avetti_password" as "fk_avetti_password",
+			"p"."fk_preferredcountry" as "fk_preferred_country",
+			"p"."gradYear" as "gradYear",
+			"p"."isMLSActive" as "isMLSActive",
+			"p"."lastModifyDate" as "lastModifyDate",
+			"p"."lastName" as "lastName",
+			"p"."major" as "major",
+			"p"."occupation" as "occupation",
+			"p"."organization" as "organization",
+			"p"."passwordResetString" as "passwordResetString",
+			"p"."phone" as "phone",
+			"p"."profilePictureMimeType" as "profilePictureMimeType",
+			"p"."profilePictureName" as "profilePictureName",
+			"p"."screenName" as "screenName",
+			"p"."sex" as "sex",
+			"p"."shortId" as "shortId",
+			"p"."university" as "university",
+			"p"."userPassword" as "userPassword"
+			
+	 FROM	UserProfile p
+	 		
+ 	WHERE	"p"."primaryKey" = :key
+]]>
+	</sql-query>
+<!-- 			
+            "p"."metaInfo" as "metaInfo",
+			"p"."profilePicture" as "profilePicture",
+ -->
+	<!-- 
+	=======================================================
+			Find Pencast By Short ID
+	======================================================= -->
+	<sql-query name="findPencastByShortId" cacheable="false" callable="false">
+		
+		<return-scalar column="primaryKey"			type="binary"/>
+		<return-scalar column="shortId"				type="string"/>
+		<return-scalar column="categoryName"		type="string"/>
+		<return-scalar column="contentDescription"	type="clob"/>
+		<return-scalar column="fileDate"			type="date"/>
+		<return-scalar column="displayName"			type="string"/>
+		<return-scalar column="filePath"			type="string"/>
+		<return-scalar column="fileSize"			type="int"/>
+		<return-scalar column="globalShare"			type="int"/>
+		<return-scalar column="numberOfViews"		type="int"/>
+		<return-scalar column="rating"				type="double"/>
+		<return-scalar column="authorFirstName"		type="string"/>
+		<return-scalar column="authorLastName"		type="string"/>
+		<return-scalar column="authorEmail"			type="string"/>
+		<return-scalar column="authorScreenName"	type="string"/>
+		
+<![CDATA[
+	SELECT	"f"."primaryKey" as "primaryKey",			
+			"f"."shortId" as "shortId",
+			"c"."displayName" as "categoryName",
+			"f"."contentDescription" as "contentDescription",
+			"f"."displayName" as "displayName",
+			"f"."fileDate" as "fileDate",
+			"f"."filePath" as "filePath",
+			"f"."fileSize" as "fileSize",
+			"f"."globalShare" as "globalShare",
+			"f"."views" as "numberOfViews",
+			"f"."rating" as "rating",
+			"p"."firstName" as "authorFirstName",
+			"p"."lastName" as "authorLastName",
+			"p"."email" as "authorEmail",
+			"p"."screenName" as "authorScreenName"
+
+	 FROM	"UGFile" "f",
+	 		"UGCategory" "c",
+	 		"UserProfile" "p"
+	 
+ 	WHERE	"f"."categoryKey" = "c"."primaryKey"
+ 			AND "f"."userProfileKey" = "p"."primaryKey"
+ 			AND "f"."shortId" = :shortId
+ 			AND "f"."filePath" is not null
+ 			AND "f"."fileSize" > 0
+]]>
+	</sql-query>
+
+	<sql-query name="getFeaturedPencasts" cacheable="false" callable="false">
+	
+		<return-scalar column="primaryKey"			type="binary"/>
+		<return-scalar column="shortId"				type="string"/>
+		<return-scalar column="categoryName"		type="string"/>
+		<return-scalar column="contentDescription"	type="clob"/>
+		<return-scalar column="fileDate"			type="date"/>
+		<return-scalar column="displayName"			type="string"/>
+		<return-scalar column="filePath"			type="string"/>
+		<return-scalar column="fileSize"			type="int"/>
+		<return-scalar column="globalShare"			type="int"/>
+		<return-scalar column="numberOfViews"		type="int"/>
+		<return-scalar column="rating"				type="double"/>
+		<return-scalar column="authorFirstName"		type="string"/>
+		<return-scalar column="authorLastName"		type="string"/>
+		<return-scalar column="authorEmail"			type="string"/>
+		<return-scalar column="authorScreenName"	type="string"/>
+		<return-scalar column="avgRating"			type="string"/>
+
+<![CDATA[
+
+	SELECT	TOP 20 "f"."primaryKey" as "primaryKey",
+			"f"."shortId" as "shortId",
+			"c"."displayName" as "categoryName",
+			"f"."contentDescription" as "contentDescription",
+			"f"."displayName" as "displayName",
+			"f"."fileDate" as "fileDate",
+			"f"."filePath" as "filePath",
+			"f"."fileSize" as "fileSize",
+			"f"."globalShare" as "globalShare",
+			"f"."views" as "numberOfViews",
+			"f"."rating" as "rating",
+			"p"."firstName" as "authorFirstName",
+			"p"."lastName" as "authorLastName",
+			"p"."email" as "authorEmail",
+			"p"."screenName" as "authorScreenName",
+			(sum("cmnt"."rating")/count(*)) as "avgRating"
+			
+	 FROM	"UGFile" "f",
+  			"UGCategory" "c",
+  			"UGComment" "cmnt",
+  			"UserProfile" "p"
+  			
+ 	WHERE	"f"."categoryKey" = "c"."primaryKey"
+ 			AND "f"."userProfileKey" = "p"."primaryKey"
+ 			AND "cmnt"."rating" > 0
+ 			AND "cmnt"."ugFileKey" = "f"."primaryKey"
+ 			AND "f"."globalShare" = :share
+ 			AND "f"."inappropriateCounter" < :inappropCount
+ 			
+  GROUP BY	"f"."primaryKey",
+			"f"."shortId", 
+			"c"."categoryName", 
+			"f"."contentDescription", 
+			"f"."displayName", 
+			"f"."fileDate",
+			"f"."filePath",
+			"f"."fileSize",
+			"f"."numberOfViews",
+			"f"."rating",
+			"p"."authorFirstName",
+			"p"."authorLastName",
+			"p"."authorEmail",
+			"p"."authorScreenName",
+			"avgRating"
+
+   HAVING	COUNT(*) > 0
+
+ ORDER BY	avgRating DESC
+
+]]>
+	</sql-query>
+	
+	<!-- 
+	=======================================================
+			Get RECENT Pencasts
+	======================================================= -->
+	<sql-query name="getRecentPencasts" cacheable="false" callable="false">
+		
+		<return-scalar column="primaryKey"			type="binary"/>
+		<return-scalar column="shortId"				type="string"/>
+		<return-scalar column="categoryName"		type="string"/>
+		<return-scalar column="contentDescription"	type="clob"/>
+		<return-scalar column="fileDate"			type="date"/>
+		<return-scalar column="displayName"			type="string"/>
+		<return-scalar column="filePath"			type="string"/>
+		<return-scalar column="fileSize"			type="int"/>
+		<return-scalar column="globalShare"			type="int"/>
+		<return-scalar column="numberOfViews"		type="int"/>
+		<return-scalar column="rating"				type="double"/>
+		<return-scalar column="authorFirstName"		type="string"/>
+		<return-scalar column="authorLastName"		type="string"/>
+		<return-scalar column="authorEmail"			type="string"/>
+		<return-scalar column="authorScreenName"	type="string"/>
+		
+<![CDATA[
+
+	SELECT	TOP 10 "f1"."userProfileKey", 
+			"f1"."primaryKey" as "primaryKey", 
+			"f1"."shortId" as "shortId",
+			"c"."displayName" as "categoryName",
+			"f1"."contentDescription" as "contentDescription",
+			"f1"."fileDate" as "fileDate", 
+			"f1"."displayName" as "displayName",
+			"f1"."filePath" as "filePath",
+			"f1"."fileSize" as "fileSize",
+			"f"."globalShare" as "globalShare",
+			"f1"."views" as "numberOfViews",
+			"f1"."rating" as "rating",
+			"p"."firstName" as "authorFirstName",
+			"p"."lastName" as "authorLastName",
+			"p"."email" as "authorEmail",
+			"p"."screenName" as "authorScreenName"
+			
+	  FROM	"UGFile" "f1",
+			"UserProfile" "p",
+			"UGCategory" "c"
+			
+	 WHERE	"f1"."globalShare" = 1
+	 		AND "f1"."filePath" is not null
+			AND "f1"."fileSize" > 0
+			AND "f1"."fileDate" = (
+			
+				SELECT MAX ("f2"."fileDate")
+				
+				  FROM "UGFile" "f2"
+				  
+				 WHERE "f1"."userProfileKey" = "f2"."userProfileKey"
+					   AND "f2"."fileDate" > TIMESTAMP'2009-01-01 00:00:00' 
+					   AND "f2"."globalShare" = 1
+					   AND "f2"."views" > 1
+					   AND "f2"."inappropriateCounter" < 1)
+			
+			AND "f1"."userProfileKey" = "p"."primaryKey"
+			AND "f1"."categoryKey" = "c"."primaryKey"
+			
+ ORDER BY	"f1"."fileDate" DESC;
+
+]]>
+	</sql-query>
+	
+</hibernate-mapping>
