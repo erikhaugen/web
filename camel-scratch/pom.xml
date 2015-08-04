@@ -10,8 +10,8 @@
 	<url>http://maven.apache.org</url>
 
 	<scm>
-		<connection>scm:svn:svn+ssh://${svn-user}@svn.livescribe.com/svn/LSRepository/WebCore/WebServices/paperreplay/trunk/</connection>
-		<developerConnection>scm:svn:svn+ssh://${svn-user}@svn.livescribe.com/svn/LSRepository/WebCore/WebServices/paperreplay/trunk/</developerConnection>
+		<connection>https://jackstraw66@github.com/jackstraw66/web.git/</connection>
+		<developerConnection>https://jackstraw66@github.com/jackstraw66/web.git</developerConnection>
 	</scm>
 
 <!-- 	<distributionManagement> -->
