@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="logfileall" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/Livescribe/Services/LSDataMetrics/Logs/lsdatametrics-${ENV}.log" />
+		<param name="Threshold" value="debug" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%25c{1}] - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="debug" />
+			<param name="LevelMax" value="fatal" />
+			<param name="AcceptOnMatch" value="true" />
+		</filter> 
+	</appender>
+
+    <!-- Graylog2 Appender -->
+    <appender name="gelf" class="org.graylog2.log.GelfAppender">
+        <param name="graylogHost"   value="graylog.livescribe.com" />
+        <param name="originHost"    value="${logfile}" />
+        <param name="addExtendedInformation" value="true" />
+        <param name="facility"  value="LS Datametrics" />
+        <param name="Threshold" value="info" />
+        <param name="additionalFields" value="{'Environment': '${ENV}'}" />
+        <param name="extractStacktrace" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} %-5p [%25c{1} [%15.15t]] - %m%n" />
+        </layout>
+    </appender>
+        
+	<logger name="org.hibernate" additivity="false">
+		<level value="info" />
+		<appender-ref ref="logfileall" />
+	</logger>
+	
+	<logger name="org.spring" additivity="false">
+		<level value="info" />
+		<appender-ref ref="logfileall" />
+	</logger>
+
+    <logger name="com.livescribe.aws.heartbeat.MetricGrayLogger" additivity="false">
+        <level value="info" />
+        <appender-ref ref="gelf" />
+    </logger>
+
+	<logger name="com.livescribe" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="logfileall"/>
+		<appender-ref ref="gelf"/>
+	</logger>
+		
+	<root>
+		<priority value="error" />
+		<appender-ref ref="logfileall" />
+		<appender-ref ref="gelf"/>
+	</root>
+      
+</log4j:configuration>

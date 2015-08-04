@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 28, 2012 2:27:18 PM by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="com.livescribe.aws.heartbeat.orm.MetricGroup" table="metric_group" catalog="metrics">
+        <id name="metricGroupId" type="java.lang.Long">
+            <column name="metric_group_id" />
+            <generator class="identity" />
+        </id>
+        <property name="messageId" type="string">
+            <column name="message_id" length="64" />
+        </property>
+        <property name="metricSent" type="timestamp">
+            <column name="metric_sent" length="19" not-null="true" />
+        </property>
+        <property name="created" type="timestamp">
+            <column name="created" length="19" />
+        </property>
+        <!--
+        <set name="penOns" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.PenOn" />
+        </set>
+        <set name="captivePortals" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.CaptivePortal" />
+        </set>
+        <set name="newHostSpots" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.NewHostSpot" />
+        </set>
+        <set name="diagnostics" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.Diagnostic" />
+        </set>
+        <set name="buttonTaps" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.ButtonTap" />
+        </set>
+        -->
+        
+        <set name="quickcmds" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.Quickcmd" />
+        </set>
+        <set name="wifiOffs" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.WifiOff" />
+        </set>
+        <set name="paperReplaies" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.PaperReplay" />
+        </set>
+        <set name="penUndockeds" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.PenUndocked" />
+        </set>
+        <set name="firmwareUpdates" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.FirmwareUpdate" />
+        </set>
+        <set name="pageSwitchs" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.PageSwitch" />
+        </set>
+        <set name="penOffs" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.PenOff" />
+        </set>
+        <set name="dynnavplusCreateds" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.DynnavplusCreated" />
+        </set>
+        <set name="quickrecords" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.Quickrecord" />
+        </set>
+        <set name="launchApps" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.LaunchApp" />
+        </set>
+        <set name="switchLangs" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.SwitchLang" />
+        </set>
+        <set name="launchLines" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.LaunchLine" />
+        </set>
+        <set name="shortcuts" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.Shortcut" />
+        </set>
+        <set name="wifiOns" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.WifiOn" />
+        </set>
+        <set name="usbCommands" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.UsbCommand" />
+        </set>
+        <set name="crashs" inverse="true">
+            <key>
+                <column name="metric_group_id" />
+            </key>
+            <one-to-many class="com.livescribe.aws.heartbeat.orm.Crash" />
+        </set>
+    </class>
+</hibernate-mapping>

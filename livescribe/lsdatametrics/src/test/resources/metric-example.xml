@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metrics version="1.0" unique_id="A0SD98F0ASGHRSA90GFUA" device="ECHO" fw_version="3.0.0" firstAttemptSend="2011-12-12T02:54:34Z">
+
+	<!--  metric type="BUTTON_TAP" class="navplus" button_type="navigation" value="up" time="2011-07-18T12:00:00Z" test="1" />	-->
+	<!-- <metric type="DIAGNOSTIC" sub_type="newHostSpot" s3_location="/AJ3-AAA-HE6-EA/crash_21821447758.txt" time="2011-07-18T12:00:00Z" test="1" /> -->
+	<!-- <metric type="NEW_HOST_SPOT" url="https://s3.amazonaws.com/lspencrashdumpdev" s3_location="/AJ3-AAA-HE6-EA/crash_21821447758.txt" time="2011-07-18T12:00:00Z" test="1" /> -->
+	<!-- <metric type="PEN_ON" device_action="powerup" time="2011-07-18T12:00:00Z" test="1" /> -->
+	<!-- <metric type="CAPTIVE_PORTAL" path="some path" passed="0" time="2011-07-18T12:00:00Z" test="1" /> -->
+
+	<metric type="PEN_UNDOCKED" time="2011-07-18T12:00:00Z" test="1" />
+	<metric type="CRASH" line="21" dump_path="/src/path/dump" time="2011-07-18T12:00:00Z" test="1" />
+	<metric type="DYNNAVPLUS_CREATED" time="2011-07-18T12:00:00Z" test="1" />
+	<metric type="FW_UPDATE" version="1.0" revision="56321" buildTime="2011-11-02 20:29" time="2011-07-18T12:00:00Z" test="1" />
+	<metric type="LAUNCH_APP" name="com.livescribe.wifi.connectiontest.ConnectionTest" reason="ACTIVATED_BY_MENU" time="2011-11-08T02:58:18Z" test="1"/>
+	<metric type="LAUNCH_LINE" action="create" time="2011-11-02T00:36:01Z" test="1"/>
+	<metric type="LAUNCH_LINE" action="launchApp" class="com.livescribe.wifisettings.WifiSettings" time="2011-10-20T03:27:19Z" test="1"/>
+	<metric type="PAGE_SWITCH" PA="0.2208.2.9.65" page="0" copy="0" time="2011-10-20T03:27:19Z" test="1"/>
+	<metric type="PAPER_REPLAY" time="2011-11-10T03:09:01Z" duration="1600" start="2011-11-10T03:08:47Z" test="1"/>
+	<metric type="PEN_OFF" reason="power_button" duration="3600" time="2011-07-18T12:00:00Z" test="1" />
+	<metric type="QUICKCMD" action="createCmd" cmd="AppCommand [Wi-Fi Settings]" time="2011-07-18T12:00:00Z" test="1" />
+	<metric type="QUICKRECORD" action="start" time="2011-11-02T14:04:07Z" test="1"/>
+    <metric type="SHORTCUT" action="assignShortcut" shortcutId="1" cmd="Wi-Fi Settings" time="2011-11-02T07:05:50Z" test="1"/>
+    <metric type="SWITCH_LANG" locale="en_US" time="2011-07-18T12:00:00Z" test="1" />
+	<metric type="USB_COMMAND" command="usbcommand" time="2011-07-18T12:00:00Z" test="1" />
+	<metric type="WIFI_OFF" time="2011-07-18T12:00:00Z" test="1" />
+	<metric type="WIFI_ON" time="2011-07-18T12:00:00Z" test="1" />
+	
+</metrics>

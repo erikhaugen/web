@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+#	datametrics:		Starts the LS Data Metrics Daemon
+#
+#	description:		The LS Data Metrics daemon listens to an SQS
+#						queue for XML messages sent from pens.  When found,
+#						they are parsed and the metrics are saved to the
+#						database.
+#
+
+#	Run this script as 'wouser'.
+if [ `id -u` -eq 0 ]
+then
+	echo "Changing to 'wouser' ..."
+	exec su wouser -c "$0 $1"
+fi 
+
+#	Make sure the script is present and executable.
+[ -x /Livescribe/Services/LSDataMetrics/datametrics.sh ] || exit 0
+
+#	Make sure JAVA_HOME is set.
+if [[ -z $JAVA_HOME ]]
+then
+	echo
+	echo "*** WARNING:  JAVA_HOME not set."
+	JAVA_HOME="/usr/java/jdk1.6.0_21"
+	echo "Using $JAVA_HOME"
+	echo
+fi
+
+#	Set the running environment name.
+export DM_ENV=stage
+
+#	See how we were called.
+case "$1" in
+    start)
+		datametrics start $DM_ENV
+		RETVAL=$?
+		;;
+    stop)
+		datametrics stop $DM_ENV
+		RETVAL=$?
+		;;
+    status)
+		datametrics status $DM_ENV
+		RETVAL=$?
+		;;
+    *)
+    	# Prints the usage info.
+		datametrics
+		RETVAL=1
+		;;
+esac
+exit $RETVAL

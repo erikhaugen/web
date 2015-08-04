@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+                xmlns:oxm="http://www.springframework.org/schema/oxm"
+                xmlns:tx="http://www.springframework.org/schema/tx"
+                xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                                http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
+								http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<context:component-scan base-package="com.livescribe.aws.heartbeat" />
+	<context:annotation-config />
+	<tx:annotation-driven />
+<!-- 	<tx:annotation-driven mode="aspectj" /> -->
+<!-- 	<context:load-time-weaver aspectj-weaving="on" /> -->
+	
+<!-- 	<bean id="awsCredentials" class="com.livescribe.aws.heartbeat.config.HeartbeatProperties"> -->
+<!--         <property name="location"> -->
+<!-- 	        <value>classpath:aws.properties</value> -->
+<!-- 	    </property> -->
+<!-- 	</bean> -->
+
+	<bean id="heartbeatProperties" class="com.livescribe.aws.heartbeat.config.AppProperties" init-method="init" destroy-method="destroy">
+<!-- 	<bean id="heartbeatProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> -->
+        <property name="location">
+	        <value>classpath:heartbeat.properties</value>
+	    </property>
+	    <property name="searchSystemEnvironment"><value>true</value></property>
+<!-- 	    <property name="systemPropertiesMode"><value>SYSTEM_PROPERTIES_MODE_FALLBACK</value></property> -->
+	    <property name="systemPropertiesMode"><value>1</value></property>
+	</bean>
+
+	<!--  <bean id="dataSource" class="com.livescribe.aws.heartbeat.config.HeartbeatDataSource" />-->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.driverClassName}" />
+        <property name="jdbcUrl" value="${jdbc.url}" />
+        <property name="user" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+
+<!-- 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close"> -->
+<!-- 		<property name="jdbcUrl"><value>jdbc:mysql://heartbeat.c3xovyuledrj.us-east-1.rds.amazonaws.com:3306/metrics</value></property> -->
+<!-- 		<property name="user"><value>lsadmin</value></property> -->
+<!-- 		<property name="password"><value>wwwpen</value></property> -->
+<!-- 	</bean> -->
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource"><ref local="dataSource" /></property>
+        <property name="mappingResources">
+			<list>
+<!-- 		        <value>com/livescribe/aws/heartbeat/orm/ButtonTap.hbm.xml</value> -->
+<!-- 		        <value>com/livescribe/aws/heartbeat/orm/Diagnostic.hbm.xml</value> -->
+<!-- 		        <value>com/livescribe/aws/heartbeat/orm/NewHostSpot.hbm.xml</value> -->
+<!-- 		        <value>com/livescribe/aws/heartbeat/orm/PenOn.hbm.xml</value> -->
+<!-- 		        <value>com/livescribe/aws/heartbeat/orm/CaptivePortal.hbm.xml</value> -->
+		        <value>com/livescribe/aws/heartbeat/orm/Crash.hbm.xml</value>
+		        <value>com/livescribe/aws/heartbeat/orm/DynnavplusCreated.hbm.xml</value>
+		        <value>com/livescribe/aws/heartbeat/orm/FirmwareUpdate.hbm.xml</value>
+		        <value>com/livescribe/aws/heartbeat/orm/LaunchApp.hbm.xml</value>
+		        <value>com/livescribe/aws/heartbeat/orm/LaunchLine.hbm.xml</value>
+		        <value>com/livescribe/aws/heartbeat/orm/MetricGroup.hbm.xml</value>
+		        <value>com/livescribe/aws/heartbeat/orm/PageSwitch.hbm.xml</value>
+		        <value>com/livescribe/aws/heartbeat/orm/PaperReplay.hbm.xml</value>
+		        <value>com/livescribe/aws/heartbeat/orm/PenOff.hbm.xml</value>
+		        <value>com/livescribe/aws/heartbeat/orm/PenUndocked.hbm.xml</value>
+		        <value>com/livescribe/aws/heartbeat/orm/Quickcmd.hbm.xml</value>
+		        <value>com/livescribe/aws/heartbeat/orm/Quickrecord.hbm.xml</value>
+                <value>com/livescribe/aws/heartbeat/orm/Shortcut.hbm.xml</value>
+                <value>com/livescribe/aws/heartbeat/orm/SwitchLang.hbm.xml</value>
+		        <value>com/livescribe/aws/heartbeat/orm/UsbCommand.hbm.xml</value>
+                <value>com/livescribe/aws/heartbeat/orm/WifiOff.hbm.xml</value>
+                <value>com/livescribe/aws/heartbeat/orm/WifiOn.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean>
+
+	<bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="properties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+				<prop key="connection.driver_class">com.mysql.jdbc.Driver</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop>
+			</props>
+		</property>
+	</bean>
+
+    <bean id="dataMetricFactory" class="com.livescribe.aws.heartbeat.DataMetricFactory">
+        <property name="metricTypeMap">
+            <map>
+<!--                 <entry key="BUTTON_TAP"         value="com.livescribe.aws.heartbeat.orm.ButtonTap" /> -->
+<!--                 <entry key="DIAGNOSTIC"         value="com.livescribe.aws.heartbeat.orm.Diagnostic" /> -->
+<!--                 <entry key="NEW_HOST_SPOT"      value="com.livescribe.aws.heartbeat.orm.NewHostSpot" /> -->
+<!--                 <entry key="PEN_ON"             value="com.livescribe.aws.heartbeat.orm.PenOn" /> -->
+<!--                 <entry key="CAPTIVE_PORTAL"     value="com.livescribe.aws.heartbeat.orm.CaptivePortal" /> -->
+                <entry key="CRASH"              value="com.livescribe.aws.heartbeat.orm.Crash" />
+                <entry key="DYNNAVPLUS_CREATED" value="com.livescribe.aws.heartbeat.orm.DynnavplusCreated" />
+                <entry key="FW_UPDATE"          value="com.livescribe.aws.heartbeat.orm.FirmwareUpdate" />
+                <entry key="LAUNCH_APP"         value="com.livescribe.aws.heartbeat.orm.LaunchApp" />
+                <entry key="LAUNCH_LINE"        value="com.livescribe.aws.heartbeat.orm.LaunchLine" />
+                <entry key="PAGE_SWITCH"        value="com.livescribe.aws.heartbeat.orm.PageSwitch" />
+                <entry key="PAPER_REPLAY"       value="com.livescribe.aws.heartbeat.orm.PaperReplay" />
+                <entry key="PEN_OFF"            value="com.livescribe.aws.heartbeat.orm.PenOff" />
+                <entry key="PEN_UNDOCKED"       value="com.livescribe.aws.heartbeat.orm.PenUndocked" />
+                <entry key="QUICKCMD"           value="com.livescribe.aws.heartbeat.orm.Quickcmd" />
+                <entry key="QUICKRECORD"        value="com.livescribe.aws.heartbeat.orm.Quickrecord" />
+                <entry key="SHORTCUT"           value="com.livescribe.aws.heartbeat.orm.Shortcut" />
+                <entry key="SWITCH_LANG"        value="com.livescribe.aws.heartbeat.orm.SwitchLang" />
+                <entry key="USB_COMMAND"        value="com.livescribe.aws.heartbeat.orm.UsbCommand" />
+                <entry key="WIFI_OFF"           value="com.livescribe.aws.heartbeat.orm.WifiOff" />
+                <entry key="WIFI_ON"            value="com.livescribe.aws.heartbeat.orm.WifiOn" />
+            </map>
+        </property>
+    </bean>
+
+    <!-- Transaction Management -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+	
+	<!-- 
+	==================================================
+		DAO Beans
+	================================================== -->
+<!-- 	<bean id="buttonTapDao"            name="buttonTapDao"         class="com.livescribe.aws.heartbeat.orm.dao.impl.ButtonTapDaoImpl" /> -->
+<!-- 	<bean id="diagnosticDao"           name="diagnosticDao"        class="com.livescribe.aws.heartbeat.orm.dao.impl.DiagnosticDaoImpl" /> -->
+<!-- 	<bean id="newHostSpotDao"          name="newHostSpotDao"       class="com.livescribe.aws.heartbeat.orm.dao.impl.NewHostSpotDaoImpl" /> -->
+<!-- 	<bean id="penOnDao"                name="penOnDao"             class="com.livescribe.aws.heartbeat.orm.dao.impl.PenOnDaoImpl" /> -->
+<!-- 	<bean id="captivePortalDao"        name="captivePortalDao"     class="com.livescribe.aws.heartbeat.orm.dao.impl.CaptivePortalDaoImpl" /> -->
+	<bean id="crashDao"                name="crashDao"             class="com.livescribe.aws.heartbeat.orm.dao.impl.CrashDaoImpl" />
+	<bean id="dynnavplusCreatedDao"    name="dynnavplusCreatedDao" class="com.livescribe.aws.heartbeat.orm.dao.impl.DynnavplusCreatedDaoImpl" />
+	<bean id="firmwareUpdateDao"       name="firmwareUpdateDao"    class="com.livescribe.aws.heartbeat.orm.dao.impl.FirmwareUpdateDaoImpl" />
+	<bean id="launchAppDao"            name="launchAppDao"         class="com.livescribe.aws.heartbeat.orm.dao.impl.LaunchAppDaoImpl" />
+	<bean id="launchLineDao"           name="launchLineDao"        class="com.livescribe.aws.heartbeat.orm.dao.impl.LaunchLineDaoImpl" />
+	<bean id="pageSwitchDao"           name="pageSwitchDao"        class="com.livescribe.aws.heartbeat.orm.dao.impl.PageSwitchDaoImpl" />
+	<bean id="paperReplayDao"          name="paperReplayDao"       class="com.livescribe.aws.heartbeat.orm.dao.impl.PaperReplayDaoImpl" />
+	<bean id="penOffDao"               name="penOffDao"            class="com.livescribe.aws.heartbeat.orm.dao.impl.PenOffDaoImpl" />
+	<bean id="penUndockedDao"          name="penUndockedDao"       class="com.livescribe.aws.heartbeat.orm.dao.impl.PenUndockedDaoImpl" />
+	<bean id="quickcmdDao"             name="quickcmdDao"          class="com.livescribe.aws.heartbeat.orm.dao.impl.QuickcmdDaoImpl" />
+	<bean id="quickrecordDao"          name="quickrecordDao"       class="com.livescribe.aws.heartbeat.orm.dao.impl.QuickrecordDaoImpl" />
+    <bean id="shortcutDao"             name="shortcutDao"          class="com.livescribe.aws.heartbeat.orm.dao.impl.ShortcutDaoImpl" />
+    <bean id="switchLangDao"           name="switchLangDao"        class="com.livescribe.aws.heartbeat.orm.dao.impl.SwitchLangDaoImpl" />
+	<bean id="usbCommandDao"           name="usbCommandDao"        class="com.livescribe.aws.heartbeat.orm.dao.impl.UsbCommandDaoImpl" />
+	<bean id="wifiOffDao"              name="wifiOffDao"           class="com.livescribe.aws.heartbeat.orm.dao.impl.WifiOffDaoImpl" />
+	<bean id="wifiOnDao"               name="wifiOnDao"            class="com.livescribe.aws.heartbeat.orm.dao.impl.WifiOnDaoImpl" />
+	<bean id="metricGroupDao"          name="metricGroupDao"       class="com.livescribe.aws.heartbeat.orm.dao.impl.MetricGroupDaoImpl" />
+	
+
+    <!-- 
+    ==================================================
+        Service Beans
+    ================================================== -->
+	<bean id="dataMetricsTxfr"		name="dataMetricsTxfr"		class="com.livescribe.aws.heartbeat.DataMetricsTransferServiceImpl">
+        <property name="daoMap">
+            <map>
+<!--                 <entry key="com.livescribe.aws.heartbeat.orm.ButtonTap"                         value-ref="buttonTapDao" /> -->
+<!--                 <entry key="com.livescribe.aws.heartbeat.orm.Diagnostic"                        value-ref="diagnosticDao" /> -->
+<!--                 <entry key="com.livescribe.aws.heartbeat.orm.NewHostSpot"                       value-ref="newHostSpotDao" /> -->
+<!--                 <entry key="com.livescribe.aws.heartbeat.orm.PenOn"                             value-ref="penOnDao" /> -->
+<!--                 <entry key="com.livescribe.aws.heartbeat.orm.CaptivePortal"                     value-ref="captivePortalDao" /> -->
+                <entry key="com.livescribe.aws.heartbeat.orm.Crash"                             value-ref="crashDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.DynnavplusCreated"                 value-ref="dynnavplusCreatedDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.FirmwareUpdate"                    value-ref="firmwareUpdateDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.LaunchApp"                         value-ref="launchAppDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.LaunchLine"                        value-ref="launchLineDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.PageSwitch"                        value-ref="pageSwitchDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.PaperReplay"                       value-ref="paperReplayDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.PenOff"                            value-ref="penOffDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.PenUndocked"                       value-ref="penUndockedDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.Quickcmd"                          value-ref="quickcmdDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.Quickrecord"                       value-ref="quickrecordDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.Shortcut"                          value-ref="shortcutDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.SwitchLang"                        value-ref="switchLangDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.UsbCommand"                        value-ref="usbCommandDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.WifiOff"                           value-ref="wifiOffDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.WifiOn"                            value-ref="wifiOnDao" />
+                <entry key="com.livescribe.aws.heartbeat.orm.MetricGroup"                       value-ref="metricGroupDao" />
+            </map>
+        </property>
+	</bean>
+	
+</beans>

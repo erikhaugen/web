@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 11, 2011 3:11:40 PM by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="com.livescribe.aws.heartbeat.orm.ButtonTap" table="button_tap" catalog="metrics">
+        <id name="id" type="java.lang.Long">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="metricGroup" class="com.livescribe.aws.heartbeat.orm.MetricGroup" fetch="select">
+            <column name="metric_group_id" />
+        </many-to-one>
+        <property name="messageId" type="string">
+            <column name="message_id" length="64" />
+        </property>
+        <property name="metricVersion" type="string">
+            <column name="metric_version" length="32" />
+        </property>
+        <property name="deviceId" type="string">
+            <column name="device_id" length="64" />
+        </property>
+        <property name="deviceType" type="string">
+            <column name="device_type" length="64" />
+        </property>
+        <property name="fwVersion" type="string">
+            <column name="fw_version" length="32" />
+        </property>
+        <property name="classAttr" type="string">
+            <column name="class" length="64" />
+        </property>
+        <property name="buttonType" type="string">
+            <column name="button_type" length="64" />
+        </property>
+        <property name="value" type="string">
+            <column name="value" length="64" />
+        </property>
+        <property name="isTestData" type="java.lang.Boolean">
+            <column name="is_test_data" />
+        </property>
+        <property name="eventTime" type="timestamp">
+            <column name="event_time" length="19" />
+        </property>
+        <property name="metricSent" type="timestamp">
+            <column name="metric_sent" length="19" />
+        </property>
+        <property name="created" type="timestamp">
+            <column name="created" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

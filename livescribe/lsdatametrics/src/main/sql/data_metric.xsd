@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.livescribe.com/schemas/data_metrics/1.0/" 
+	xmlns:tns="http://www.livescribe.com/schemas/data_metrics/1.0/" 
+	elementFormDefault="qualified">
+
+	<element name="metrics">
+		<complexType>
+			<sequence>
+				<element name="metric" type="tns:metric" minOccurs="1" maxOccurs="unbounded"></element>
+			</sequence>
+			<attribute ref="tns:version" />
+			<attribute ref="tns:unique_id" />
+			<attribute ref="tns:device" />
+		</complexType>
+	</element>
+	
+	<complexType name="metric">
+		<annotation>
+			<documentation></documentation>
+		</annotation>
+		<attribute ref="tns:type" />
+		<attribute ref="tns:time" />
+		<attribute ref="tns:test" />
+	</complexType>
+	
+	<attribute name="version" type="string">
+		<annotation>
+			<documentation></documentation>
+		</annotation>
+	</attribute>
+	
+	<attribute name="unique_id" type="string">
+		<annotation>
+			<documentation></documentation>
+		</annotation>
+	</attribute>
+	
+	<attribute name="device" type="string">
+		<annotation>
+			<documentation></documentation>
+		</annotation>
+	</attribute>
+	
+	<attribute name="type" type="string">
+		<annotation>
+			<documentation></documentation>
+		</annotation>
+	</attribute>
+
+	<attribute name="time" type="dateTime">
+		<annotation>
+			<documentation></documentation>
+		</annotation>
+	</attribute>
+
+	<attribute name="test" type="integer">
+		<annotation>
+			<documentation></documentation>
+		</annotation>
+	</attribute>
+
+</schema>

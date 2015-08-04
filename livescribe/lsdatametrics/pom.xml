@@ -1,0 +1,786 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.livescribe.aws</groupId>
+	<artifactId>lsdatametrics</artifactId>
+	<packaging>jar</packaging>
+	<version>1.1.0-SNAPSHOT</version>
+	<name>Data Metrics Queue Manager</name>
+	<url>http://maven.apache.org</url>
+
+	<scm>
+		<connection>scm:svn:svn+ssh://${svn-user}@svn.livescribe.com/svn/LSRepository/WebCore/WebServices/lsdatametrics/trunk/</connection>
+		<developerConnection>scm:svn:svn+ssh://${svn-user}@svn.livescribe.com/svn/LSRepository/WebCore/WebServices/lsdatametrics/trunk/</developerConnection>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>nexus</id>
+			<name>Nexus Releases Repository</name>
+			<url>http://jenkins.pensoft.local:8081/nexus/content/repositories/releases</url>
+			<layout>default</layout>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>nexus-snapshots</id>
+			<name>Nexus Snapshots Repository</name>
+			<url>http://jenkins.pensoft.local:8081/nexus/content/repositories/snapshots</url>
+			<layout>default</layout>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>livescribe-repo</id>
+			<name>livescribe-repo</name>
+			<url>http://jenkins.pensoft.local:8081/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
+	
+	<profiles>
+	
+		<profile>
+			<activation>
+				<property>
+					<name>buildfromhudson</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<directory>${hudson-build-folder}/${project.version}_${hudson-build-number}</directory>
+				<finalName>${project.artifactId}-${project.version}_${hudson-build-number}</finalName>
+				<plugins>
+					<!-- 
+					==============================================
+						Maven Surefire Plugin
+					============================================== -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<phase>test</phase>
+								<configuration>
+									<excludes>
+										<exclude>**/*.java</exclude>
+									</excludes>
+<!--									<skipTests>true</skipTests>-->
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>local</id>
+			<activation>
+				<property>
+					<name>local</name>
+					<value>true</value>
+				</property>
+			</activation>
+			
+			<repositories>
+				<repository>
+					<id>localhost-repo</id>
+					<name>localhost-repo</name>
+					<url>http://localhost:8081/nexus/content/groups/public/</url>
+				</repository>
+<!-- 				<repository> -->
+<!-- 					<id>livescribe-repo</id> -->
+<!-- 					<name>livescribe-repo</name> -->
+<!-- 					<url>http://jenkins.pensoft.local:8081/nexus/content/groups/public/</url> -->
+<!-- 				</repository> -->
+			</repositories>
+			
+			<distributionManagement>
+				<repository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>localhost-nexus</id>
+					<name>Nexus Releases Repository</name>
+					<url>http://localhost:8081/nexus/content/repositories/releases</url>
+					<layout>default</layout>
+				</repository>
+				<snapshotRepository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>localhost-nexus-snapshots</id>
+					<name>Nexus Snapshots Repository</name>
+					<url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+					<layout>default</layout>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+		
+	</profiles>
+
+	<dependencies>
+	
+		<!-- 
+		==============================================
+		  Livescribe Dependencies
+		============================================== -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.livescribe</groupId> -->
+<!-- 			<artifactId>baseutils</artifactId> -->
+<!-- 			<version>2.7-SNAPSHOT</version> -->
+<!-- 		</dependency> -->
+
+		<dependency>
+			<groupId>com.livescribe.framework</groupId>
+			<artifactId>lsconfiguration</artifactId>
+			<version>1.1.0-SNAPSHOT</version>
+		</dependency>
+
+		<!-- 
+		==============================================
+			Testing Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.3.27</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.mail</groupId>
+					<artifactId>mail</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.aspectj</groupId> -->
+<!-- 			<artifactId>aspectjtools</artifactId> -->
+<!-- 			<version>1.6.11</version> -->
+<!-- 		</dependency> -->
+
+		<dependency>
+			<groupId>commons-daemon</groupId>
+			<artifactId>commons-daemon</artifactId>
+			<version>1.0.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-digester3</artifactId>
+			<version>3.0</version>
+		</dependency>
+
+ 		<dependency> 
+ 			<groupId>commons-logging</groupId>
+ 			<artifactId>commons-logging</artifactId>
+ 			<version>1.1.1</version>
+ 		</dependency>
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>commons-httpclient</groupId> -->
+<!-- 			<artifactId>commons-httpclient</artifactId> -->
+<!-- 			<version>3.0.1</version> -->
+<!-- 		</dependency> -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>commons-codec</groupId> -->
+<!-- 			<artifactId>commons-codec</artifactId> -->
+<!-- 			<version>1.3</version> -->
+<!-- 		</dependency> -->
+
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>1.1.1</version>
+			<scope>runtime</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>xalan</groupId>
+					<artifactId>xalan</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	
+		<!-- 
+		==============================================
+			Spring Dependencies
+		============================================== -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework</groupId> -->
+<!-- 			<artifactId>spring-aop</artifactId> -->
+<!-- 			<version>${version.springframework}</version> -->
+<!-- 		</dependency> -->
+<!-- 	    <dependency> -->
+<!-- 	    	<groupId>org.springframework</groupId> -->
+<!-- 	    	<artifactId>spring-aspects</artifactId> -->
+<!-- 	    	<version>${version.springframework}</version> -->
+<!-- 	    </dependency> -->
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-beans</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework</groupId> -->
+<!-- 			<artifactId>spring-core</artifactId> -->
+<!-- 			<version>${version.springframework}</version> -->
+<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework</groupId> -->
+<!-- 			<artifactId>spring-context-support</artifactId> -->
+<!-- 			<version>${version.springframework}</version> -->
+<!-- 		</dependency> -->
+<!-- 	    <dependency> -->
+<!-- 	    	<groupId>org.springframework</groupId> -->
+<!-- 	    	<artifactId>spring-expression</artifactId> -->
+<!-- 	    	<version>${version.springframework}</version> -->
+<!-- 	    </dependency> -->
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-jdbc</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+<!-- 	    <dependency> -->
+<!-- 	    	<groupId>org.springframework</groupId> -->
+<!-- 	    	<artifactId>spring-jmx</artifactId> -->
+<!-- 	    	<version>2.0.8</version> -->
+<!-- 	    </dependency> -->
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-test</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-tx</artifactId>
+	    	<version>${version.springframework}</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-orm</artifactId>
+	    	<version>${version.springframework}</version>
+	    	<scope>runtime</scope>
+	    </dependency>
+
+		<!-- 
+		==============================================
+			Database-related Dependencies
+		============================================== -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>3.3.2.GA</version>
+<!-- 			<exclusions> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>javax.transaction</groupId> -->
+<!-- 					<artifactId>jta</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 			</exclusions> -->
+		</dependency>
+
+		<!-- Used for reverse engineering -->
+<!-- 	    <dependency> -->
+<!-- 	    	<groupId>org.hibernate</groupId> -->
+<!-- 	    	<artifactId>hibernate-tools</artifactId> -->
+<!-- 	    	<version>3.2.0.beta8.patched</version> -->
+<!-- 	    </dependency> -->
+<!-- 	    <dependency> -->
+<!-- 	    	<groupId>org.hibernate</groupId> -->
+<!-- 	    	<artifactId>hibernate-tools</artifactId> -->
+<!-- 	    	<version>3.2.3.GA.patched</version> -->
+<!-- 	    </dependency> -->
+
+ 		<dependency>
+ 			<groupId>c3p0</groupId>
+ 			<artifactId>c3p0</artifactId>
+ 			<version>0.9.1.2</version>
+ 		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.12</version>
+			<scope>runtime</scope>
+		</dependency>  
+
+<!-- 	    <dependency> -->
+<!-- 	    	<groupId>cglib</groupId> -->
+<!-- 	    	<artifactId>cglib</artifactId> -->
+<!-- 	    	<version>2.2</version> -->
+<!-- 	    </dependency> -->
+
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.4.GA</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.6</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.stream</groupId>
+			<artifactId>sjsxp</artifactId>
+			<version>1.0.1</version>
+			<scope>runtime</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.xml.stream</groupId>
+					<artifactId>stax-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>xerces</groupId> -->
+<!-- 			<artifactId>xercesImpl</artifactId> -->
+<!-- 			<version>2.9.1</version> -->
+<!-- 		</dependency> -->
+
+		<dependency>
+			<groupId>xalan</groupId>
+			<artifactId>xalan</artifactId>
+			<version>2.7.1</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.xsom</groupId>
+			<artifactId>xsom</artifactId>
+			<version>20110809</version>
+		</dependency>
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>javax.mail</groupId> -->
+<!-- 			<artifactId>mail</artifactId> -->
+<!-- 			<version>[1.4,)</version> -->
+<!-- 		</dependency> -->
+
+		<dependency>
+			<groupId>org.graylog2</groupId>
+			<artifactId>gelfj</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+	</dependencies>
+	
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<finalName>${project.artifactId}-${project.version}</finalName>
+		
+		<plugins>
+
+			<!-- 
+			==============================================
+				Timestamp Plugin
+			============================================== -->
+			<plugin>
+				<groupId>com.keyboardsamurais.maven</groupId>
+				<artifactId>maven-timestamp-plugin</artifactId>
+				<version>1.0</version>
+<!-- 				<configuration> -->
+<!-- 					<propertyName>timestamp</propertyName> -->
+<!-- 					<timestampPattern>MMM dd, yyyy HH:mm:ss</timestampPattern> -->
+<!-- 				</configuration> -->
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+						<configuration>
+							<propertyName>timestamp</propertyName>
+							<timestampPattern>MMM dd, yyyy HH:mm:ss</timestampPattern>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- 
+			==============================================
+			  Eclipse Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+<!-- 				<version>2.2</version> -->
+			</plugin>
+			
+			<!-- 
+			==============================================
+				Maven APT Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+				<version>1.0-alpha-3</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+							<goal>test-process</goal>
+						</goals>
+					</execution>
+				</executions>
+            </plugin>
+            
+			<!-- 
+			==============================================
+			  Hibernate-related Plugins
+			============================================== -->
+			<!-- <plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>hibernate3-maven-plugin</artifactId>
+				<version>2.2</version>
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>5.1.12</version>
+					</dependency>
+				</dependencies>
+				<executions>
+				
+					
+					==================================================
+						MySQL	MySQL >> hbm.xml
+					==================================================
+					<execution>
+						<id>hbm2hbmxml-mysql</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>hbm2hbmxml</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2hbmxml</name>
+									<outputDirectory>src/main/resources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<configurationfile>/src/main/resources/hibernate.cfg.xml</configurationfile>
+								<packagename>com.livescribe.aws.heartbeat.orm</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					
+					==================================================
+						MySQL	hbm.xml >> Java
+					==================================================
+					<execution>
+						<id>hbm2java-mysql</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>hbm2java</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbm2java</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>jdbcconfiguration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<configurationfile>/src/main/resources/hibernate.cfg.xml</configurationfile>
+								<packagename>com.livescribe.aws.heartbeat.orm</packagename>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+					
+					==================================================
+						MySQL	hbm.xml >> DAO (template)
+					==================================================
+					<execution>
+						<id>hbm2template-mysql</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>hbmtemplate</goal>
+						</goals>
+						<configuration>
+							<components>
+								<component>
+									<name>hbmtemplate</name>
+									<outputDirectory>target/hibernate3/generated-sources</outputDirectory>
+									<implementation>configuration</implementation>
+								</component>
+							</components>
+							<componentProperties>
+								<templatepath>src/main/templates</templatepath>
+								<filepattern>{package-name}/{class-name}DaoImpl.java</filepattern>
+								<templateprefix>dao/</templateprefix>
+								<jdk5>true</jdk5>
+								<ejb3>false</ejb3>
+								<template>dao/daohome.ftl</template>
+								<configurationfile>/src/main/resources/hibernate.cfg.xml</configurationfile>
+								<packagename>com.livescribe.aws.heartbeat.orm.dao.impl</packagename>
+								<sessionFactoryName>sessionFactory</sessionFactoryName>
+							</componentProperties>
+						</configuration>
+					</execution>
+
+				</executions>
+			</plugin> -->
+
+			<!-- 
+			==============================================
+				Maven Dependency Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+<!-- 					<execution> -->
+<!-- 						<id>analyze</id> -->
+<!-- 						<goals> -->
+<!-- 							<goal>analyze-only</goal> -->
+<!-- 						</goals> -->
+<!-- 						<configuration> -->
+<!-- 							<failOnWarning>true</failOnWarning> -->
+<!-- 							<outputXML>true</outputXML> -->
+<!-- 							<verbose>true</verbose> -->
+<!-- 						</configuration> -->
+<!-- 					</execution> -->
+					<execution>
+						<id>copy</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<excludeArtifactIds>junit</excludeArtifactIds>
+<!-- 							<excludeArtifactIds>slf4j-api</excludeArtifactIds> -->
+							<outputDirectory>${project.build.directory}/classes</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Maven Compiler Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Maven Assembly Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/final-zip.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> 
+						<phase>package</phase> 
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		
+			<!-- 
+			==============================================
+				Maven Build Number Plugin
+			============================================== --> 
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.0-beta-4</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>false</doCheck>
+					<doUpdate>false</doUpdate>
+					<scmDirectory>${basedir}</scmDirectory>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Resource Encodings Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+<!-- 				<configuration> -->
+<!-- 					<encoding>UTF-8</encoding> -->
+<!-- 				</configuration> -->
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<encoding>UTF-8</encoding>
+							<resources>
+								<resource>
+									<directory>src/main/non-packaged-resources</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>datametrics.sh</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+     
+			<!-- 
+			==============================================
+				Maven JAR Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+<!-- 							<classpathPrefix>lib</classpathPrefix> -->
+<!-- 							<classpathPrefix>${usr.local.heartbeat}/lib</classpathPrefix> -->
+<!-- 							<mainClass>com.livescribe.aws.heartbeat.DataMetricsTransferApp</mainClass> -->
+<!-- 							<mainClass>com.livescribe.aws.heartbeat.Main</mainClass> -->
+							<mainClass>com.livescribe.aws.heartbeat.Launcher</mainClass>
+						</manifest>
+						<manifestEntries>
+							<App-Version>${version}</App-Version>
+							<Svn-Revision>${buildNumber}</Svn-Revision>
+							<Hudson-Build-Number>${hudson-build-number}</Hudson-Build-Number>
+							<Build-Date>${maven.build.timestamp}</Build-Date>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Maven Deploy Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<updateReleaseInfo>true</updateReleaseInfo>
+				</configuration>
+			</plugin>
+		
+			<!-- 
+			==============================================
+				Maven Release Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0</version>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>perform</goal>
+						</goals>
+						<configuration>
+							<workingDirectory>${project.build.directory}/checkout</workingDirectory>
+						</configuration>
+					</execution>
+				</executions>
+
+				<configuration>
+					
+					<tagBase>svn+ssh://${svn-user}@svn.livescribe.com/svn/LSRepository/WebCore/WebServices/lsdatametrics/tags</tagBase>
+				</configuration>
+			</plugin>
+		
+			<!-- 
+			==============================================
+				Maven Site Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<inputDirectory>${project.reporting.outputDirectory}</inputDirectory>
+					<outputDirectory>/Library/WebServer/Documents/services/lsdatametrics</outputDirectory>
+				</configuration>
+			</plugin>
+		
+		</plugins>
+	
+	</build>
+	      
+	<properties>
+		<svn-user>${env.USER}</svn-user>
+		<version.springframework>3.0.3.RELEASE</version.springframework>
+		<version.hibernate-anno>3.4.0.GA</version.hibernate-anno>
+		<version.hibernate-core>3.3.2.GA</version.hibernate-core>
+		<version.hibernate-tools>3.3.0.GA</version.hibernate-tools>
+		<usr.local.heartbeat>/usr/local/heartbeat</usr.local.heartbeat>
+	</properties>
+
+</project>

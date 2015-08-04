@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory name="sessionFactory">
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.username">lsadmin</property>
+        <property name="hibernate.connection.password">wwwpen</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/metrics</property>
+        <property name="hibernate.connection.default_schema">metrics</property>
+        <property name="hibernate.connection.default_catalog">metrics</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+		
+		<!-- <mapping resource="com/livescribe/aws/heartbeat/orm/ButtonTap.hbm.xml" /> -->
+		<!-- <mapping resource="com/livescribe/aws/heartbeat/orm/PenOn.hbm.xml" /> -->
+		<!-- <mapping resource="com/livescribe/aws/heartbeat/orm/Diagnostic.hbm.xml" /> -->
+		<!-- <mapping resource="com/livescribe/aws/heartbeat/orm/NewHostSpot.hbm.xml" /> -->
+		<!-- <mapping resource="com/livescribe/aws/heartbeat/orm/CaptivePortal.hbm.xml" /> -->
+		
+		<mapping resource="com/livescribe/aws/heartbeat/orm/Crash.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/DynnavplusCreated.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/FirmwareUpdate.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/LaunchApp.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/LaunchLine.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/MetricGroup.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/PageSwitch.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/PaperReplay.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/PenOff.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/PenUndocked.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/Quickcmd.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/Quickrecord.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/Shortcut.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/SwitchLang.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/UsbCommand.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/WifiOff.hbm.xml" />
+		<mapping resource="com/livescribe/aws/heartbeat/orm/WifiOn.hbm.xml" />
+		
+    </session-factory>
+
+</hibernate-configuration>
