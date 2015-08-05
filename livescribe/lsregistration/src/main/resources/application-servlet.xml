@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:mvc="http://www.springframework.org/schema/mvc"
+		xmlns:oxm="http://www.springframework.org/schema/oxm"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+				http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+				http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.2.xsd">
+
+	<context:component-scan base-package="com.livescribe"/>
+	
+	<!-- Enable incoming form object conversion. -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="formHttpMessageConverter"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="formHttpMessageConverter" class="org.springframework.http.converter.FormHttpMessageConverter" />
+	<bean id="marshallingHttpMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+		<property name="marshaller" ref="xStreamMarshaller" />
+		<property name="unmarshaller" ref="xStreamMarshaller" />
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="order" value="0" />
+		<property name="mediaTypes">
+			<map>
+				<entry key="atom"	value="application/atom+xml" />
+				<entry key="pcc"	value="application/pcc+xml" />
+				<entry key="xml" 	value="application/xml" />
+				<entry key="json" 	value="application/json" />
+				<entry key="html"	value="text/html" />
+				<entry key="gif"	value="image/gif" />
+			</map>
+		</property>
+		<property name="viewResolvers">
+			<list>
+				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+<!-- 				<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> -->
+<!-- 					<property name="prefix" value="/WEB-INF/jsp/"/> -->
+<!-- 					<property name="suffix" value=".jsp"/> -->
+<!-- 				</bean> -->
+<!-- 				<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver"> -->
+<!-- 					<property name="viewClass" value="org.springframework.web.servlet.view.RedirectView" /> -->
+<!-- 				</bean> -->
+			</list>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<ref bean="versionView" />
+				<ref bean="xmlResponseView" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 
+	==================================================
+		View Beans
+	================================================== -->
+	<bean id="xmlResponseView" class="org.springframework.web.servlet.view.xml.MarshallingView">
+		<constructor-arg ref="xStreamMarshaller" />
+	</bean>
+
+	<!-- This view is required by VersionController in the 'lsversion' project. -->
+	<bean id="versionView" class="org.springframework.web.servlet.view.xml.MarshallingView">
+		<constructor-arg ref="xStreamMarshaller" />
+	</bean>
+
+	<!-- XStream XML Marshaller/Unmarshaller -->
+	<bean id="xStreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+		<property name="autodetectAnnotations" value="false" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.livescribe.framework.web.response.ServiceResponse</value>
+				<value>com.livescribe.framework.web.response.ErrorResponse</value>
+				<value>com.livescribe.framework.version.response.VersionResponse</value>
+				<value>com.livescribe.web.registration.response.RegistrationResponse</value>
+				<value>com.livescribe.web.registration.response.RegistrationListResponse</value>
+				<value>com.livescribe.web.registration.dto.RegistrationDTO</value>
+				<value>com.livescribe.web.registration.response.RegistrationHistoryResponse</value>
+                <value>com.livescribe.web.registration.response.RegistrationHistoryListResponse</value>
+                <value>com.livescribe.web.registration.dto.RegistrationHistoryDTO</value>
+                <value>com.livescribe.web.registration.response.WarrantyResponse</value>
+                <value>com.livescribe.web.registration.response.WarrantyListResponse</value>
+                <value>com.livescribe.web.registration.dto.WarrantyDTO</value>
+                <value>com.livescribe.web.registration.response.UserListResponse</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

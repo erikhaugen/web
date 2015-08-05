@@ -1,0 +1,24 @@
+/**
+ * Created:  
+ */
+package ${package};
+
+public enum $enum.ClassName {
+
+#foreach($value in $enum.Values)
+	$value.get("valueName") ("$value.get("value")")#if ($foreach.hasNext),#else;#end
+#end
+
+	private final String value;
+	
+	/**
+	 * <p></p>
+	 */
+	${enum.ClassName}(String value) {
+		this.value = value;
+	}
+
+	public String getValue() {
+		return value;
+	}
+}

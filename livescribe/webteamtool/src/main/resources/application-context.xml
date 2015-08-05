@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xmlns:camel="http://camel.apache.org/schema/spring"
+                xmlns:p="http://www.springframework.org/schema/p"
+                xmlns:context="http://www.springframework.org/schema/context"
+                xmlns:mvc="http://www.springframework.org/schema/mvc"
+                xmlns:oxm="http://www.springframework.org/schema/oxm"
+                xmlns:tx="http://www.springframework.org/schema/tx"
+                xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+                                http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+                                http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.2.xsd
+								http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+								http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<context:component-scan base-package="com.livescribe" />
+	<context:annotation-config />
+	<tx:annotation-driven />
+	
+    <bean id="appProperties" class="com.livescribe.web.tools.webteamtool.config.AppProperties" init-method="init" destroy-method="destroy">
+		<!-- Gets the <display-name> value from the 'web.xml' file. -->
+<!-- 		<property name="servletContextName" value="#{servletContext.servletContextName}" /> -->
+        <property name="location">
+	        <value>classpath:app.properties</value>
+	    </property>
+	    <property name="searchSystemEnvironment"><value>true</value></property>
+	    <property name="systemPropertiesMode"><value>1</value></property>
+	</bean>    
+    
+	<bean id="dataSourceConsumer" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="jdbcUrl" value="${consumer.jdbc.url}" />
+		<property name="user" value="${consumer.jdbc.username}" />
+		<property name="password" value="${consumer.jdbc.password}" />
+		<property name="driverClass" value="${consumer.jdbc.driverClassName}" />
+	</bean>
+
+	<bean id="sessionFactoryConsumer" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource"><ref local="dataSourceConsumer" /></property>
+        <property name="mappingResources">
+			<list>
+				<value>com/livescribe/framework/orm/consumer/Authenticated.hbm.xml</value>
+				<value>com/livescribe/framework/orm/consumer/Authorization.hbm.xml</value>
+				<value>com/livescribe/framework/orm/consumer/DeviceSetting.hbm.xml</value>
+				<value>com/livescribe/framework/orm/consumer/DeviceUpdate.hbm.xml</value>
+				<value>com/livescribe/framework/orm/consumer/Group.hbm.xml</value>
+				<value>com/livescribe/framework/orm/consumer/PremiumCode.hbm.xml</value>
+				<value>com/livescribe/framework/orm/consumer/RegisteredDevice.hbm.xml</value>
+				<value>com/livescribe/framework/orm/consumer/Role.hbm.xml</value>
+				<value>com/livescribe/framework/orm/consumer/User.hbm.xml</value>
+				<value>com/livescribe/framework/orm/consumer/UserSetting.hbm.xml</value>
+				<value>com/livescribe/framework/orm/consumer/XUserGroup.hbm.xml</value>
+				<value>com/livescribe/framework/orm/consumer/XUserRole.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean>
+
+	<bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="properties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+				<prop key="connection.driver_class">com.mysql.jdbc.Driver</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop>
+			</props>
+		</property>
+	</bean>
+
+    <bean id="txConsumer" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+    	<qualifier value="consumer" />
+		<property name="sessionFactory">
+			<ref local="sessionFactoryConsumer" />
+		</property>
+	</bean>
+	
+    <bean id="oauthValidator" class="com.livescribe.web.tools.webteamtool.OAuthTokenValidator" />
+    
+	<!-- 
+	==================================================
+		Service Beans
+	================================================== -->
+    <bean id="evernoteService" class="com.livescribe.web.tools.webteamtool.service.EvernoteServiceImpl" />
+    <bean id="userService" class="com.livescribe.web.tools.webteamtool.service.UserServiceImpl" />
+    
+	<!-- 
+	==================================================
+		DAO Beans
+	================================================== -->
+    <bean id="authorizationDao" class="com.livescribe.web.tools.webteamtool.dao.CustomAuthorizationDao" />
+    <bean id="userDao" class="com.livescribe.web.tools.webteamtool.dao.CustomUserDao" />
+    
+</beans>

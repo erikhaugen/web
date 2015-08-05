@@ -1,0 +1,18 @@
+<archetype>
+	<id>webservice</id>
+	<sources>
+		<source>src/main/java/package-info.java</source>
+	</sources>
+	<resources>
+		<resource>src/main/resources/application-context.xml</resource>
+		<resource>src/main/resources/application-servlet.xml</resource>
+		<resource>src/main/resources/log4j.xml</resource>
+		<resource>src/main/webapp/WEB-INF/web.xml</resource>
+	</resources>
+	<testSources>
+		<source>src/test/java/BaseTest.java</source>
+	</testSources>
+	<testResources>
+		<resource>src/test/resources/log4j.xml</resource>
+	</testResources>
+</archetype>

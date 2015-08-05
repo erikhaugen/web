@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dataset SYSTEM "../dtd/registration.dtd">
+<dataset>
+
+	<registration registration_id="10000" app_id="DbUnit-Loader-1" display_id="AYE-ARE-CA3-TP" pen_serial="2594171696607" email="lester02@ls.com" first_name="Lester" last_name="the Tester #2" pen_name="Lester's Test Pen #2" edition="0" locale="en_US" country="Somewhere else on the Internet." opt_in="false" created="2013-10-21 17:32:57" last_modified="2013-10-21 17:32:57" />
+	<registration registration_id="10010" app_id="DbUnit-Loader-1" display_id="AYE-ASW-AED-HB" pen_serial="2594172882907" email="lester03@ls.com" first_name="Lester" last_name="the Tester #3" pen_name="Lester's Test Pen #3" edition="0" locale="en_US" country="Somewhere else on the Internet." opt_in="false" created="2013-11-06 10:22:47" last_modified="2013-11-06 10:22:47" />
+	<registration app_id="RegistrationServiceImplTest.testRegister()" display_id="AYE-ASX-CM4-KB" pen_serial="2594172911908" email="lester01@ls.com" first_name="Bob" last_name="Straw" edition="0" />
+	
+</dataset>

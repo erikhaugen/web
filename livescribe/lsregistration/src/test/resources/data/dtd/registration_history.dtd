@@ -1,0 +1,18 @@
+<!ELEMENT dataset (registration_history*)>
+
+<!ELEMENT registration_history EMPTY>
+<!ATTLIST registration_history registration_id		CDATA #IMPLIED>
+<!ATTLIST registration_history app_id				CDATA #IMPLIED>
+<!ATTLIST registration_history display_id			CDATA #IMPLIED>
+<!ATTLIST registration_history edition				CDATA #IMPLIED>
+<!ATTLIST registration_history pen_serial			CDATA #IMPLIED>
+<!ATTLIST registration_history pen_name				CDATA #IMPLIED>
+<!ATTLIST registration_history first_name			CDATA #IMPLIED>
+<!ATTLIST registration_history last_name			CDATA #IMPLIED>
+<!ATTLIST registration_history email				CDATA #IMPLIED>
+<!ATTLIST registration_history locale				CDATA #IMPLIED>
+<!ATTLIST registration_history country				CDATA #IMPLIED>
+<!ATTLIST registration_history opt_in				CDATA #IMPLIED>
+<!ATTLIST registration_history registration_date    CDATA #IMPLIED>
+<!ATTLIST registration_history created				CDATA #IMPLIED>
+<!ATTLIST registration_history last_modified		CDATA #IMPLIED>

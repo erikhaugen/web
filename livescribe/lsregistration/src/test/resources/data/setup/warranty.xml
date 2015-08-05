@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dataset SYSTEM "../dtd/warranty.dtd">
+<dataset>
+
+    <warranty 
+       registration_id="10000"
+       app_id="APP-ID-TEST-67890"
+       display_id="AYE-ARE-CA3-TP"
+       pen_serial="2594171696607"
+       email="lester02@ls.com"
+       first_name="Lester"
+       last_name="the Tester #2"
+       pen_name="Lester's Test Pen #2"
+       edition="0"
+       locale="en_US"
+       created="2013-10-21 17:32:57" />
+    
+</dataset>

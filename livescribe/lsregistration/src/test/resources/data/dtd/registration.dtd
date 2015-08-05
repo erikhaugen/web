@@ -1,0 +1,17 @@
+<!ELEMENT dataset (registration*)>
+
+<!ELEMENT registration EMPTY>
+<!ATTLIST registration registration_id		CDATA #IMPLIED>
+<!ATTLIST registration app_id				CDATA #IMPLIED>
+<!ATTLIST registration display_id			CDATA #IMPLIED>
+<!ATTLIST registration edition				CDATA #IMPLIED>
+<!ATTLIST registration pen_serial			CDATA #IMPLIED>
+<!ATTLIST registration pen_name				CDATA #IMPLIED>
+<!ATTLIST registration first_name			CDATA #IMPLIED>
+<!ATTLIST registration last_name			CDATA #IMPLIED>
+<!ATTLIST registration email				CDATA #IMPLIED>
+<!ATTLIST registration locale				CDATA #IMPLIED>
+<!ATTLIST registration country				CDATA #IMPLIED>
+<!ATTLIST registration opt_in				CDATA #IMPLIED>
+<!ATTLIST registration created				CDATA #IMPLIED>
+<!ATTLIST registration last_modified		CDATA #IMPLIED>

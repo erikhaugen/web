@@ -1,0 +1,181 @@
+/**
+ * Created:  $date.long
+ *           
+ * Companion SDK Framework - Version 0.5.0 (PRE-RELEASE) - CONFIDENTIAL
+ * Copyright (c) $date.get('yyyy'). Livescribe, Inc. All rights reserved.
+ */
+package $package;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+import java.util.ArrayList;
+import java.io.CharArrayWriter;
+
+//import javax.xml.parsers.SAXParser;
+import org.xml.sax.XMLReader;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+//import org.apache.xerces.parsers.*;
+import org.xml.sax.helpers.DefaultHandler;
+
+## Import the 'type' for which this class handles.
+import ${package}.types.${element.ClassName};
+#foreach ($child in $element.Children)
+import ${package}.types.${child.ClassName};
+#end
+
+/**
+ * <p></p>
+ * 
+ * @author <a href="mailto:kmurdoff@livescribe.com">Kevin Murdoff</a>
+ * @version 1.0
+ */
+public class ${element.ClassName}Handler extends DefaultHandler {
+
+	private ArrayList<${element.ClassName}> ${element.elementName}List = null;
+#foreach($child in $element.Children)
+	private List<${child.ClassName}> ${child.elementName}List;
+	private $child.ClassName ${child.elementName};
+#end
+    private CharArrayWriter textWriter = new CharArrayWriter();
+    private Stack path;
+    private Map params;
+    private DefaultHandler parent;
+    private XMLReader reader;
+#foreach ($attr in $element.Attributes)
+    private ${attr.get("type")} ${attr.get("name")};
+#end
+
+    /**
+     * <p></p>
+     * 
+     * @param path
+     * @param params
+     * @param attributes
+     * @param reader
+     * @param parent
+     * 
+     * @throws SAXException 
+     */
+    public ${element.ClassName}Handler(Stack path, Map params, Attributes attributes, XMLReader reader, DefaultHandler parent)  throws SAXException {
+    
+        this.path = path;
+        this.params = params;
+        this.parent = parent;
+        this.reader = reader;
+    }
+    
+	#foreach ($child in ${element.Children})
+
+	/**
+	 * <p></p>
+	 *
+	 * @params attributes
+	 */
+	public void start${child.ClassName}(Attributes attributes) throws SAXException {
+    
+      #foreach ($attr in $child.Attributes)
+        #if (${attr.get("type")} == "String")
+        this.${child.ElementName}.set${attr.get("className")}(attributes.getValue("${attr.get("name")}"));
+        #elseif (${attr.get("type")} == "Integer")
+        String ${attr.get("name")}Str = attributes.getValue("${attr.get("name")}");
+		this.${child.ElementName}.set${attr.get("className")}(Integer.parseInt(${attr.get("name")}Str));
+		#elseif (${attr.get("type")} == "Double")
+        String ${attr.get("name")}Str = attributes.getValue("${attr.get("name")}");
+		this.${child.ElementName}.set${attr.get("className")}(Double.parseDouble(${attr.get("name")}Str));
+		#end
+      #end
+	}
+
+      #if ($child.hasChildren())
+      #else
+
+	/**
+	 * <p></p>
+	 *
+	 */
+    public void end${child.ClassName}() throws SAXException {
+    }
+
+      #end
+
+    #end
+
+    /**
+     * <p></p>
+     * 
+     * @param uri
+     * @param localName
+     * @param qName
+     * @param attributes
+     * 
+     * @throws SAXException
+     */
+    @Override
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+    	
+    	textWriter.reset();
+    	
+    	#foreach ($child in $element.Children)
+   	      #if ($child.hasChildren())
+    	if (qName.equals("${child.ElementName}")) {
+    		${element.elementName}List = new ArrayList<${element.ClassName}>();
+    		DefaultHandler handler = new ${child.ClassName}Handler(path, params, attributes, reader, this);
+    		path.push("${child.ElementName}");
+    		reader.setContentHandler(handler);
+    	}
+    	  #else
+    	  #end
+    	#end
+    }
+    
+    /**
+     * <p></p>
+     *
+     * @param uri
+     * @param localName
+     * @param qName
+     * 
+     * @throws SAXException
+     */
+    @Override
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+    
+        if (qName.equals("${element.ElementName}")) {
+        
+            path.pop();
+            reader.setContentHandler (parent);
+        }
+        #foreach ($child in $element.Children)
+          #if ($child.hasChildren())
+          #else
+		else if (qName.equals("${child.ElementName}")) {
+			end${child.ClassName}();
+		}
+          #end
+        #end
+	}
+	
+	/**
+	 * <p></p>
+	 * 
+	 * @return the text contained within this element.
+	 */
+	public String getText() {
+		return textWriter.toString().trim();
+	}
+
+	/**
+	 * <p></p>
+	 * 
+	 * @param ch
+	 * @param start
+	 @ @param length
+	 */
+	@Override
+    public void characters(char[] ch, int start, int length) {
+        textWriter.write(ch,start,length);
+    }
+}
+	

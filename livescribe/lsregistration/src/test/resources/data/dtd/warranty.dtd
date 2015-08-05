@@ -1,0 +1,15 @@
+<!ELEMENT dataset (warranty)>
+
+<!ELEMENT warranty EMPTY>
+<!ATTLIST warranty registration_id		CDATA #IMPLIED>
+<!ATTLIST warranty app_id				CDATA #IMPLIED>
+<!ATTLIST warranty display_id			CDATA #IMPLIED>
+<!ATTLIST warranty edition				CDATA #IMPLIED>
+<!ATTLIST warranty pen_serial			CDATA #IMPLIED>
+<!ATTLIST warranty pen_name				CDATA #IMPLIED>
+<!ATTLIST warranty first_name			CDATA #IMPLIED>
+<!ATTLIST warranty last_name			CDATA #IMPLIED>
+<!ATTLIST warranty email				CDATA #IMPLIED>
+<!ATTLIST warranty locale				CDATA #IMPLIED>
+<!ATTLIST warranty created				CDATA #IMPLIED>
+<!ATTLIST warranty last_modified		CDATA #IMPLIED>

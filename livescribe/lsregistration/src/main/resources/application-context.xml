@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xmlns:camel="http://camel.apache.org/schema/spring"
+                xmlns:p="http://www.springframework.org/schema/p"
+                xmlns:context="http://www.springframework.org/schema/context"
+                xmlns:mvc="http://www.springframework.org/schema/mvc"
+                xmlns:oxm="http://www.springframework.org/schema/oxm"
+                xmlns:tx="http://www.springframework.org/schema/tx"
+                xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+                                http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+                                http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.2.xsd
+								http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+								http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<context:component-scan base-package="com.livescribe" />
+	<context:annotation-config />
+	<tx:annotation-driven />
+
+    <bean id="appProperties" class="com.livescribe.framework.lsconfiguration.AppProperties" init-method="init" destroy-method="destroy">
+		<!-- Gets the <display-name> value from the 'web.xml' file. -->
+		<property name="servletContextName" value="#{servletContext.servletContextName}" />
+        <property name="location">
+	        <value>classpath:app.properties</value>
+	    </property>
+	    <property name="searchSystemEnvironment"><value>true</value></property>
+	    <property name="systemPropertiesMode"><value>1</value></property>
+	</bean>    
+    
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="jdbcUrl" value="${vectordb.jdbc.url}" />
+		<property name="user" value="${vectordb.jdbc.username}" />
+		<property name="password" value="${vectordb.jdbc.password}" />
+		<property name="driverClass" value="${vectordb.jdbc.driverClassName}" />
+	</bean>
+
+	<bean id="dataSourceManufacturing" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="jdbcUrl" value="${manufacturing.jdbc.url}" />
+		<property name="user" value="${manufacturing.jdbc.username}" />
+		<property name="password" value="${manufacturing.jdbc.password}" />
+		<property name="driverClass" value="${manufacturing.jdbc.driverClassName}" />
+	</bean>
+
+	<!-- 
+	==================================================
+		Hibernate-related Beans
+	================================================== -->
+
+	<bean id="sessionFactoryVectorDB" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource"><ref local="dataSource" /></property>
+        <property name="mappingResources">
+			<list>
+				<value>com/livescribe/framework/orm/vectordb/Registration.hbm.xml</value>
+				<value>com/livescribe/framework/orm/vectordb/RegistrationHistory.hbm.xml</value>
+				<value>com/livescribe/framework/orm/vectordb/Warranty.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean>
+
+	<bean id="sessionFactoryManufacturing" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource"><ref local="dataSourceManufacturing" /></property>
+        <property name="mappingResources">
+			<list>
+				<value>com/livescribe/framework/orm/manufacturing/Pen.hbm.xml</value>
+				<value>com/livescribe/framework/orm/manufacturing/PenCertificate.hbm.xml</value>
+				<value>com/livescribe/framework/orm/manufacturing/PenRequest.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean>
+
+	<bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="properties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+				<prop key="connection.driver_class">com.mysql.jdbc.Driver</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop>
+			</props>
+		</property>
+	</bean>
+
+    <!-- Transaction Management -->
+    <bean id="txRegistration" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+		<qualifier value="registration" />
+		<property name="sessionFactory">
+			<ref local="sessionFactoryVectorDB" />
+		</property>
+	</bean>
+    <bean id="txManufacturing" class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="false">
+    	<qualifier value="manufacturing" />
+		<property name="sessionFactory">
+			<ref local="sessionFactoryManufacturing" />
+		</property>
+	</bean>
+	
+	<!-- 
+	==================================================
+		Service Beans
+	================================================== -->
+	
+	<!-- Translates an HTTP request into a Registration object. -->
+	<bean id="registrar" class="com.livescribe.web.registration.bean.RegistrationBean" />
+	
+	<!-- Looks up existing Registration records. -->
+	<bean id="registrationService" class="com.livescribe.web.registration.service.RegistrationServiceImpl" />
+	
+	<!-- Looks up existing Registration records. -->
+	<bean id="userService" class="com.livescribe.web.registration.service.UserServiceImpl" />
+	
+	<!-- Looks up existing RegistrationHistory records. -->
+    <bean id="registrationHistoryService" class="com.livescribe.web.registration.service.RegistrationHistoryServiceImpl" />
+    
+    <!-- Looks up existing Warranty records. -->
+    <bean id="warrantyService" class="com.livescribe.web.registration.service.WarrantyServiceImpl" />
+	
+	<!-- Reports versioning information of this Service. -->
+	<bean id="versionService" class="com.livescribe.framework.version.service.VersionServiceImpl" />
+	
+	<bean id="requestDataValueProcessor" class="com.livescribe.web.registration.validation.RegistrationDataValueProcessor" />
+	<!-- 
+	==================================================
+		DAO Beans
+	================================================== -->
+	<bean id="registrationDao" class="com.livescribe.framework.orm.vectordb.CustomRegistrationDao" />
+	<bean id="penDao" class="com.livescribe.framework.orm.manufacturing.CustomPenDao" />
+	<bean id="registrationHistoryDao" class="com.livescribe.framework.orm.vectordb.CustomRegistrationHistoryDao" />
+	<bean id="warrantyDao" class="com.livescribe.framework.orm.vectordb.CustomWarrantyDao" />
+
+    <bean id="emailNotifications" class="com.livescribe.web.registration.service.support.EMailNotifications" scope="prototype" />
+	
+</beans>

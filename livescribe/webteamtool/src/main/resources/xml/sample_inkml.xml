@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ink xmlns="http://www.livescribe.com/schemas/LSInkML" schemaLocation="lsinkml.xsd" 
+    documentID="uuid:cbe1f2159dcc41e4-0" 
+    archive="2" 
+    copy="2">
+    
+   <inkSource xml:id="LSC-iOS-0AB422C88D9C31" manufacturer="Livescribe" model="4" serialNo="AYE-ARD-3BX-MN">
+      <sampleRate uniform="true" value="75"></sampleRate>
+      <traceFormat>
+         <channel name="X" type="integer" units="anoto"></channel>
+         <channel name="Y" type="integer" units="anoto"></channel>lsPdfPlus.pdf
+      </traceFormat>
+   </inkSource>
+   <annotationXML type="Livescribe_Metadata">
+      <audioSession name="08.28.13 1:05p" start="1377720320053" end="1377720377036">
+         <audio_file file_attachment_key="session0_audio0.mp4" start="1377720320546" end="1377720336930" />
+         <audio_file file_attachment_key="session0_audio1.mp4" start="1377720354572" end="1377720377036" />
+         <audio_stroke page_address="2427721674276879" start="1377720323182" end="1377720335915" offset="1377720323182" />
+         <audio_stroke page_address="2427721674276879" start="1377720357522" end="1377720375574" offset="1377720357522" />
+      </audioSession>
+      <backgroundImage page_address="2427721674276879" metadata_key="Livescribe_BgImage0.png" />
+   </annotationXML>
+   <traceGroup xml:id="2427721674276879">
+      <activeArea size="338 331 5757 7451" width="6773" height="8127" pageIndex="25" units="au"></activeArea>
+      <timestamp xml:id="dts001" time="0"></timestamp>
+      <timestamp xml:id="dts002" timeOffset="1377720392106" timestampRef="#dts001"></timestamp>
+      <snippet text="lazy fox" confidence="86">
+         <cluster text="lazy" confidence="56"></cluster>
+         <cluster text="fox" confidence= "96">1377720296410</cluster>
+      </snippet>
+      <trace contextRef="#dts001" timeOffset="1377720296410">735 1194, -5 -10, -4 -8, -2 -2, 0 2, 2 5, 4 21, 4 42, 18 56, 17 63, 11 53, 9 41, 8 24</trace>
+   </traceGroup>
+</ink>

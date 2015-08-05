@@ -1,0 +1,57 @@
+/**
+ * Created:  $date.long
+ *           
+ * Companion SDK Framework - Version 0.5.0 (PRE-RELEASE) - CONFIDENTIAL
+ * Copyright (c) $date.get('yyyy'). Livescribe, Inc. All rights reserved.
+ */
+package ${package}.types;
+
+/**
+ * <p></p>
+ * 
+ * Created on $date.long
+ * @author <a href="mailto:kmurdoff@livescribe.com">Kevin Murdoff</a>
+ * @version 0.5
+ */
+public class $element.ClassName {
+
+#foreach(${child} in ${element.Children})
+  #if (${child.isList})
+	private ArrayList<${child.ClassName}> ${child.ElementName}List = new ArrayList<${child.ClassName}>();
+  #else
+	private ${child.ClassName} ${child.ElementName};
+  #end
+#end
+#foreach($attr in ${element.Attributes})
+	private $attr.get("type") $attr.get("name");
+#end
+
+	/**
+	 * <p></p>
+	 */
+	public ${element.ClassName}() {
+	
+	}
+
+#foreach($child in ${element.Children})
+	public $child.ClassName get${child.ClassName}() {
+		return ${child.elementName};
+	}
+#end
+#foreach($attr in $element.Attributes)
+	public $attr.get("type") get${attr.get("className")}() {
+		return ${attr.get("name")};
+	}
+#end
+
+#foreach($child in ${element.Children})
+	public void set${child.ClassName}($child.ClassName $child.ElementName) {
+		this.${child.elementName} = ${child.elementName};
+	}
+#end
+#foreach($attr in $element.Attributes)
+	public void set${attr.get("className")}(${attr.get("type")} ${attr.get("name")}) {
+		this.${attr.get("name")} = $attr.get("name");
+	}
+#end
+}
