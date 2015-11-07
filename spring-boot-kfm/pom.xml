@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.kfm.spring-boot</groupId>
+    <artifactId>spring-boot-kfm</artifactId>
+    <version>0.1.0</version>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.2.7.RELEASE</version>
+    </parent>
+
+	<developers>
+		<developer>
+			<id>kmurdoff</id>
+			<name>Kevin Murdoff</name>
+			<email>kmurdoff@curiousmaximus.org</email>
+			<url>http://www.curiousmaximus.org</url>
+			<organization>Curious Maximus, Inc.</organization>
+			<organizationUrl>http://www.curiousmaximus.org</organizationUrl>
+			<roles>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>-8</timezone>
+			<properties>
+				<picUrl>images/SYF-Stone.jpg</picUrl>
+			</properties>
+		</developer>
+	</developers>
+
+	<repositories>
+		<repository>
+			<id>nexus-local</id>
+			<name>localhost-nexus-repo</name>
+			<url>http://localhost:8081/nexus/content/groups/public/</url>
+		</repository>
+		<repository>
+      		<id>releases</id>
+      		<url>http://nexus/content/repositories/releases</url>
+		</repository>
+		<repository>
+      		<id>snapshots</id>
+      		<url>http://nexus/content/repositories/snapshots</url>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>nexus-local</id>
+			<name>Nexus Releases Repository</name>
+			<url>http://localhost:8081/nexus/content/repositories/releases</url>
+			<layout>default</layout>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>nexus-local-snapshots</id>
+			<name>Nexus Snapshots Repository</name>
+			<url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+			<layout>default</layout>
+		</snapshotRepository>
+	</distributionManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>4.2.2.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+
+    </dependencies>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
