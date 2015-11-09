@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<configuration>
+  
+  <LIVESCRIBE>
+    <WWW>www.livescribe.com</WWW>
+    <ADMIN>admin.livescribe.com</ADMIN>
+  </LIVESCRIBE>
+  
+  <services>
+    <allowRefresh>false</allowRefresh>
+  </services>
+  
+  <beanfiles>
+    <path>bean.xml</path>
+  </beanfiles>
+
+</configuration>

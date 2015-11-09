@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<configuration>
+  <appName>LSLocatorService</appName>
+
+  <context>
+    <name>LSLocatorService</name>
+    <isApplication>true</isApplication>
+  </context>
+
+  <services>
+    <allowRefresh>true</allowRefresh>
+  </services>
+  
+  <!--   
+  <livescribe>
+    <services>
+      <domain>
+        <name>LIVESCRIBE</name>  
+        <www-host>
+          <service>Authentication=/services/authentication</service>
+          <service>Community=/services/community</service>
+          <service>Download=/services/download</service>
+          <service>Registration=/services/registration</service>
+          <service>Storage=/services/storage</service>
+          <service>Upload=/services/upload</service>
+        </www-host>
+        <admin-host>
+          <service>Test=/services/test</service>
+        </admin-host>
+      </domain>
+    </services>
+  </livescribe>
+  -->
+
+  <beanfiles>
+    <path>bean.xml</path>
+  </beanfiles>
+
+</configuration>

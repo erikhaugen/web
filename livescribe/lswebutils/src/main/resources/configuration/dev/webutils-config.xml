@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<configuration>
+
+  <livescribe>
+    <domains>
+      <www>
+        <name>www-test.livescribe.com</name>
+        <auth>
+          <user>wwwscriber</user>
+          <password>wwwlspen</password>
+        </auth>
+      </www>
+      <admin>
+        <name>admin-test.livescribe.com</name>
+        <auth>
+          <user>wwwscriber</user>
+          <password>wwwlspen</password>
+        </auth>
+      </admin>
+    </domains>
+  </livescribe>
+
+</configuration>

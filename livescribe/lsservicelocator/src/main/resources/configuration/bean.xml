@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+       
+       
+  <bean id="sessionFactoryServiceLocator" name="sessionFactoryServiceLocator" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <property name="dataSource" ref="dataSourceServiceLocator"/>
+    <property name="mappingResources">
+      <list>
+        <value>com/livescribe/servicelocator/dao/data/ServiceLocator.hbm.xml</value>
+      </list>
+    </property>
+    <property name="hibernateProperties" ref="hibernateProperties" />
+     <property name="exposeTransactionAwareSessionFactory"><value>false</value></property>
+  </bean>
+  
+  <bean id="hibernateProperties" name="hibernateProperties" class="com.livescribe.base.MultipleProperties">
+    <property name="propertiesList">
+      <list>
+        <ref bean="hibernatePropertiesMain" />
+        <ref bean="hibernatePropertiesOverride" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="hibernatePropertiesMain" name="hibernatePropertiesMain" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="properties">
+      <props>
+        <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+        <prop key="connection.driver_class">com.mysql.jdbc.Driver</prop>
+        <prop key="hibernate.current_session_context_class">thread</prop>
+        <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
+        <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+        <prop key="hibernate.connection.isolation">2</prop>
+        <prop key="hibernate.connection.locking">deferred</prop>
+        <prop key="hibernate.connection.readonly">false</prop>
+        <prop key="hibernate.show_sql">false</prop>
+        <prop key="hibernate.c3p0.acquire_increment">3</prop>
+        <prop key="hibernate.c3p0.timeout">1800</prop>
+        <prop key="hibernate.c3p0.max_size">20</prop>
+        <prop key="hibernate.c3p0.max_statements">50</prop>
+        <prop key="hibernate.c3p0.min_size">5</prop>
+        <prop key="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop>
+      </props>
+    </property>
+  </bean>
+
+	<bean id="hibernatePropertiesOverride" name="hibernatePropertiesOverride" class="org.springframework.beans.factory.config.PropertiesFactoryBean" />
+  
+	<bean id="versionService" name="versionService" class="com.livescribe.framework.services.VersionService" />
+
+	<bean id="daoFactory" name="daoFactory" class="com.livescribe.servicelocator.dao.hbimpl.HbDaoFactory">
+		<property name="sessionFactoryServiceLocator" ref="sessionFactoryServiceLocator"/>
+	</bean>
+	
+</beans>

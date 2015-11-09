@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<configuration>
+  
+  <LIVESCRIBE>
+    <WWW>localhost</WWW>
+    <ADMIN>127.0.0.1</ADMIN>
+  </LIVESCRIBE>
+
+  <beanfiles>
+    <path>bean.xml</path>
+  </beanfiles>
+  
+</configuration>

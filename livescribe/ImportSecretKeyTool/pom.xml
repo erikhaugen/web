@@ -1,0 +1,353 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.livescribe</groupId>
+	<artifactId>ImportSecretKeyTool</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>ImportSecretKeyTool</name>
+	<repositories>
+		<repository>
+			<id>livescribe-repo</id>
+			<name>livescribe-repo</name>
+			<url>http://10.1.1.26:8081/nexus/content/groups/public/</url>
+		</repository>
+		<!--<repository> <id>www.hivedb.org</id> <name>www.hivedb.org</name> <url>http://www.hivedb.org/maven/</url> 
+			</repository> -->
+	</repositories>
+	
+	<profiles>
+
+        <!-- ============================================== Profile for Jenkins/Hudson builds ============================================== -->
+        <profile>
+            <activation>
+                <property>
+                    <name>buildfromhudson</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <directory>${hudson-build-folder}/${project.version}_${hudson-build-number}</directory>
+                <finalName>${project.artifactId}-${project.version}_${hudson-build-number}</finalName>
+                <plugins>
+                    <!-- ============================================== Maven Surefire Plugin ============================================== -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <phase>test</phase>
+                                <configuration>
+                                    <excludes>
+                                        <exclude>**/*.java</exclude>
+                                    </excludes>
+                                    <!-- <skipTests>true</skipTests> -->
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- ============================================== Profile for building locally ============================================== -->
+        <profile>
+            <id>local</id>
+            <activation>
+                <property>
+                    <name>local</name>
+                    <value>true</value>
+                </property>
+            </activation>
+
+            <repositories>
+                <repository>
+                    <id>localhost-repo</id>
+                    <name>localhost-repo</name>
+                    <url>http://localhost:8081/nexus/content/groups/public/</url>
+                </repository>
+                <repository>
+                    <id>livescribe-repo</id>
+                    <name>livescribe-repo</name>
+                    <url>http://svn.livescribe.com:8081/nexus/content/groups/public/</url>
+                </repository>
+            </repositories>
+
+            <distributionManagement>
+                <repository>
+                    <uniqueVersion>false</uniqueVersion>
+                    <id>nexus</id>
+                    <name>Nexus Releases Repository</name>
+                    <url>http://localhost:8081/nexus/content/repositories/releases</url>
+                    <layout>default</layout>
+                </repository>
+                <snapshotRepository>
+                    <uniqueVersion>false</uniqueVersion>
+                    <id>nexus-snapshots</id>
+                    <name>Nexus Snapshots Repository</name>
+                    <url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+                    <layout>default</layout>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+
+    </profiles>
+	<dependencies>
+		<dependency>
+			<groupId>com.frontbase</groupId>
+			<artifactId>frontbase-driver</artifactId>
+			<version>2.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.beust</groupId>
+			<artifactId>jcommander</artifactId>
+			<version>1.13</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.20</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.5</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.1</version>
+			<classifier>ftp</classifier>
+		</dependency>
+		<dependency>
+		    <groupId>com.jcraft</groupId>
+		    <artifactId>jsch</artifactId>
+		    <version>0.1.49</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<directory>target</directory>
+		<finalName>${project.artifactId}-${project.version}</finalName>
+		<plugins>
+		
+			<!-- 
+			==============================================
+				Maven Compiler Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			
+			<!-- 
+			==============================================
+				Maven Dependency Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<outputDirectory>
+						${project.build.directory}/classes
+					</outputDirectory>
+				</configuration>
+			</plugin>
+			
+			<!-- 
+			==============================================
+				Maven Assembly Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/final-zip.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> 
+						<phase>package</phase> 
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		
+			<!-- 
+			==============================================
+				Maven Resources Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<!-- This execution is for copying the contents of 'src/main/resources'
+						to the 'target/classes' directory with filtering. -->
+					<execution>
+						<id>copy-version.properties</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/classes</outputDirectory>
+							<encoding>UTF-8</encoding>
+							<resources>
+								<resource>
+									<directory>src/main/resources</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<!-- This execution is for copying the contents of 'non-packaged-resources'
+						to the 'target' directory with filtering. -->
+					<execution>
+						<id>copy-run.sh</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<encoding>UTF-8</encoding>
+							<resources>
+								<resource>
+									<directory>src/main/non-packaged-resources</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>ImportSecretKeyTool.sh</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+     
+            <!-- 
+            ==============================================
+                Maven AntRun Plugin
+            ============================================== -->
+            <!-- This is a workaround to keep file permissions 
+                 because copy-resources goal of Maven Resource Plugin
+                 doesn't keep file's permission-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>execpermission</id>
+						<phase>validate</phase>
+						<configuration>
+							<target>
+								<chmod file="${project.build.directory}/ImportSecretKeyTool.sh"
+									perm="755" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+     
+			<!-- 
+			==============================================
+				Maven JAR Plugin
+			============================================== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+							<mainClass>com.livescribe.importsecretkeytool.AppLauncher</mainClass>
+						</manifest>
+						<manifestEntries>
+							<App-Version>${version}</App-Version>
+							<Svn-Revision>${LS_SVN_REVISION}</Svn-Revision>
+							<Hudson-Build-Number>${hudson-build-number}</Hudson-Build-Number>
+							<Build-Date>${maven.build.timestamp}</Build-Date>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<!-- 
+			==============================================
+				Maven AntRun Plugin
+			============================================== -->
+<!-- 			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>createVersionInfo</id>
+						<phase>generate-resources</phase>
+						<configuration>
+							<tasks>
+								<property name="buildFolder" value="${project.basedir}"/>
+								<property name="hudson-build-number" value="${hudson-build-number}"/>
+								<property name="LS_SVN_REVISION" value="${LS_SVN_REVISION}"/>
+								<ant antfile="build.xml" target="createVersionInfo" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>create_run_jar</id>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<property name="buildFolder" value="${project.build.directory}"/>
+								<ant antfile="build.xml" target="create_run_jar" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+ -->
+		</plugins>
+
+	</build>
+
+</project>

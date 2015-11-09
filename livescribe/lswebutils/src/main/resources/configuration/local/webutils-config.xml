@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<configuration>
+
+  <livescribe>
+    <domains>
+      <www>
+        <name>localhost</name>
+      </www>
+      <admin>
+        <name>localhost</name>
+      </admin>
+    </domains>
+  </livescribe>
+
+</configuration>

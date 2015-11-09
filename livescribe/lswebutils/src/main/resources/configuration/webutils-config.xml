@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<configuration>
+
+  <context>
+    <name>LSWebUtils</name>
+    <isApplication>false</isApplication>
+  </context>
+  
+  <context>
+    <isLibrary>true</isLibrary>
+  </context>
+
+</configuration>

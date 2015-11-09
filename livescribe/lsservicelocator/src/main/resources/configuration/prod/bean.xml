@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+       
+  <bean id="dataSourceServiceLocator" name="dataSourceServiceLocator" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+    <property name="jdbcUrl"><value>jdbc:mysql://db.livescribe.com/servicelocator</value></property>
+    <property name="user"><value>_serlocatoruser</value></property>
+    <property name="password"><value>__slg834__</value></property>
+  </bean>
+
+</beans>

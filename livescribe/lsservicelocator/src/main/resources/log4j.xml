@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+  <appender name="logfileall" class="org.apache.log4j.RollingFileAppender">
+    <param name="File" value="/Livescribe/Tomcat/Logs/lsservicelocator-${logfile}.log4j.log" />
+    <param name="MaxFileSize" value="20MB" />
+    <param name="MaxBackupIndex" value="9" />
+    <!-- <param name="Threshold" value="INFO" /> -->
+    <param name="Threshold" value="DEBUG" />
+    <param name="Append" value="true" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d %-5p [%c] %m%n" />
+    </layout>
+    <!-- <filter class="org.apache.log4j.varia.LevelRangeFilter">
+      <param name="LevelMin" value="DEBUG" />
+      <param name="LevelMax" value="FATAL" />
+      <param name="AcceptOnMatch" value="true" />
+    </filter>
+    <filter class="org.apache.log4j.varia.DenyAllFilter" /> -->
+  </appender>
+        
+  <logger name="org.hibernate.cache">
+    <level value="WARN" />
+    <appender-ref ref="logfileall" />
+  </logger>
+
+  <logger name="org.hibernate.hql.ast.tree">
+    <level value="ERROR" />
+    <appender-ref ref="logfileall" />
+  </logger>
+        
+  <logger name="org.hibernate">
+    <level value="ALL" />
+    <appender-ref ref="logfileall" />
+  </logger>
+	
+  <logger name="org.spring">
+    <level value="ALL" />
+    <appender-ref ref="logfileall" />
+  </logger>
+        
+  <logger name="com.livescribe">
+    <level value="DEBUG" />
+    <appender-ref ref="logfileall"/>
+  </logger>
+
+  <root>
+    <priority value="WARN" />
+    <appender-ref ref="logfileall" />
+  </root>
+        
+</log4j:configuration>
