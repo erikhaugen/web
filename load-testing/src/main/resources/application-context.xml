@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:p="http://www.springframework.org/schema/p"
+                xmlns:context="http://www.springframework.org/schema/context"
+                xmlns:aop="http://www.springframework.org/schema/aop"
+                xmlns:tx="http://www.springframework.org/schema/tx"
+                xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                                http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+                                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<context:component-scan base-package="org.kfm.springboot" />
+	<context:annotation-config />
+	<tx:annotation-driven />
+
+	<bean id="appProperties" class="org.kfm.springboot.config.AppProperties" init-method="init" destroy-method="destroy">
+		<!-- Gets the <display-name> value from the 'web.xml' file. -->
+		<property name="servletContextName" value="#{servletContext.servletContextName}" />
+		<property name="location">
+			<value>classpath:application.properties</value>
+		</property>
+		<property name="searchSystemEnvironment"><value>true</value></property>
+		<property name="systemPropertiesMode"><value>1</value></property>
+	</bean>
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${loadtesting.jdbc.driverClassName}" />
+        <property name="jdbcUrl" value="${loadtesting.jdbc.url}" />
+        <property name="user" value="${loadtesting.jdbc.username}" />
+        <property name="password" value="${loadtesting.jdbc.password}" />
+    </bean>
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+<!-- 		<property name="mappingLocations"> -->
+<!-- 			<list> -->
+<!-- 				<value>classpath:org/kfm/springboot/domain/LoadTest.hbm.xml</value> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+		<property name="hibernateProperties" ref="hibernateProperties" />
+	</bean>
+	
+	<bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="properties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+				<prop key="connection.driver_class">com.mysql.jdbc.Driver</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 
+	==================================================
+		Service Beans
+	================================================== -->
+	<bean id="agentService"	class="org.kfm.loadtesting.service.impl.AgentServiceImpl" />
+
+	<!-- 
+	==================================================
+		DAO Beans
+	================================================== -->
+
+
+</beans>
